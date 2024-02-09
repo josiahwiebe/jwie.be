@@ -1,4 +1,13 @@
  <?php
+
+  if (!isset($_ENV['NOW_PHP_DEBUG'])) {
+    if (preg_match('/\.(css|js|png|jpg|jpeg|gif|svg|ico)$/', $_SERVER['REQUEST_URI'])) {
+      require(__DIR__ . '/../util/dev.php');
+      dev_load_static_files($_SERVER['REQUEST_URI']);
+      return;
+    }
+  }
+
   require_once __DIR__ . '/../vendor/autoload.php';
   $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
   $dotenv->safeLoad();

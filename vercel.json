@@ -8,39 +8,23 @@
   "routes": [
     {
       "src": "/(css|js|img)/(.*)",
-      "dest": "public/assets/$1/$2"
+      "dest": "public/assets/$1/$2",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
     },
     {
       "src": "/content/(.*)",
-      "dest": "public/content/$1"
+      "dest": "public/content/$1",
+      "headers": { "Cache-Control": "s-maxage=1, stale-while-revalidate=86400" }
     },
     {
       "src": "/",
-      "dest": "/api/index.php"
+      "dest": "/api/index.php",
+      "headers": { "Cache-Control": "s-maxage=1, stale-while-revalidate=86400" }
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.php"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(css|js|img)/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "s-maxage=1, stale-while-revalidate=86400"
-        }
-      ]
+      "dest": "/api/index.php",
+      "headers": { "Cache-Control": "s-maxage=1, stale-while-revalidate=86400" }
     }
   ]
 }

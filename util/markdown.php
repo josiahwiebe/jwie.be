@@ -3,6 +3,9 @@
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 function parse_markdown($file_contents, $slug) {
+  if (!is_string($file_contents)) {
+    return 'Invalid file contents';
+  }
   $object = YamlFrontMatter::parse($file_contents);
   if ($object->matter()) {
 
