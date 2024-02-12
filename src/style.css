@@ -232,6 +232,10 @@ a:hover {
     color: transparent;
   }
 
+  .prose blockquote {
+    color: var(--tw-prose-invert);
+  }
+
   .prose a {
     border-bottom: 1px solid;
     border-image-slice: 1;

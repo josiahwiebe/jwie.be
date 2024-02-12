@@ -22,6 +22,12 @@ $nav_items = [
   <title><?php echo $title; ?></title>
   <link rel="stylesheet" href="/css/fonts.css" />
   <link rel="stylesheet" href="/css/style.css" />
+
+  <meta name="twitter:site" content="@josiahwiebe">
+  <link rel="me" href="https://mastodon.social/@josiahwiebe">
+  <link rel="me" href="https://twitter.com/josiahwiebe">
+  <link rel="me" href="https://github.com/josiahwiebe">
+  <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 </head>
 
 <body>
@@ -52,13 +58,13 @@ $nav_items = [
           Archive
         </a>
         <span class='w-full h-1 mt-1 inline-flex border-t border-gray-200 dark:border-slate-700'></span>
-        <a href='https://twitter.com/josiahwiebe' class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
+        <a href='https://twitter.com/josiahwiebe' rel="me" class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           Twitter
         </a>
-        <a href='https://mastodon.social/@josiahwiebe' class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
+        <a href='https://mastodon.social/@josiahwiebe' rel="me" class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           Mastodon
         </a>
-        <a href='https://instagram.com/josiahwiebe' class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
+        <a href='https://instagram.com/josiahwiebe' rel="me" class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           Instagram
         </a>
       </div>
