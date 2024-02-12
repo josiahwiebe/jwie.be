@@ -7,7 +7,7 @@
   },
   "routes": [
     {
-      "src": "/(css|js|img)/(.*)",
+      "src": "/(css|js|img|fonts)/(.*)",
       "dest": "public/assets/$1/$2",
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
     },

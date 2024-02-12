@@ -1,7 +1,7 @@
  <?php
 
   if (!isset($_ENV['NOW_PHP_DEBUG'])) {
-    if (preg_match('/\.(css|js|png|jpg|jpeg|gif|svg|ico)$/', $_SERVER['REQUEST_URI'])) {
+    if (preg_match('/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2)$/', $_SERVER['REQUEST_URI'])) {
       require(__DIR__ . '/../util/dev.php');
       dev_load_static_files($_SERVER['REQUEST_URI']);
       return;
@@ -19,12 +19,17 @@
   require(__DIR__ . '/../util/markdown.php');
   require(__DIR__ . '/../util/posts.php');
 
+  if ($_SERVER['REQUEST_URI'] == '/feed' || $_SERVER['REQUEST_URI'] == '/feed.xml') {
+    require(__DIR__ . '/../util/feed.php');
+    exit;
+  }
+
   $file = load_markdown($_SERVER['REQUEST_URI']);
   $document = parse_markdown($file->content, $file->slug);
 
   // if the markdown file doesn't have front matter, 404
 
-  if (!$document->front_matter) {
+  if (!isset($document->front_matter)) {
     http_response_code(404);
     $template_name = '404';
     include(__DIR__ . '/../templates/base.php');

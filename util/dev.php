@@ -31,6 +31,12 @@ function dev_load_static_files($path) {
     case 'ico':
       $type = 'image/x-icon';
       break;
+    case 'woff':
+      $type = 'font/woff';
+      break;
+    case 'woff2':
+      $type = 'font/woff2';
+      break;
     default:
       $type = 'text/plain';
       break;

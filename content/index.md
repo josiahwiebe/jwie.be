@@ -1,6 +1,4 @@
 ---
-title: PHP Markdown Blog
-layout: page
+title: jwie.be
+layout: home
 ---
-
-This website is dynamically generated from Markdown, using a simple PHP file.

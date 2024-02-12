@@ -17,7 +17,11 @@ function parse_markdown($file_contents, $slug) {
       'slug' => $slug,
     ];
   } else {
-    return 'No front matter';
+    return (object) [
+      'markdown' => null,
+      'front_matter' => null,
+      'slug' => $slug,
+    ];
   }
 }
 
@@ -48,6 +52,6 @@ function load_markdown($path) {
     return (object) ["content" => $markdownContent, "slug" => $markdownFilePath->slug];
   } else {
     // Display an error message if the Markdown file is not found
-    return 'Markdown file not found.';
+    return (object) ["content" => null, "slug" => $markdownFilePath->slug];
   }
 }
