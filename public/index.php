@@ -1,6 +1,6 @@
  <?php
 
-  if (!isset($_ENV['NOW_PHP_DEBUG'])) {
+  if (!isset($_ENV['VERCEL'])) {
     if (preg_match('/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2)$/', $_SERVER['REQUEST_URI'])) {
       require(__DIR__ . '/../util/dev.php');
       dev_load_static_files($_SERVER['REQUEST_URI']);
@@ -14,7 +14,7 @@
 
   $Parsedown = new Parsedown();
 
-  define('MARKDOWN_BASE_DIR', $_ENV['NOW_PHP_DEBUG']  ? '/var/task/user/content' : __DIR__ . '/../content');
+  define('MARKDOWN_BASE_DIR', $_ENV['VERCEL']  ? '/var/task/user/content' : __DIR__ . '/../content');
 
   require(__DIR__ . '/../util/markdown.php');
   require(__DIR__ . '/../util/posts.php');
