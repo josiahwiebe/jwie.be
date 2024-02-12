@@ -6,7 +6,7 @@
       👋 Hi, I'm Josiah
     </h1>
     <p class='text-gray-500 dark:text-slate-300 lg:text-lg'>
-      I'm a multi-disciplinary developer and marketing manager based in the Canadian Praries. I currently lead the
+      I'm a multi-disciplinary developer and marketing manager based in the Canadian Prairies. I currently lead the
       marketing team at <a href='https://leisurevans.com/'>Leisure Travel Vans</a>.
     </p>
   </div>
