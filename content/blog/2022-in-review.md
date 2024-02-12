@@ -19,12 +19,18 @@ Winter felt a little bit more challenging than past years, but we made the most 
 We spent a lot of time trekking through my parents woods, just exploring and enjoying the natural beauty of winter. There's always a few deer or foxes to be seen, and plenty of sunshine (even though it is a bit cold).
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/lainey-assiniboine-skating.jpg' alt=''>
-    Lainey skating on the Assiniboine River
-  </ImageWithCaption>
-  <ImageWithCaption src='/img/2022-in-review/river-skating.gif' alt=''>
-    Skating on the Boyne River in Carman
-  </ImageWithCaption>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/lainey-assiniboine-skating.jpg" alt="" />
+    <figcaption class="text-xs">
+      Lainey skating on the Assiniboine River
+      </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/river-skating.gif" alt="" />
+    <figcaption class="text-xs">
+      Skating on the Boyne River in Carman
+    </figcaption>
+  </figure>
 </div>
 
 Skating on our frozen rivers and creeks is a truly Canadian pastime, and we take advantage to the fullest. Lainey loves to skate, and Olsen was content to just enjoy the ride in the stroller.
@@ -36,30 +42,45 @@ As the spring came, along with it came a lot of hope for the year. The snow star
 I had the opportunity to plan a new office for myself in our marketing space, as we planned to grow the team in within the year. I was able to get my hands dirty with some of the design and ideation, and I'm quite pleased with the end result.
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/office-reno-planning.jpg' alt=''>
-    Planning out the walls
-  </ImageWithCaption>
-  <ImageWithCaption src='/img/2022-in-review/office-reno-wip.jpg' alt=''>
-    Studs and drywall going up
-  </ImageWithCaption>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/lainey-assiniboine-skating.jpg" alt="" />
+      <figcaption class="text-xs">Lainey skating on the Assiniboine River</figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/river-skating.gif" alt="" />
+    <figcaption class="text-xs">Skating on the Boyne River in Carman</figcaption>
+  </figure>
 </div>
 
-<ImageWithCaption src='/img/2022-in-review/office-reno-complete.jpg' alt=''>
-  The (pretty much) finished product
-</ImageWithCaption>
+<div class='image-half'>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/office-reno-planning.jpg" alt="" />
+    <figcaption class="text-xs">
+      Planning out the walls
+    </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/office-reno-wip.jpg" alt="" />
+    <figcaption class="text-xs">
+      Studs and drywall going up
+    </figcaption>
+  </figure>
+</div>
+
+<figure class="relative h-fit"><img src="/img/2022-in-review/office-reno-complete.jpg" alt="" /><figcaption class="text-xs">
+  The (pretty much) finished product</figcaption>
+</figure>
 
 I also (reluctantly) became a truck owner, taking delivery of the model I had ordered the previous December. We were planning on taking a long road trip in the summer and needed something more substantial than our XC90 to pull the camper.
 
-<Image src='/img/2022-in-review/new-truck.jpg' />
+![](/img/2022-in-review/new-truck.jpg)
 
 Spring felt like it settled in nicely, and we took full advantage of the outdoors whenever we could. Olsen was still waking up very early, so I started taking advantage of that time and took him golfing with a friend and their son.
 
-<div class='image-half'>
-  <Image src='/img/2022-in-review/stroller-golfing.jpg' />
-  <Image src='/img/2022-in-review/morning-golfing.jpg' />
-</div>
+![](/img/2022-in-review/stroller-golfing.jpg)
+![](/img/2022-in-review/morning-golfing.jpg)
 
-<Image src='/img/2022-in-review/backyard-work.jpg' />
+![](/img/2022-in-review/backyard-work.jpg)
 
 We took a family trip down to Minneapolis for the May long weekend – our first family trip for the year. It was a great little getaway, and the hotel pool was a hit with the kids. Minneapolis is a fantastic city, I'd liken it to a Portland of the Midwest.
 
@@ -69,66 +90,95 @@ Settling into the full swing of summer. The kids (meaning me) got Katie a paddle
 
 We planned and booked a camping trip out to Vancouver for the end of summer, so I began eagerly working on some upgrades to our camper. We have a 2021 Winnebago Micro Minnie 2100BH. Most of the sites we booked were unserviced, so I wanted to do some power upgrades to ensure we had enough capacity to handle our off-grid sites. You can read more about those upgrades in the [logbook entry](/logbook/2021-winnebago-micro-minnie-2100bh).
 
-<Image src='/img/2022-in-review/winnebago-electrical-upgrade.jpg' />
+![](/img/2022-in-review/winnebago-electrical-upgrade.jpg)
 
 I spent some time on my bicycle throughout the summer, but not as much as previous years. I tried to balance that deficit out with some running. Even still, I made the most of my time in the saddle and got a few solid rides in.
 
-<Image src='/img/2022-in-review/bike-ride.jpg' />
+![](/img/2022-in-review/bike-ride.jpg)
 
 Top purchase for 2022 was probably our Arctic Spas Summit hot tub. It really helps makes our backyard into even more of an oasis. We enjoy a soak in it every evening, bring the Kindles and read a few chapters when the kids are in bed.
 
-<Image src='/img/2022-in-review/hot-tub.jpg' />
+![](/img/2022-in-review/hot-tub.jpg)
 
 Summer is also when things get into full swing at Leisure Travel Vans, as we have to take advantage of the limited good weather that we get in southern Manitoba. Our video team headed out on our annual product video shoots, which tend to take us all around Manitoba.
 
 We also launched two all-new products this year, and we made a plan to head to Kelowna to shoot the launch videos.
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/kelowna-shoot-rig.jpg' alt=''>
-    Our [car-to-car rig](https://tilta.com/shop/hydra-alien-car-mounting-system-pro-kit/)
-  </ImageWithCaption>
-  <ImageWithCaption src='/img/2022-in-review/kelowna-shoot-temperature.jpg' alt=''>
-    Temperatures in the coach climbed over 40C
-  </ImageWithCaption>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/kelowna-shoot-rig.jpg" alt="" />
+    <figcaption class="text-xs">
+      Our <a href="https://tilta.com/shop/hydra-alien-car-mounting-system-pro-kit/">car-to-car rig</a>
+    </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/kelowna-shoot-temperature.jpg" alt="" />
+    <figcaption class="text-xs">
+      Temperatures in the coach climbed over 40C
+    </figcaption>
+  </figure>
 </div>
 
-<ImageWithCaption src='/img/2022-in-review/kelowna-shoot-selfie.jpg' alt=''>
-  The Film Boyz (self-titled)
-</ImageWithCaption>
+<figure class="relative h-fit">
+  <img src="/img/2022-in-review/kelowna-shoot-selfie.jpg" alt="" />
+  <figcaption class="text-xs">
+    The Film Boyz (self-titled)
+  </figcaption>
+</figure>
 
-<ImageWithCaption src='/img/2022-in-review/kelowna-shoot-drone.jpg' alt=''>
-  One of the drone shots from the shoot
-</ImageWithCaption>
+<figure class="relative h-fit">
+  <img src="/img/2022-in-review/kelowna-shoot-drone.jpg" alt="" />
+  <figcaption class="text-xs">
+    One of the drone shots from the shoot
+  </figcaption>
+</figure>
 
 In August, we headed out on a three-week family camping trip, intending to end up in Squamish, BC. Our plans changed a little bit due to the extreme heat of the Okanagan Valley combined with a lack of serviced campgrounds, but I think the trip was better for it. We ended up spending a bit less time in Kelowna, and then made our way directly to Vancouver Island, to reconnect with the friends that had just moved away. I'll detail the trip in a [logbook](/logbook) entry soon.
 
-<ImageWithCaption src='/img/2022-in-review/squamish-trip-departure.jpg' alt=''>
-  Preparing to depart on our 3-week trip
-</ImageWithCaption>
+<figure class="relative h-fit">
+  <img src="/img/2022-in-review/squamish-trip-departure.jpg" alt="" />
+  <figcaption class="text-xs">
+    Preparing to depart on our 3-week trip
+  </figcaption>
+</figure>
 
 Highlight of the trip was probably the [Triple Ferry Ride](https://www.strava.com/activities/7705952028), starting in Victoria, BC. It's a 120 kilometre bike ride that takes you on three different ferries, from Vancouver Island to Salt Spring Island, and then back to Vancouver Island. A full day affair and an absolute blast — wine tasting, coffee stops and all.
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/triple-ferry-1.jpg' alt=''>
-    Crossing Salt Spring Island
-  </ImageWithCaption>
-  <Image src='/img/2022-in-review/triple-ferry-2.gif' />
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/triple-ferry-1.jpg" alt="" />
+    <figcaption class="text-xs">
+      Crossing Salt Spring Island
+    </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/triple-ferry-2.gif" />
+  </figure>
 </div>
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/triple-ferry-4.jpg' alt=''>
-    Waiting for the ferry
-  </ImageWithCaption>
-  <ImageWithCaption src='/img/2022-in-review/triple-ferry-3.gif'>
-    Wine tasting at [Enrico](https://www.enricowinery.com/)
-  </ImageWithCaption>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/triple-ferry-4.jpg" alt="" />
+    <figcaption class="text-xs">
+      Waiting for the ferry
+    </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/triple-ferry-3.gif" alt="" />
+    <figcaption class="text-xs">
+      Wine tasting at <a href="https://www.enricowinery.com/">Enrico</a>
+    </figcaption>
+  </figure>
 </div>
 
 We returned home just in time for Lainey to start kindergarten, and then I headed off with the team to Hershey, Pennsylvania to launch our brand new Murphy Bed Lounge floorplan.
 
-<ImageWithCaption src='/img/2022-in-review/hershey-rv-show.jpg' alt='Hershey RV Show'>
-  Preparing for the [livestream](https://www.youtube.com/watch?v=cwJEpB2wBG0) at the Hershey RV Show
-</ImageWithCaption>
+<figure class="relative h-fit">
+  <img src="/img/2022-in-review/hershey-rv-show.jpg" alt="Hershey RV Show" />
+  <figcaption class="text-xs">
+    Preparing for the <a href="https://www.youtube.com/watch?v=cwJEpB2wBG0">livestream</a> at the Hershey RV Show
+  </figcaption>
+</figure>
 
 ## Third Quarter
 
@@ -138,9 +188,12 @@ Since Lainey started school, we went through (what sounds like it's the usual) b
 
 We celebrated both Lainey and Olsen's birthdays in October, and had a rare snow-free Halloween (also Olsen's birthday).
 
-<ImageWithCaption src='/img/2022-in-review/no-name.jpg'>
-  I made [no name](https://www.noname.ca/en_ca/about/) costumes for Halloween.
-</ImageWithCaption>
+<figure class="relative h-fit">
+  <img src="" alt="">
+  <figcaption class="text-xs">
+    I made <a href="https://www.noname.ca/en_ca/about/">no name</a> costumes for Halloween.
+  </figcaption>
+</figure>
 
 ## Fourth Quarter
 
@@ -149,32 +202,49 @@ The last part of the year was a bit of a blur, as we settled into new routines w
 We spent a lot of time with family and friends, eating lots of good food and [drinking good wine](https://www.vivino.com/users/jwiebe). I made a lot of charcuterie boards, both at home and at work.
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/charcuterie-2.jpg'>
-    We hosted an office holiday party with a charcuterie table
-  </ImageWithCaption>
-  <ImageWithCaption src='/img/2022-in-review/charcuterie-1.jpg'>Another evening, another spread</ImageWithCaption>
+ <figure class="relative h-fit">
+    <img src="/img/2022-in-review/charcuterie-2.jpg" alt="" />
+    <figcaption class="text-xs">
+      We hosted an office holiday party with a charcuterie table
+    </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/charcuterie-1.jpg" alt="" />
+    <figcaption class="text-xs">
+      Another evening, another spread
+    </figcaption>
+  </figure>
 </div>
 
 After a long hiatus from a lifetime growing up Nordic Skiing, I finally got back on the skis this year. Katie and I both purchased a new set of skis which we've been really happy with. They are the [Saloman Escape 6 Skin](https://www.salomon.com/en-int/shop-int/product/escape-6-skin-and-prolink-access.html#color=67766) – I've been really impressed with the skin technology.
 
 <div class='image-half'>
-  <ImageWithCaption src='/img/2022-in-review/skiing-1.jpg' alt='Skiing through the snowy Burwalde woods'>
-    Skiing through the snowy Burwalde woods
-  </ImageWithCaption>
-  <ImageWithCaption src='/img/2022-in-review/skiing-2.jpg' alt='Nordic skiing with the family'>
-    Lainey & Olsen came to love skiing, so we often make it a whole family affair
-  </ImageWithCaption>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/skiing-1.jpg" alt="Skiing through the snowy Burwalde woods" />
+    <figcaption class="text-xs">
+      Skiing through the snowy Burwalde woods
+    </figcaption>
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/skiing-2.jpg" alt="Nordic skiing with the family" />
+    <figcaption class="text-xs">
+      Lainey & Olsen came to love skiing, so we often make it a whole family affair
+    </figcaption>
+  </figure>
 </div>
 
-<ImageWithCaption src='/img/2022-in-review/skiing-3.jpg' alt='Josiah and Katie out on the trails'>
-  We skiied every day during the week of Christmas
-</ImageWithCaption>
+<figure class="relative h-fit">
+  <img src="/img/2022-in-review/skiing-3.jpg" alt="Josiah and Katie out on the trails" />
+  <figcaption class="text-xs">
+    We skiied every day during the week of Christmas
+  </figcaption>
+</figure>
 
 If you made it this far, thanks for reading. I hope you enjoyed the review, and I hope you have a great 2023. I'm looking forward to breathing new life into my personal site, and I hope you'll join me.
 
 You can also follow me on [Twitter](https://twitter.com/josiahwiebe)/[Mastodon](https://mastodon.social/@josiahwiebe) and [Instagram](https://instagram.com/josiahwiebe).
 
-<Image src='/img/2022-in-review/cheers.gif' width={200} height={300} alt='Cheers to 2023' contain={true} />
+![Cheers to 2023](/img/2022-in-review/cheers.gif')
 
 ## 2022: In Statistics
 

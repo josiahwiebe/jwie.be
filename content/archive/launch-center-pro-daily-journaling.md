@@ -9,7 +9,7 @@ I was recently reading about [meal logging](https://thenewsprint.co/blog/launch-
 
 Most of these actions are based around things that I’ve enjoyed throughout the day– a good glass of wine, a favourite beer, a perfect coffee or a great book. In fact, I compiled so many actions that I created a dedicated group in Launch Center Pro; Input. Here’s what it looks like right now:
 
-<Image src='/img/archive/lcp-daily.png' alt='screenshot of launch center pro on iOS' />
+![screenshot of launch center pro on iOS](/img/archive/lcp-daily.png')
 
 It’s far easier for me to keep on top of documenting these very tangible things throughout my day. My Daily Summary action has a very important “Physical Notebook Reference” field at the end. This is because I still primarily write my thoughts down on physical paper, usually in [Field Notes](http://fieldnotesbrand.com) Brand notebooks or [Moleskine Cahiers](http://shop.moleskine.com/en-us/notebooks-journals/cahier/). This field allows me to easily make reference to which notebook I’ve written in that day (thanks to Josh for giving me this idea).
 

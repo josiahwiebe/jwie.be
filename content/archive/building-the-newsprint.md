@@ -11,7 +11,7 @@ Regardless of the piece of advice that I was giving, there was always one little
 
 As the first year anniversary of the site was coming up, Josh thought it would be good timing to rebuild the site. He sent me a text telling me that he was looking into it and wasn't sure if I'd be able to do it for him, based on timeline. Immediately after receiving that text, I decided to do a quick mockup in Sketch, pretty much just for the fun of it. He had talked often of the style of site that he enjoyed, so I based the mockup off of those discussions.
 
-<Image src='/img/building-the-newsprint/the-newsprint-screenshot.png' alt='Screenshot of The Newsprint' />
+![Screenshot of The Newsprint](/img/building-the-newsprint/the-newsprint-screenshot.png)
 
 I sent it over to him, and he immediately thought that it was almost exactly how he had imagined it in his mind. It's pretty awesome when your design can align so well with client expectations so quickly. I spent a bit of time tweaking things; refining the main brand colour, tweaking the typography, and cleaning up the layout.
 
