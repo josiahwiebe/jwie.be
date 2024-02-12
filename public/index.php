@@ -19,11 +19,6 @@
   require(__DIR__ . '/../util/markdown.php');
   require(__DIR__ . '/../util/posts.php');
 
-  if ($_SERVER['REQUEST_URI'] == '/feed' || $_SERVER['REQUEST_URI'] == '/feed.xml') {
-    require(__DIR__ . '/../util/feed.php');
-    exit;
-  }
-
   $file = load_markdown($_SERVER['REQUEST_URI']);
   $document = parse_markdown($file->content, $file->slug);
 
@@ -43,4 +38,4 @@
 
   include(__DIR__ . '/../templates/base.php');
 
-  ?>
+  exit;

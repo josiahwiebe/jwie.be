@@ -4,15 +4,19 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 use Lukaswhite\FeedWriter\RSS2;
 
-$feed = new RSS2();
+$feed = new RSS2('utf-8');
+$feed->registerAtomNamespace()
+  ->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/')
+  ->registerNamespace('content', 'http://purl.org/rss/1.0/modules/content/');
 $channel = $feed->addChannel();
 $channel->title('Josiah Wiebe - Blog')
   ->link('https://jwie.be/blog')
+  ->addAtomLink('https://jwie.be/feed.xml', 'self')
   ->description('Feed of blog posts from jwie.be')
   ->link('https://jwie.be/feed.xml')
   ->pubDate(new DateTime())
   ->lastBuildDate(new DateTime())
-  ->copyright('2011–' . date('Y') . ' Josiah Wiebe')
+  ->copyright('2011-' . date('Y') . ' Josiah Wiebe')
   ->language('en-CA');
 
 $posts = get_all_posts('blog');
