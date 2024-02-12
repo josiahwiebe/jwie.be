@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('America/Winnipeg');
-error_reporting(E_ALL ^ E_DEPRECATED);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING);
 
 use Lukaswhite\FeedWriter\RSS2;
 
@@ -9,7 +9,7 @@ $feed->registerAtomNamespace()
   ->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/')
   ->registerNamespace('content', 'http://purl.org/rss/1.0/modules/content/');
 $channel = $feed->addChannel();
-$channel->title('Josiah Wiebe - Blog')
+$channel->title('Josiah Wiebe – Blog')
   ->link('https://jwie.be/blog')
   ->addAtomLink('https://jwie.be/feed.xml', 'self')
   ->description('Feed of blog posts from jwie.be')
