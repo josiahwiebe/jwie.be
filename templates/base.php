@@ -48,9 +48,6 @@ $nav_items = [
         <a href='/feed.xml' class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           RSS
         </a>
-        <a href='/feed.json' class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
-          JSON
-        </a>
         <a href='/archive' class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           Archive
         </a>
