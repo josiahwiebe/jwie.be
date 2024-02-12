@@ -7,13 +7,18 @@
   },
   "routes": [
     {
-      "src": "/(css|js|img|fonts)/(.*)",
-      "dest": "public/assets/$1/$2",
+      "src": "/favicon.ico",
+      "dest": "/public/favicon.ico",
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
     },
     {
-      "src": "/content/(.*)",
-      "dest": "public/content/$1",
+      "src": "/(css|js|img|fonts)/(.*)",
+      "dest": "/public/$1/$2",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/public/$1",
       "headers": { "Cache-Control": "s-maxage=1, stale-while-revalidate=86400" }
     },
     {

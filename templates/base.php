@@ -19,14 +19,23 @@ $nav_items = [
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f2787c">
+  <meta name="description" content="Josiah Wiebe is a multi-disciplinary developer and marketing manager based in the Canadian Prairies.">
+
   <title><?php echo $title; ?></title>
   <link rel="stylesheet" href="/css/fonts.css" />
   <link rel="stylesheet" href="/css/style.css" />
 
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for jwie.be" href="/feed.xml">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+
   <meta name="twitter:site" content="@josiahwiebe">
   <link rel="me" href="https://mastodon.social/@josiahwiebe">
   <link rel="me" href="https://twitter.com/josiahwiebe">
-  <link rel="me" href="https://github.com/josiahwiebe">
+  <link rel="me authn" href="https://github.com/josiahwiebe">
   <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 </head>
 
