@@ -2,15 +2,22 @@
   "name": "@josiahwiebe/jwiebe-php",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tailwindcss -i ./src/style.css -o ./public/css/style.css --watch --postcss postcss.config.js",
+    "dev:css": "tailwindcss -i ./src/style.css -o ./public/css/style.css --watch --postcss postcss.config.js",
+    "dev:serve": "php -S localhost:8008 -t public",
+    "dev:og": "vc dev",
+    "dev:php": "npm-run-all --parallel dev:css dev:serve",
     "build": "tailwind -i ./src/style.css -o ./public/css/style.css --postcss postcss.config.js --minify"
   },
-  "author": "",
+  "author": "@josiahwiebe",
   "license": "ISC",
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.17",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "@vercel/og": "^0.6.2"
   }
 }

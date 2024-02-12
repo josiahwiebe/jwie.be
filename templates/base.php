@@ -32,6 +32,8 @@ $nav_items = [
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
 
+  <meta name="og:image" content="/api/og?title=<?= isset($document->front_matter->title) ? $document->front_matter->title : 'JWWW'; ?>">
+
   <meta name="twitter:site" content="@josiahwiebe">
   <link rel="me" href="https://mastodon.social/@josiahwiebe">
   <link rel="me" href="https://twitter.com/josiahwiebe">

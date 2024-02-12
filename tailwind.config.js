@@ -23,7 +23,7 @@ module.exports = {
       },
       backgroundImage: {
         'gradient-primary':
-          'linear-gradient(135deg, hsla(55, 61%, 85%, 1) 0%,hsla(196, 79%, 79%, 1) 50%,hsla(358, 82%, 71%, 1) 100%)',
+          'linear-gradient(135deg, hsla(55, 61%, 85%, 1) 0%, hsla(196, 79%, 79%, 1) 50%, hsla(358, 82%, 71%, 1) 100%)',
       },
     },
   },
