@@ -19,7 +19,10 @@ $channel->title('Josiah Wiebe - Blog')
   ->copyright('2011-' . date('Y') . ' Josiah Wiebe')
   ->language('en-CA');
 
-$posts = get_all_posts('blog');
+$blog_posts = get_all_posts('blog');
+$logbook_posts = get_all_posts('logbook');
+$archive_posts = get_all_posts('archive');
+$posts = array_merge($blog_posts, $logbook_posts, $archive_posts);
 foreach ($posts as $post) {
   $item = $channel->addItem()
     ->title($post->front_matter->title)
