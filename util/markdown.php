@@ -2,6 +2,25 @@
 
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 
+class ParsedownHighlighting extends Parsedown {
+
+  protected function blockFencedCodeComplete($block) {
+    $text = $block['element']['text']['text'];
+    $language = $block['element']['text']['attributes']['class'];
+
+    $language = explode('-', $language)[1];
+
+    $hl = new \Highlight\Highlighter();
+    $highlighted = $hl->highlight($language, $text);
+
+    unset($block['element']['text']['text']);
+    $block['element']['text']['attributes']['class'] = 'hljs ' . $highlighted->language;
+    $block['element']['text']['rawHtml'] = $highlighted->value;
+
+    return $block;
+  }
+}
+
 function parse_markdown($file_contents, $slug) {
   if (!is_string($file_contents)) {
     return 'Invalid file contents';
@@ -9,7 +28,7 @@ function parse_markdown($file_contents, $slug) {
   $object = YamlFrontMatter::parse($file_contents);
   if ($object->matter()) {
 
-    $parsed_markdown = (new Parsedown)->text($object->body() ?? "");
+    $parsed_markdown = (new ParsedownHighlighting)->text($object->body() ?? "");
 
     return (object) [
       'markdown' => $parsed_markdown,

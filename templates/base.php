@@ -25,6 +25,7 @@ $nav_items = [
   <title><?php echo $title; ?></title>
   <link rel="stylesheet" href="/css/fonts.css" />
   <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/nord.css" />
 
   <link rel="alternate" type="application/rss+xml" title="RSS Feed for jwie.be" href="/feed.xml">
   <link rel="icon" href="/favicon.ico">

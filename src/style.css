@@ -266,7 +266,6 @@ a:hover {
 
 .prose pre {
   margin-top: 0;
-  border-top-left-radius: 0;
 }
 
 div[data-rehype-pretty-code-fragment] {

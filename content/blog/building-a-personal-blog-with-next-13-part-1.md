@@ -115,7 +115,7 @@ Now that the new directory structure has been configured, it's time to start con
 
 I started with the root layout file, since this is going to define the overall base layout for the site. For brevity, I'm not going to post the entire contents of these files, but you can find the full source code on [GitHub](https://github.com/josiahwiebe/jwie.be).
 
-```tsx title="app/layout.tsx"
+```jsx title="app/layout.tsx"
 import '@styles/styles.css'
 import Link from 'next/link'
 
@@ -149,7 +149,7 @@ Note the `{children}` prop. This is where the content for each page will be rend
 
 Next, I created the `page.tsx` file for the root route. This will be our index page. Just like the convention for the previous `pages` directory, this file should simply export a React component.
 
-```tsx title="app/page.tsx"
+```jsx title="app/page.tsx"
 export default async function IndexPage() {
   return (
     <section class='page-content grid items-center'>
@@ -166,11 +166,11 @@ The `head.tsx` file is a special file that will be used to define the `<Head>` c
 
 I created a custom `PageHead` component that will be used to define the `<Head>` component for each page. This component will accept a `title` prop, and will automatically append the site name to the end of the title.
 
-```tsx title="@components/page-head.tsx"
+```jsx title="@components/page-head.tsx"
 interface PageHeadProps {
   params: {
-    title: string
-  }
+    title: string,
+  };
 }
 
 export default function PageHead({ params = { title: '' } }: PageHeadProps) {
@@ -189,7 +189,7 @@ export default function PageHead({ params = { title: '' } }: PageHeadProps) {
 
 Now we can load that component in the `head.tsx` file for the root route.
 
-```tsx title="app/head.tsx"
+```jsx title="app/head.tsx"
 import PageHead from '@components/page-head'
 
 export default function Head() {
