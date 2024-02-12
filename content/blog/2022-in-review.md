@@ -43,17 +43,6 @@ I had the opportunity to plan a new office for myself in our marketing space, as
 
 <div class='image-half'>
   <figure class="relative h-fit">
-    <img src="/img/2022-in-review/lainey-assiniboine-skating.jpg" alt="" />
-      <figcaption class="text-xs">Lainey skating on the Assiniboine River</figcaption>
-  </figure>
-  <figure class="relative h-fit">
-    <img src="/img/2022-in-review/river-skating.gif" alt="" />
-    <figcaption class="text-xs">Skating on the Boyne River in Carman</figcaption>
-  </figure>
-</div>
-
-<div class='image-half'>
-  <figure class="relative h-fit">
     <img src="/img/2022-in-review/office-reno-planning.jpg" alt="" />
     <figcaption class="text-xs">
       Planning out the walls
@@ -77,8 +66,14 @@ I also (reluctantly) became a truck owner, taking delivery of the model I had or
 
 Spring felt like it settled in nicely, and we took full advantage of the outdoors whenever we could. Olsen was still waking up very early, so I started taking advantage of that time and took him golfing with a friend and their son.
 
-![](/img/2022-in-review/stroller-golfing.jpg)
-![](/img/2022-in-review/morning-golfing.jpg)
+<div class='image-half'>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/stroller-golfing.jpg" alt="" />
+  </figure>
+  <figure class="relative h-fit">
+    <img src="/img/2022-in-review/morning-golfing.jpg" alt="" />
+  </figure>
+</div>
 
 ![](/img/2022-in-review/backyard-work.jpg)
 
@@ -189,7 +184,7 @@ Since Lainey started school, we went through (what sounds like it's the usual) b
 We celebrated both Lainey and Olsen's birthdays in October, and had a rare snow-free Halloween (also Olsen's birthday).
 
 <figure class="relative h-fit">
-  <img src="" alt="">
+  <img src="/img/2022-in-review/no-name.jpg" alt="">
   <figcaption class="text-xs">
     I made <a href="https://www.noname.ca/en_ca/about/">no name</a> costumes for Halloween.
   </figcaption>
@@ -244,7 +239,7 @@ If you made it this far, thanks for reading. I hope you enjoyed the review, and 
 
 You can also follow me on [Twitter](https://twitter.com/josiahwiebe)/[Mastodon](https://mastodon.social/@josiahwiebe) and [Instagram](https://instagram.com/josiahwiebe).
 
-![Cheers to 2023](/img/2022-in-review/cheers.gif')
+![Cheers to 2023](/img/2022-in-review/cheers.gif)
 
 ## 2022: In Statistics
 
