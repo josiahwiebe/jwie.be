@@ -1,23 +1,17 @@
-import { ImageResponse } from '@vercel/og'
+import fs from 'fs'
+import path from 'path'
+import { unstable_createNodejsStream } from '@vercel/og'
 
-export const config = {
-  runtime: 'edge',
-}
-
-export default async function handler(request) {
+export default async function handler(req, res) {
   try {
-    const { searchParams } = new URL(request.url)
+    const searchParams = new URL(req.url, `https://${req.headers.host}`).searchParams
 
     // ?title=<title>
     const hasTitle = searchParams.has('title')
     const title = hasTitle ? searchParams.get('title')?.slice(0, 100) : 'My default title'
 
-    const VulfSansBold = await fetch(
-      new URL('https://github.com/josiahwiebe/jwie.be/raw/main/public/fonts/Vulf_Sans-Bold.ttf')
-    ).then((res) => res.arrayBuffer())
-    const VulfSansRegular = await fetch(
-      new URL('https://github.com/josiahwiebe/jwie.be/raw/main/public/fonts/Vulf_Sans-Regular.ttf')
-    ).then((res) => res.arrayBuffer())
+    const VulfSansBold = fs.readFileSync(path.resolve('./public/fonts/Vulf_Sans-Bold.ttf'))
+    const VulfSansRegular = fs.readFileSync(path.resolve('./public/fonts/Vulf_Sans-Regular.ttf'))
 
     const html = {
       type: 'div',
@@ -85,7 +79,8 @@ export default async function handler(request) {
         },
       },
     }
-    return new ImageResponse(html, {
+
+    const stream = await unstable_createNodejsStream(html, {
       width: 1200,
       height: 630,
       fonts: [
@@ -101,7 +96,13 @@ export default async function handler(request) {
         },
       ],
     })
+    res.setHeader('Content-Type', 'image/png')
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+    res.statusCode = 200
+    res.statusMessage = 'OK'
+    stream.pipe(res)
   } catch (e) {
+    console.error(e)
     console.log(`${e.message}`)
     return new Response(`Failed to generate the image`, {
       status: 500,
