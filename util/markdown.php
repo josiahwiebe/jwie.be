@@ -1,25 +1,18 @@
 <?php
 
 use Spatie\YamlFrontMatter\YamlFrontMatter;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
-class ParsedownHighlighting extends Parsedown {
-
-  protected function blockFencedCodeComplete($block) {
-    $text = $block['element']['text']['text'];
-    $language = $block['element']['text']['attributes']['class'];
-
-    $language = explode('-', $language)[1];
-
-    $hl = new \Highlight\Highlighter();
-    $highlighted = $hl->highlight($language, $text);
-
-    unset($block['element']['text']['text']);
-    $block['element']['text']['attributes']['class'] = 'hljs ' . $highlighted->language;
-    $block['element']['text']['rawHtml'] = $highlighted->value;
-
-    return $block;
-  }
-}
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\Extension\Attributes\AttributesExtension;
+use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
+use League\CommonMark\MarkdownConverter;
+use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
+use Spatie\CommonMarkHighlighter\IndentedCodeRenderer;
 
 function parse_markdown($file_contents, $slug) {
   if (!is_string($file_contents)) {
@@ -28,7 +21,16 @@ function parse_markdown($file_contents, $slug) {
   $object = YamlFrontMatter::parse($file_contents);
   if ($object->matter()) {
 
-    $parsed_markdown = (new ParsedownHighlighting)->text($object->body() ?? "");
+    $environment = new Environment();
+    $environment->addExtension(new CommonMarkCoreExtension());
+    $environment->addExtension(new GithubFlavoredMarkdownExtension());
+    $environment->addExtension(new AttributesExtension());
+    $environment->addExtension(new ExternalLinkExtension());
+    $environment->addRenderer(FencedCode::class, new FencedCodeRenderer());
+    $environment->addRenderer(IndentedCode::class, new IndentedCodeRenderer());
+    $markdownConverter = new MarkdownConverter($environment);
+
+    $parsed_markdown = $markdownConverter->convert($object->body() ?? "");
 
     return (object) [
       'markdown' => $parsed_markdown,

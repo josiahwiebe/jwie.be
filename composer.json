@@ -2,10 +2,10 @@
   "require": {
     "php": "^8.2",
     "vlucas/phpdotenv": "^5.3",
-    "erusev/parsedown": "^1.7",
     "symfony/yaml": "^7.0",
     "spatie/yaml-front-matter": "^2.0",
     "lukaswhite/php-feed-writer": "^2.1",
-    "scrivo/highlight.php": "^9.18.1.10"
+    "league/commonmark": "^2.5@dev",
+    "spatie/commonmark-highlighter": "dev-main"
   }
 }
