@@ -20,15 +20,14 @@ export default async function handler(req, res) {
           {
             type: 'div',
             props: {
-              tw: 'pl-10 shrink flex',
+              tw: 'pl-10 shrink flex -mt-20',
               children: [
                 {
                   type: 'div',
                   props: {
-                    tw: 'text-white text-9xl',
+                    tw: 'text-white text-8xl',
                     style: {
-                      fontSize: '64px',
-                      fontFamily: 'Vulf Sans Bold',
+                      fontFamily: 'Sans Bold',
                     },
                     children: title,
                   },
@@ -39,14 +38,14 @@ export default async function handler(req, res) {
           {
             type: 'div',
             props: {
-              tw: 'absolute right-[40px] bottom-[40px] flex items-center',
+              tw: 'absolute left-12 bottom-12 flex items-center pl-12',
               children: [
                 {
                   type: 'div',
                   props: {
                     tw: 'text-white text-4xl',
                     style: {
-                      fontFamily: 'Vulf Sans Bold',
+                      fontFamily: 'Sans Bold',
                     },
                     children: 'Josiah Wiebe',
                   },
@@ -54,17 +53,17 @@ export default async function handler(req, res) {
                 {
                   type: 'div',
                   props: {
-                    tw: 'px-2 text-4xl text-gray-300',
+                    tw: 'px-2 text-4xl text-white',
                     style: {
                       fontSize: '30px',
                     },
-                    children: '|',
+                    children: '—',
                   },
                 },
                 {
                   type: 'div',
                   props: {
-                    tw: 'text-4xl text-gray-300',
+                    tw: 'text-4xl text-gray-200',
                     children: '@josiahwiebe',
                   },
                 },
@@ -72,9 +71,9 @@ export default async function handler(req, res) {
             },
           },
         ],
-        tw: 'w-full h-full flex items-center justify-center relative px-22',
+        tw: 'w-full h-full flex items-center relative px-12 rounded-3xl',
         style: {
-          background: 'linear-gradient(135deg, #f0ecc1 0%, #9fddf4 50%, #f2787c 100%)',
+          background: 'linear-gradient(230deg, #f0ecc1 0%, #f2787c 100%)',
           fontFamily: 'Vulf Sans Regular',
         },
       },
