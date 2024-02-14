@@ -6,6 +6,9 @@
     "spatie/yaml-front-matter": "^2.0",
     "lukaswhite/php-feed-writer": "^2.1",
     "league/commonmark": "^2.5@dev",
-    "spatie/commonmark-highlighter": "dev-main"
-  }
+    "spatie/commonmark-highlighter": "dev-main",
+    "jsw/commonmark-figure-extension": "^1.2",
+    "jsw/commonmark-container-extension": "dev-master"
+  },
+  "minimum-stability": "dev"
 }

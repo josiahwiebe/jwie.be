@@ -1,7 +1,6 @@
 <?php
 
 use Spatie\YamlFrontMatter\YamlFrontMatter;
-use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
@@ -11,24 +10,40 @@ use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
 use League\CommonMark\MarkdownConverter;
+use JSW\Figure\FigureExtension;
+use JSW\Container\ContainerExtension;
 use Spatie\CommonMarkHighlighter\FencedCodeRenderer;
 use Spatie\CommonMarkHighlighter\IndentedCodeRenderer;
 
+$config = [
+  'external_link' => [
+    'internal_hosts' => ['localhost', 'jwie.be'],
+    'open_in_new_window' => true,
+    'html_class' => 'external-link',
+    'nofollow' => '',
+    'noopener' => 'external',
+    'noreferrer' => 'external',
+  ],
+];
+
+$environment = new Environment($config);
+$environment->addExtension(new CommonMarkCoreExtension());
+$environment->addExtension(new GithubFlavoredMarkdownExtension());
+$environment->addExtension(new AttributesExtension());
+$environment->addExtension(new ExternalLinkExtension());
+$environment->addExtension(new FigureExtension());
+$environment->addExtension(new ContainerExtension());
+$environment->addRenderer(FencedCode::class, new FencedCodeRenderer());
+$environment->addRenderer(IndentedCode::class, new IndentedCodeRenderer());
+$markdownConverter = new MarkdownConverter($environment);
+
 function parse_markdown($file_contents, $slug) {
+  global $markdownConverter;
   if (!is_string($file_contents)) {
     return 'Invalid file contents';
   }
   $object = YamlFrontMatter::parse($file_contents);
   if ($object->matter()) {
-
-    $environment = new Environment();
-    $environment->addExtension(new CommonMarkCoreExtension());
-    $environment->addExtension(new GithubFlavoredMarkdownExtension());
-    $environment->addExtension(new AttributesExtension());
-    $environment->addExtension(new ExternalLinkExtension());
-    $environment->addRenderer(FencedCode::class, new FencedCodeRenderer());
-    $environment->addRenderer(IndentedCode::class, new IndentedCodeRenderer());
-    $markdownConverter = new MarkdownConverter($environment);
 
     $parsed_markdown = $markdownConverter->convert($object->body() ?? "");
 

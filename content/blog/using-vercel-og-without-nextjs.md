@@ -165,12 +165,9 @@ The library also supports TailwindCSS through the use of the `tw` property, so w
 
 Put that all together, then access `/api/og?title=Your Title Here` and it should return a PNG of your freshly minted on-demand OG image!
 
-<figure class="relative h-fit">
-  <img src="/img/vercel-og/og.png" alt="" />
-  <figcaption class="text-xs">
-    Our generated OG image
-  </figcaption>
-</figure>
+^^^
+![](/img/vercel-og/og.png)
+^^^ Our generated OG image
 
 To add this OG image to your HTML, simply include this HTML in the `<head>` of your page:
 

@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "0017973fd7ac689b92cec26131d7246b",
+  "content-hash": "2e2deb199116802e1a5618fae629a8f3",
   "packages": [
     {
       "name": "dflydev/dot-access-data",
@@ -142,6 +142,108 @@
         }
       ],
       "time": "2023-11-12T22:16:48+00:00"
+    },
+    {
+      "name": "jsw/commonmark-container-extension",
+      "version": "dev-master",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/JanStanleyWatt/commonmark-container-extension.git",
+        "reference": "a53899621ac6ef01935d4d6f9e6e558933fbc992"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/JanStanleyWatt/commonmark-container-extension/zipball/a53899621ac6ef01935d4d6f9e6e558933fbc992",
+        "reference": "a53899621ac6ef01935d4d6f9e6e558933fbc992",
+        "shasum": ""
+      },
+      "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.14",
+        "league/commonmark": "^2.3",
+        "phpunit/phpunit": "^9.5"
+      },
+      "suggest": {
+        "jsw/commonmark-figure-extension": "League\\CommonMark extension for HTML diagrams and captions inspired by Markdig."
+      },
+      "default-branch": true,
+      "type": "commonmark-extension",
+      "autoload": {
+        "psr-4": {
+          "JSW\\Container\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "Apache-2.0"
+      ],
+      "authors": [
+        {
+          "name": "Jan Stanley Watt",
+          "email": "github@mail.whojinn.com"
+        }
+      ],
+      "description": "League/commonmark extension for custom container inspired by Markdig.",
+      "keywords": [
+        "commonmark",
+        "commonmark-extension",
+        "extension",
+        "markdown",
+        "md"
+      ],
+      "support": {
+        "issues": "https://github.com/JanStanleyWatt/commonmark-container-extension/issues",
+        "source": "https://github.com/JanStanleyWatt/commonmark-container-extension/tree/master"
+      },
+      "time": "2023-03-14T17:34:46+00:00"
+    },
+    {
+      "name": "jsw/commonmark-figure-extension",
+      "version": "1.2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/JanStanleyWatt/commonmark-figure-extension.git",
+        "reference": "d3406b3410e3b3b9daed8699cb077418a4f2d829"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/JanStanleyWatt/commonmark-figure-extension/zipball/d3406b3410e3b3b9daed8699cb077418a4f2d829",
+        "reference": "d3406b3410e3b3b9daed8699cb077418a4f2d829",
+        "shasum": ""
+      },
+      "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.14",
+        "league/commonmark": "^2.3",
+        "phpunit/phpunit": "^9.5"
+      },
+      "type": "commonmark-extension",
+      "autoload": {
+        "psr-4": {
+          "JSW\\Figure\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "Apache-2.0"
+      ],
+      "authors": [
+        {
+          "name": "Jan Stanley Watt",
+          "email": "github@mail.whojinn.com"
+        }
+      ],
+      "description": "League/commonmark extension for HTML figure and caption.",
+      "keywords": [
+        "commonmark",
+        "extension",
+        "markdown",
+        "md"
+      ],
+      "support": {
+        "email": "github@mail.whojinn.com",
+        "issues": "https://github.com/JanStanleyWatt/commonmark-figure-extension/issues",
+        "source": "https://github.com/JanStanleyWatt/commonmark-figure-extension/tree/1.2.0"
+      },
+      "time": "2024-01-10T12:07:25+00:00"
     },
     {
       "name": "league/commonmark",
@@ -1308,7 +1410,7 @@
   ],
   "packages-dev": [],
   "aliases": [],
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "stability-flags": {
     "league/commonmark": 20,
     "spatie/commonmark-highlighter": 20

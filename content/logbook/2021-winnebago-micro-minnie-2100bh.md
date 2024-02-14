@@ -28,20 +28,15 @@ Installed [this rear camera](https://a.co/d/7bFckYf) on the back of the trailer.
 
 Our first trip with the camper. We took it to Falcon Lake, Manitoba for a long weekend.
 
-<div class='image-half'>
-  <figure class="relative h-fit">
-    <img src="/img/winnebago-micro-minnie/winnie-first-trip.jpg" alt="Prepared to depart for our inaugural trip" />
-    <figcaption class="text-xs">
-      Ready for our maiden voyage!
-    </figcaption>
-  </figure>
-  <figure class="relative h-fit">
-    <img src="/img/winnebago-micro-minnie/winnie-first-trip.jpg" alt="Camper at Falcon Lake Beach Campground" />
-    <figcaption class="text-xs">
-      Setup at <a href="https://www.travelmanitoba.com/directory/falcon-beach-campground/">Falcon Lake Beach Campground</a>
-    </figcaption>
-  </figure>
-</div>
+:::image-half
+^^^
+![Prepared to depart for our inaugural trip](/img/winnebago-micro-minnie/winnie-first-trip.jpg)
+^^^ Ready for our maiden voyage!
+
+^^^
+![Camper at Falcon Lake Beach Campground](/img/winnebago-micro-minnie/winnie-falcon.jpg)
+^^^ Setup at [Falcon Lake Beach Campground](https://www.travelmanitoba.com/directory/falcon-beach-campground/)
+:::
 
 ### 3 Feb 2022 - Memory Foam Mattress
 
@@ -79,12 +74,9 @@ Looking at the [Winnie Owners forums](https://www.winnieowners.com/forums/), it 
 
 In the end, we settled on the rear storage area. Using 2 AWG cable over a 13 metre cable run only results in a 1% voltage drop at 10 amps, well within acceptable range. We ended up using 4 AWG as there was no 2 AWG available, but even that resulted in only 1.65% voltage drop.
 
-<figure class="relative h-fit">
-  <img src="/img/winnebago-micro-minnie/winnie-shore-power.jpg" alt="Showing how the shore power enters the RV" />
-  <figcaption class="text-xs">
-    Shore power enters the trailer through the rear storage compartment.
-  </figcaption>
-</figure>
+^^^
+![Showing how the shore power enters the RV](/img/winnebago-micro-minnie/winnie-shore-power.jpg)
+^^^ Shore power enters the trailer through the rear storage compartment.
 
 The Freedom XC has a pass-through mode, which will simply allow it to operate as a (relatively) neutral part of the circuit when plugged into shore power once the battery is fully charged. To accomplish this, we split the shore power wire where it entered the trailer and installed a junction box. From this box, we connected the shore power wire to the inverter IN, then ran a cable from the inverter OUT which connected inside the junction box to the wire we originally split (which continues on to our distribution and breaker panel).
 
@@ -104,20 +96,14 @@ I acquired a MicroAir Easy Start (soft start capacitor) and set about installing
 
 After a few tests, I was able to successfully run the air conditioner off of battery power! It ran at about 5.5A, so that only gave me about 2 hours of run time, but that didn't matter. I simply wanted to be able to do it, and have the option available to me in a pinch.
 
-<div class='image-half'>
-  <figure class="relative h-fit">
-    <img src="/img/winnebago-micro-minnie/soft-start-status.png" alt="Screenshot of Easy Start app status" />
-    <figcaption class="text-xs">
-      The Easy Start app shows the current voltage and starting voltage of the A/C
-    </figcaption>
-  </figure>
-  <figure class="relative h-fit">
-    <img src="/img/winnebago-micro-minnie/battery-status.png" alt="Screenshot of Renogy app" />
-    <figcaption class="text-xs">
-      The Renogy app shows the remaining battery capacity under load
-    </figcaption>
-  </figure>
-</div>
+:::image-half
+^^^
+![Screenshot of Easy Start app status](/img/winnebago-micro-minnie/soft-start-status.png)
+^^^ The Easy Start app shows the current voltage and starting voltage of the A/C
+
+^^^
+![Screenshot of Renogy app](/img/winnebago-micro-minnie/battery-status.png)
+^^^ The Renogy app shows the remaining battery capacity under load
 
 ### 10 August 2022 - IRVWPC
 

@@ -31,6 +31,32 @@ h4,
 h5,
 h6 {
   @apply font-heading;
+
+  /* &:has(.heading-permalink):hover {
+    cursor: pointer;
+  } */
+}
+
+.heading-permalink {
+  /* position: absolute; */
+  top: 0;
+  right: 1rem;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: opacity 120ms ease-in-out;
+  color: var(--color-primary-invert) !important;
+  background: none;
+  background-clip: unset;
+  border: none !important;
+}
+
+h1:hover .heading-permalink,
+h2:hover .heading-permalink,
+h3:hover .heading-permalink,
+h4:hover .heading-permalink,
+h5:hover .heading-permalink,
+h6:hover .heading-permalink {
+  opacity: 1;
 }
 
 .prose h1,
@@ -145,6 +171,11 @@ body {
   grid-gap: var(--grid-gap);
   margin-bottom: var(--grid-gap);
 
+  figure img {
+    position: relative;
+    height: fit-content;
+  }
+
   @media screen and (min-width: 30rem) {
     grid-template-columns: 1fr 1fr;
   }
@@ -162,8 +193,9 @@ body {
 }
 
 figcaption p,
-.prose figcaption p {
-  @apply text-sm;
+.prose figcaption p,
+.prose figure figcaption {
+  @apply text-xs;
   margin-bottom: 0;
 }
 
