@@ -1,5 +1,8 @@
 <?php
 $type = isset($document->front_matter->type) ? $document->front_matter->type : 'blog';
+// $page = isset($_GET['p']) ? $_GET['p'] : 1;
+// $limit = 10;
+// $skip = ($page - 1) * $limit;
 $posts = get_all_posts($type);
 ?>
 

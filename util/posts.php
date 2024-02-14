@@ -1,5 +1,5 @@
 <?php
-function get_all_posts($dir = 'blog') {
+function get_all_posts($dir = 'blog', $limit = null, $skip = 0) {
   $posts = glob(__DIR__ . '/../content/' . $dir . '/*.md');
   $posts = array_reverse($posts);
   $posts = array_map(
@@ -16,5 +16,14 @@ function get_all_posts($dir = 'blog') {
     $posts
   );
   $posts = array_filter($posts);
+  usort(
+    $posts,
+    function ($a, $b) {
+      return ($a->front_matter->date < $b->front_matter->date) ? 1 : -1;
+    }
+  );
+  if ($limit) {
+    $posts = array_slice($posts, $skip, $limit);
+  }
   return $posts;
 }
