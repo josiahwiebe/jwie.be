@@ -64,7 +64,8 @@ function get_file_path($file_path) {
 }
 
 function load_markdown($path) {
-  $markdownFilePath = get_file_path($path);
+  $uri = explode('?', $path)[0];
+  $markdownFilePath = get_file_path($uri);
 
   // Check if the Markdown file exists
   if (file_exists($markdownFilePath->path)) {
