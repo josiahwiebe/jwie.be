@@ -177,3 +177,15 @@ Spent the best day paddling with the family and some friends on the Revelstoke R
 - Little Drummer Girl - not from 2024 so it doesn't really count
 - Death and Other Details
 - Silo - only season 1 though
+
+**Favourite Books**
+
+I surpassed [my reading goal](https://www.goodreads.com/user/year_in_books/2024/3921541) of 32 books. Here's my top picks:
+
+- Hyperion by Dan Simmons (and the rest of the series)
+- The Midnight Feast by Lucy Foley
+- Observer by Robert Lanza, Nancy Kress
+- The Three Body Problem by Cixin Liu
+- Wool by Hugh Howey
+
+I read three full series this year, and all of them were excellent.
