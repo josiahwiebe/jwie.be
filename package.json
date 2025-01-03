@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0-beta.8",
-    "@tailwindcss/typography": "^0.5.0-alpha.3",
+    "@tailwindcss/typography": "^0.5.15",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.35",
     "tailwindcss": "^4.0.0-beta.8"
