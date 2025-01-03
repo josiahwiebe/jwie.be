@@ -211,6 +211,7 @@ body {
   figure img {
     position: relative;
     height: fit-content;
+    height: auto;
   }
 
   @media screen and (min-width: 30rem) {
