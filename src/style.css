@@ -1,6 +1,44 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+@source './templates/**/*.php';
+@source './public/**/*.php';
+@source './content/**/*.md';
+
+@theme {
+  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-body: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+
+  --color-primary: var(--color-primary);
+  --color-primary-invert: var(--color-primary-invert);
+  --color-trueblack: var(--color-trueblack);
+  --color-black: var(--color-black);
+  --color-darkgrey: var(--color-darkgrey);
+  --color-mediumgrey: var(--color-mediumgrey);
+  --color-lightgrey: var(--color-lightgrey);
+  --color-code: var(--color-code);
+
+  --background-image-gradient-primary: linear-gradient(
+    135deg,
+    hsla(55, 61%, 85%, 1) 0%,
+    hsla(196, 79%, 79%, 1) 50%,
+    hsla(358, 82%, 71%, 1) 100%
+  );
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
   --color-black: #000;
@@ -16,8 +54,6 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -81,6 +117,7 @@ body {
     'main'
     'footer';
   display: grid;
+  width: 100%;
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
   @apply mx-auto my-0 p-4 font-sans text-black bg-white dark:bg-zinc-900;
@@ -262,6 +299,10 @@ a:hover {
 
   .site-nav a.is-active {
     color: var(--color-primary);
+  }
+
+  .prose {
+    color: var(--color-slate-400);
   }
 
   a,
