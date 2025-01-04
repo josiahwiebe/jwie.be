@@ -5,13 +5,6 @@
       "includeFiles": "**/*"
     }
   },
-  "redirects": [
-    {
-      "source": "/feed",
-      "destination": "/playground/feed",
-      "permanent": true
-    }
-  ],
   "routes": [
     {
       "src": "/favicon.ico",
@@ -42,6 +35,11 @@
       "src": "/feed.xml",
       "dest": "/api/feed.php",
       "headers": { "Cache-Control": "s-maxage=1, stale-while-revalidate=86400" }
+    },
+    {
+      "src": "/feed",
+      "status": 308,
+      "headers": { "Location": "/playground/feed" }
     },
     {
       "src": "/api/og",
