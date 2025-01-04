@@ -9,7 +9,11 @@ export async function searchMusicBrainz(artist: string, track: string): Promise<
   const url = `https://musicbrainz.org/ws/2/recording/?query=${encodeURIComponent(query)}&fmt=json`
 
   try {
-    const response = await fetch(url)
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'jwie.be Listening Stats (https://jwie.be/playground/lastfm)',
+      },
+    })
     if (!response.ok) {
       throw new Error('MusicBrainz search failed')
     }
