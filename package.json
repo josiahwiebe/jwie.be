@@ -4,13 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:css": "npx @tailwindcss/cli -i ./src/style.css -o ./public/css/style.css --watch --postcss postcss.config.js",
     "dev:serve": "php -S localhost:8008 -t public",
     "dev:og": "vc dev",
     "dev:php": "npm-run-all --parallel dev dev:serve",
-    "build": "vite build",
-    "dev:lastfm": "vite --config lastfm/vite.config.ts",
-    "build:lastfm": "vite build --config lastfm/vite.config.ts"
+    "build": "vite build"
   },
   "author": "@josiahwiebe",
   "license": "ISC",
