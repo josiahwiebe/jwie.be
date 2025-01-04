@@ -12,6 +12,11 @@
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
     },
     {
+      "src": "/dist/(.*)",
+      "dest": "/dist/$1",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
       "src": "/(css|js|img|fonts)/(.*)",
       "dest": "/public/$1/$2",
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }

@@ -10,7 +10,9 @@ $nav_items = [
   ['name' => 'Feed', 'slug' => '/feed'],
   ['name' => 'Logbook', 'slug' => '/logbook'],
   ['name' => 'Not here', 'slug' => '/online'],
-]
+];
+include(__DIR__ . '/../util/vite.php');
+$assets = vite_assets();
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +26,6 @@ $nav_items = [
 
   <title><?php echo $title; ?></title>
   <link rel="stylesheet" href="/css/fonts.css" />
-  <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/nord.css" />
 
   <link rel="alternate" type="application/rss+xml" title="RSS Feed for jwie.be" href="/feed.xml">
@@ -40,6 +41,12 @@ $nav_items = [
   <link rel="me" href="https://twitter.com/josiahwiebe">
   <link rel="me authn" href="https://github.com/josiahwiebe">
   <link rel="authorization_endpoint" href="https://indieauth.com/auth">
+
+  <?php $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== 'true'; ?>
+  <?php if ($isDev): ?>
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+  <?php endif; ?>
+  <link rel="stylesheet" href="<?= $assets['css'] ?>" />
 </head>
 
 <body>
@@ -57,7 +64,7 @@ $nav_items = [
       </ul>
     </nav>
   </header>
-  <main class="grid-row site-content">
+  <main class="<?= $template_name == 'react-app' ? 'site-content-react-app' : 'grid-row site-content'; ?>">
     <?php include(__DIR__ . '/' . $template_name . '.php'); ?>
   </main>
   <footer class='grid-row'>

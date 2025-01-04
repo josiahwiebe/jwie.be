@@ -1,9 +1,10 @@
 @import 'tailwindcss';
 
 @plugin '@tailwindcss/typography';
-@source './templates/**/*.php';
-@source './public/**/*.php';
-@source './content/**/*.md';
+@source '../templates/**/*.php';
+@source '../public/**/*.php';
+@source '../content/**/*.md';
+@source './lastfm/**/*.tsx';
 
 @theme {
   --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -138,6 +139,13 @@ body {
   }
 }
 
+.site-content-react-app {
+  width: 90%;
+  max-width: 62rem;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
 .site-header {
   grid-area: header;
   align-items: center;
@@ -175,11 +183,7 @@ body {
 }
 
 .footer-content {
-  grid-column: auto;
-  @apply w-full mt-16;
-  @media screen and (min-width: 60rem) {
-    grid-column: 2;
-  }
+  @apply w-full mt-16 col-span-full;
 }
 
 .page-header {

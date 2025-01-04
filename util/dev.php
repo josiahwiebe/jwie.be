@@ -1,5 +1,6 @@
 <?php
 function dev_load_static_files($path) {
+  dev_load_vite_module($path);
   http_response_code(200);
   $filename =  rtrim($path, '/');
   $file = file_get_contents(__DIR__ . '/../public/' . $filename);
@@ -45,4 +46,28 @@ function dev_load_static_files($path) {
 
   header('Content-Type: ' . $type);
   echo $file;
+}
+
+function dev_load_vite_module($path) {
+  $vite_host = 'http://localhost:5173';
+  $response = @file_get_contents($vite_host . $path);
+
+  if ($response === false) {
+    http_response_code(404);
+    return;
+  }
+
+  if (str_contains($path, '.css')) {
+    header('Content-Type: text/css');
+  } else {
+    header('Content-Type: application/javascript');
+  }
+
+  foreach ($http_response_header as $header) {
+    if (str_contains(strtolower($header), 'access-control-')) {
+      header($header);
+    }
+  }
+
+  echo $response;
 }
