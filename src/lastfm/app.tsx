@@ -1,3 +1,4 @@
+import { useQueryState } from 'nuqs'
 import React, { useState, useEffect } from 'react'
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 import AlbumChart from './components/album-chart'
@@ -8,10 +9,10 @@ import { Track, Stats } from './types'
 import { formatNumber } from './utils'
 
 export default function LastFmStats() {
-  const [username, setUsername] = useState('')
-  const [apiKey, setApiKey] = useState('')
-  const [fromDate, setFromDate] = useState('')
-  const [toDate, setToDate] = useState('')
+  const [username, setUsername] = useQueryState('username', { defaultValue: '' })
+  const [apiKey, setApiKey] = useQueryState('apiKey', { defaultValue: '' })
+  const [fromDate, setFromDate] = useQueryState('from', { defaultValue: '' })
+  const [toDate, setToDate] = useQueryState('to', { defaultValue: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [stats, setStats] = useState<Stats | null>(null)
@@ -90,11 +91,9 @@ export default function LastFmStats() {
   const { data: timeData, title: timeChartTitle, dataKey: timeDataKey } = getTimeData()
 
   return (
-    <div className='container mx-auto p-4 space-y-4'>
-      <h1 className='text-3xl font-bold'>Last.fm Listening Stats</h1>
-
+    <div className='container mx-auto space-y-4'>
       <div className='bg-white shadow rounded-lg p-6'>
-        <div className='grid grid-cols-2 gap-4 mb-4'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4'>
           <input
             className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary'
             placeholder='Last.fm Username'
@@ -120,17 +119,17 @@ export default function LastFmStats() {
             onChange={(e) => setToDate(e.target.value)}
           />
         </div>
-        <div className='flex justify-between items-center'>
+        <div className='flex flex-col sm:flex-row justify-between items-center'>
           <button
-            className='px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50'
+            className='px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 w-full sm:w-auto'
             onClick={handleFetchStats}
             disabled={loading}>
             {loading ? 'Calculating...' : 'Calculate Stats'}
           </button>
-          <div className='text-sm text-gray-500'>
+          <div className='text-sm text-gray-500 w-full sm:w-auto mt-2 sm:mt-0'>
             Cached track durations: {cacheCount}
             <button
-              className='ml-2 px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50'
+              className='ml-0 sm:ml-2 px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50'
               onClick={handleClearCache}>
               Clear Cache
             </button>
@@ -189,33 +188,35 @@ export default function LastFmStats() {
 
           <div className='bg-white shadow rounded-lg p-6'>
             <h2 className='text-xl font-semibold mb-4'>Top 10 Artists</h2>
-            <table className='min-w-full divide-y divide-gray-200'>
-              <thead className='bg-gray-50'>
-                <tr>
-                  <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                    Artist
-                  </th>
-                  <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                    Minutes
-                  </th>
-                  <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                    Tracks
-                  </th>
-                </tr>
-              </thead>
-              <tbody className='bg-white divide-y divide-gray-200'>
-                {Object.entries((partialStats || stats)?.artists || {})
-                  .sort((a, b) => b[1].minutes - a[1].minutes)
-                  .slice(0, 10)
-                  .map(([artist, data]) => (
-                    <tr key={artist}>
-                      <td className='px-6 py-4 whitespace-nowrap'>{artist}</td>
-                      <td className='px-6 py-4 whitespace-nowrap'>{formatNumber(data.minutes)}</td>
-                      <td className='px-6 py-4 whitespace-nowrap'>{formatNumber(data.count)}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <div className='overflow-x-auto'>
+              <table className='min-w-full divide-y divide-gray-200'>
+                <thead className='bg-gray-50'>
+                  <tr>
+                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      Artist
+                    </th>
+                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      Minutes
+                    </th>
+                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      Tracks
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className='bg-white divide-y divide-gray-200'>
+                  {Object.entries((partialStats || stats)?.artists || {})
+                    .sort((a, b) => b[1].minutes - a[1].minutes)
+                    .slice(0, 10)
+                    .map(([artist, data]) => (
+                      <tr key={artist}>
+                        <td className='px-6 py-4 whitespace-nowrap'>{artist}</td>
+                        <td className='px-6 py-4 whitespace-nowrap'>{formatNumber(data.minutes)}</td>
+                        <td className='px-6 py-4 whitespace-nowrap'>{formatNumber(data.count)}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {stats && stats.unmatchedTracks.length > 0 && (

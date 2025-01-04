@@ -1,3 +1,6 @@
+let lastRequestTime = 0
+const RATE_LIMIT_MS = 1000 // 1 second
+
 interface Recording {
   id: string
   title: string
@@ -5,6 +8,13 @@ interface Recording {
 }
 
 export async function searchMusicBrainz(artist: string, track: string): Promise<Recording[]> {
+  const now = Date.now()
+  const timeSinceLastRequest = now - lastRequestTime
+  if (timeSinceLastRequest < RATE_LIMIT_MS) {
+    await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_MS - timeSinceLastRequest))
+  }
+  lastRequestTime = Date.now()
+
   const query = `recording:"${track}" AND artist:"${artist}"`
   const url = `https://musicbrainz.org/ws/2/recording/?query=${encodeURIComponent(query)}&fmt=json`
 

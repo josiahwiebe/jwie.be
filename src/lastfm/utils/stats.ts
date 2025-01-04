@@ -130,8 +130,11 @@ async function getTrackDuration(track: Track, apiKey: string): Promise<number | 
   const cachedDuration = cache.get(cacheKey)
 
   if (cachedDuration) {
+    console.log('Using cached duration for:', cacheKey, cachedDuration)
     return cachedDuration
   }
+
+  console.log('No cached duration found for:', cacheKey)
 
   try {
     // Try Last.fm API first
