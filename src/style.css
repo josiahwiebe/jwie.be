@@ -194,6 +194,11 @@ body {
   }
 }
 
+.page-header.react-app {
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
 .page-content {
   grid-column: auto;
   padding-top: 2rem;
@@ -204,6 +209,10 @@ body {
     grid-column: 2;
     border-top: none;
   }
+}
+
+.site-content-react-app .page-content {
+  margin-top: 2rem;
 }
 
 .image-half {

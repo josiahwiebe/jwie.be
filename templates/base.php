@@ -7,7 +7,7 @@ $uri_segment = explode('/', $_SERVER['REQUEST_URI'])[1];
 $uri_segment = $uri_segment == '' ? null : '/' . $uri_segment;
 $nav_items = [
   ['name' => 'Blog', 'slug' => '/blog'],
-  ['name' => 'Feed', 'slug' => '/feed'],
+  ['name' => 'Playground', 'slug' => '/playground'],
   ['name' => 'Logbook', 'slug' => '/logbook'],
   ['name' => 'Not here', 'slug' => '/online'],
 ];

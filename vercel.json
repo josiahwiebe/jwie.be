@@ -5,6 +5,13 @@
       "includeFiles": "**/*"
     }
   },
+  "redirects": [
+    {
+      "source": "/feed",
+      "destination": "/playground/feed",
+      "permanent": true
+    }
+  ],
   "routes": [
     {
       "src": "/favicon.ico",
