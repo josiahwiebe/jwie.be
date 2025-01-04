@@ -1,7 +1,7 @@
 <?php
 
 function vite_assets() {
-  $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== 'true';
+  $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== '1';
 
   if ($isDev) {
     return [

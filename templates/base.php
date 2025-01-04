@@ -42,7 +42,7 @@ $assets = vite_assets();
   <link rel="me authn" href="https://github.com/josiahwiebe">
   <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 
-  <?php $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== 'true'; ?>
+  <?php $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== '1'; ?>
   <?php if ($isDev): ?>
     <script type="module" src="http://localhost:5173/@vite/client"></script>
   <?php endif; ?>

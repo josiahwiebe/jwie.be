@@ -1,4 +1,4 @@
-<?php $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== 'true'; ?>
+<?php $isDev = !isset($_ENV['VERCEL']) || $_ENV['VERCEL'] !== '1'; ?>
 <?php
 $assets = vite_assets();
 ?>
