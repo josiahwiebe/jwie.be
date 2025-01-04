@@ -17,6 +17,7 @@ export default function LastFmStats() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [progress, setProgress] = useState(0)
   const [cacheCount, setCacheCount] = useState(getCacheCount)
+  const [partialStats, setPartialStats] = useState<Partial<Stats> | null>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,9 +30,15 @@ export default function LastFmStats() {
     setLoading(true)
     setError('')
     setStats(null)
+    setPartialStats(null)
     try {
-      const result = await fetchStats(username, apiKey, new Date(fromDate), new Date(toDate), (current, total) =>
-        setProgress((current / total) * 100)
+      const result = await fetchStats(
+        username,
+        apiKey,
+        new Date(fromDate),
+        new Date(toDate),
+        (current, total) => setProgress((current / total) * 100),
+        (partial) => setPartialStats(partial)
       )
       setStats(result)
     } catch (err) {
@@ -83,7 +90,9 @@ export default function LastFmStats() {
   const { data: timeData, title: timeChartTitle, dataKey: timeDataKey } = getTimeData()
 
   return (
-    <div className='container mx-auto space-y-4 bg-white dark:bg-zinc-900'>
+    <div className='container mx-auto p-4 space-y-4'>
+      <h1 className='text-3xl font-bold'>Last.fm Listening Stats</h1>
+
       <div className='bg-white shadow rounded-lg p-6'>
         <div className='grid grid-cols-2 gap-4 mb-4'>
           <input
@@ -113,7 +122,7 @@ export default function LastFmStats() {
         </div>
         <div className='flex justify-between items-center'>
           <button
-            className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50'
+            className='px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50'
             onClick={handleFetchStats}
             disabled={loading}>
             {loading ? 'Calculating...' : 'Calculate Stats'}
@@ -132,7 +141,7 @@ export default function LastFmStats() {
       {loading && (
         <div className='bg-white shadow rounded-lg p-6'>
           <div className='w-full bg-gray-200 rounded-full h-2.5'>
-            <div className='bg-blue-600 h-2.5 rounded-full' style={{ width: `${progress}%` }}></div>
+            <div className='bg-primary h-2.5 rounded-full' style={{ width: `${progress}%` }}></div>
           </div>
           <p className='text-center mt-2'>Processing tracks: {progress.toFixed(2)}%</p>
         </div>
@@ -140,31 +149,42 @@ export default function LastFmStats() {
 
       {error && <div className='text-red-500 p-4 bg-red-100 rounded'>{error}</div>}
 
-      {stats && (
+      {(partialStats || stats) && (
         <>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-            <StatCard title='Total Listening Time' value={`${stats.totalMinutes} minutes`} />
-            <StatCard title='Total Tracks' value={formatNumber(stats.totalTracks)} />
-            <StatCard title='Unique Artists' value={formatNumber(Object.keys(stats.artists).length)} />
-            <StatCard title='Unique Tracks' value={formatNumber(stats.uniqueTracks)} />
+            <StatCard
+              title='Total Listening Time'
+              subtitle='minutes'
+              value={(partialStats || stats)?.totalMinutes || 0}
+            />
+            <StatCard title='Total Tracks' value={formatNumber((partialStats || stats)?.totalTracks || 0)} />
+            <StatCard
+              title='Unique Artists'
+              value={formatNumber(Object.keys((partialStats || stats)?.artists || {}).length)}
+            />
+            <StatCard title='Unique Tracks' value={formatNumber((partialStats || stats)?.uniqueTracks || 0)} />
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <div className='bg-white shadow rounded-lg p-6'>
-              <h2 className='text-xl font-semibold mb-4'>{timeChartTitle}</h2>
-              <div className='h-[300px]'>
-                <ResponsiveContainer width='100%' height='100%'>
-                  <BarChart data={timeData}>
-                    <XAxis dataKey={timeDataKey} />
-                    <YAxis tickFormatter={(value) => formatNumber(value)} />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey='minutes' fill='#3b82f6' />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            {stats && (
+              <>
+                <div className='bg-white shadow rounded-lg p-6'>
+                  <h2 className='text-xl font-semibold mb-4'>{timeChartTitle}</h2>
+                  <div className='h-[300px]'>
+                    <ResponsiveContainer width='100%' height='100%'>
+                      <BarChart data={timeData}>
+                        <XAxis dataKey={timeDataKey} />
+                        <YAxis tickFormatter={(value) => formatNumber(value)} />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Bar dataKey='minutes' fill='var(--color-primary)' />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
 
-            <AlbumChart albums={stats.topAlbums} />
+                <AlbumChart albums={stats.topAlbums} />
+              </>
+            )}
           </div>
 
           <div className='bg-white shadow rounded-lg p-6'>
@@ -184,7 +204,7 @@ export default function LastFmStats() {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {Object.entries(stats.artists)
+                {Object.entries((partialStats || stats)?.artists || {})
                   .sort((a, b) => b[1].minutes - a[1].minutes)
                   .slice(0, 10)
                   .map(([artist, data]) => (
@@ -198,7 +218,7 @@ export default function LastFmStats() {
             </table>
           </div>
 
-          {stats.unmatchedTracks.length > 0 && (
+          {stats && stats.unmatchedTracks.length > 0 && (
             <UnmatchedTracks tracks={stats.unmatchedTracks} onMatch={handleManualMatch} apiKey={apiKey} />
           )}
         </>
@@ -207,12 +227,13 @@ export default function LastFmStats() {
   )
 }
 
-function StatCard({ title, value }: { title: string; value: string | number }) {
+function StatCard({ title, value, subtitle }: { title: string; value: string | number; subtitle?: string }) {
   const displayValue = typeof value === 'number' && !isNaN(value) ? formatNumber(value) : value
   return (
     <div className='bg-white shadow rounded-lg p-6'>
-      <h3 className='text-sm font-medium text-gray-500'>{title}</h3>
-      <p className='mt-2 text-3xl font-semibold text-gray-900'>{displayValue}</p>
+      <h3 className='text-md font-semibold'>{title}</h3>
+      <p className='mt-2 text-3xl font-semibold text-primary'>{displayValue}</p>
+      {subtitle && <p className='text-sm text-gray-500'>{subtitle}</p>}
     </div>
   )
 }

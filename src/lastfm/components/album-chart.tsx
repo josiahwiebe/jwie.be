@@ -17,7 +17,7 @@ const AlbumChart: React.FC<AlbumChartProps> = ({ albums }) => {
             <XAxis type='number' tickFormatter={(value) => formatNumber(value)} />
             <YAxis dataKey='name' type='category' width={150} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey='minutes' fill='#3b82f6' />
+            <Bar dataKey='minutes' fill='var(--color-primary)' />
           </BarChart>
         </ResponsiveContainer>
       </div>

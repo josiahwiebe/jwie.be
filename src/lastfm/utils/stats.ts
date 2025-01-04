@@ -1,5 +1,5 @@
 import { cache } from './cache'
-import { Stats, type AlbumStats, type Track } from '../types'
+import { Track, Stats, AlbumStats } from '../types'
 import { searchMusicBrainz } from './music-brainz'
 
 export async function fetchStats(
@@ -7,7 +7,8 @@ export async function fetchStats(
   apiKey: string,
   fromDate: Date,
   toDate: Date,
-  onProgress: (current: number, total: number) => void
+  onProgress: (current: number, total: number) => void,
+  onPartialResult: (partialStats: Partial<Stats>) => void
 ): Promise<Stats> {
   const tracks = await fetchTracks(username, apiKey, fromDate, toDate)
   const stats: Stats = {
@@ -64,6 +65,11 @@ export async function fetchStats(
     // Daily stats
     const day = new Date(parseInt(track.date.uts) * 1000).toISOString().slice(0, 10)
     dailyMap.set(day, (dailyMap.get(day) || 0) + duration)
+
+    // Provide partial results every 10 tracks or on the last track
+    if (i % 10 === 0 || i === tracks.length - 1) {
+      onPartialResult({ ...stats })
+    }
   }
 
   stats.monthlyStats = Array.from(monthlyMap.entries())
@@ -144,12 +150,14 @@ async function getTrackDuration(track: Track, apiKey: string): Promise<number | 
     }
 
     // If Last.fm fails, try MusicBrainz
-    const mbRecordings = await searchMusicBrainz(track.artist['#text'], track.name)
-    const mbDuration = mbRecordings?.[0]?.length ?? null
+    let mbDuration = await searchMusicBrainz(track.artist['#text'], track.name)
 
-    if (mbDuration) {
-      cache.set(cacheKey, mbDuration)
-      return mbDuration
+    if (mbDuration.length > 0) {
+      const duration = mbDuration[0].length / 1000 / 60
+      if (duration > 0) {
+        cache.set(cacheKey, duration)
+        return duration
+      }
     }
 
     // If no duration found, return null
