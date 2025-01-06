@@ -8,7 +8,8 @@
     "league/commonmark": "^2.5@dev",
     "spatie/commonmark-highlighter": "dev-main",
     "jsw/commonmark-figure-extension": "^1.2",
-    "jsw/commonmark-container-extension": "dev-master"
+    "jsw/commonmark-container-extension": "dev-master",
+    "spatie/ray": "^1.0@dev"
   },
   "minimum-stability": "dev"
 }

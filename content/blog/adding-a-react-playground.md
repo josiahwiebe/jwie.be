@@ -2,6 +2,7 @@
 title: Adding a Vite-Powered Playground to my Website
 date: 2025-01-04
 published: true
+excerpt: You can easily use Vite to power a React/Solid/Vue/etc. application within your PHP website.
 ---
 
 I was playing around with a React project locally and I wanted a way to share it within the context of my own website.

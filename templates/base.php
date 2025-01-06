@@ -13,6 +13,7 @@ $nav_items = [
 ];
 include(__DIR__ . '/../util/vite.php');
 $assets = vite_assets();
+ray($document);
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +24,12 @@ $assets = vite_assets();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f2787c">
   <meta name="description" content="Josiah Wiebe is a multi-disciplinary developer and marketing manager based in the Canadian Prairies.">
+  <meta name="og:site_name" content="@josiahwiebe">
+  <meta name="og:type" content="website">
+  <meta name="og:title" content="<?= isset($document->front_matter->title) ? $document->front_matter->title : 'JWWW'; ?>">
+  <meta name="og:description" content="<?= isset($document->front_matter->excerpt) ? $document->front_matter->excerpt : 'Josiah Wiebe is a multi-disciplinary developer and marketing manager based in the Canadian Prairies.'; ?>">
+  <meta name="og:image" content="/api/og?title=<?= isset($document->front_matter->title) ? $document->front_matter->title : 'JWWW'; ?>">
+  <meta name="og:url" content="<?= 'https://jwie.be' . $_SERVER['REQUEST_URI']; ?>">
 
   <title><?php echo $title; ?></title>
   <link rel="stylesheet" href="/css/fonts.css" />
@@ -34,11 +41,16 @@ $assets = vite_assets();
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
 
-  <meta name="og:image" content="/api/og?title=<?= isset($document->front_matter->title) ? $document->front_matter->title : 'JWWW'; ?>">
-
   <meta name="twitter:site" content="@josiahwiebe">
+  <meta name="twitter:image" content="/api/og?title=<?= isset($document->front_matter->title) ? $document->front_matter->title : 'JWWW'; ?>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<?= isset($document->front_matter->title) ? $document->front_matter->title : 'JWWW'; ?>">
+  <meta name="twitter:description" content="<?= isset($document->front_matter->excerpt) ? $document->front_matter->excerpt : 'Josiah Wiebe is a multi-disciplinary developer and marketing manager based in the Canadian Prairies.'; ?>">
+  <meta name="twitter:url" content="<?= 'https://jwie.be' . $_SERVER['REQUEST_URI']; ?>">
+
   <link rel="me" href="https://mastodon.social/@josiahwiebe">
-  <link rel="me" href="https://twitter.com/josiahwiebe">
+  <link rel="me" href="https://x.com/josiahwiebe">
+  <link rel="me" href="https://bsky.app/profile/jwie.be">
   <link rel="me authn" href="https://github.com/josiahwiebe">
   <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 
