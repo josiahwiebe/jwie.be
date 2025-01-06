@@ -19,6 +19,7 @@ export default function LastFmStats() {
   const [error, setError] = useState('')
   const [stats, setStats] = useState<Stats | null>(null)
   const [progress, setProgress] = useState(0)
+  const [phase, setPhase] = useState<'fetching' | 'processing'>('fetching')
   const [cacheCount, setCacheCount] = useState(getCacheCount)
   const [partialStats, setPartialStats] = useState<Partial<Stats> | null>(null)
 
@@ -34,13 +35,17 @@ export default function LastFmStats() {
     setError('')
     setStats(null)
     setPartialStats(null)
+    setPhase('fetching')
     try {
       const result = await fetchStats(
         username,
         apiKey,
         new Date(fromDate),
         new Date(toDate),
-        (current, total) => setProgress((current / total) * 100),
+        (current, total, currentPhase) => {
+          setPhase(currentPhase)
+          setProgress((current / total) * 100)
+        },
         (partial) => setPartialStats(partial)
       )
       setStats(result)
@@ -144,7 +149,9 @@ export default function LastFmStats() {
           <div className='w-full bg-gray-200 rounded-full h-2.5'>
             <div className='bg-primary h-2.5 rounded-full' style={{ width: `${progress}%` }}></div>
           </div>
-          <p className='text-center mt-2 dark:text-slate-300'>Processing tracks: {progress.toFixed(2)}%</p>
+          <p className='text-center mt-2 dark:text-slate-300'>
+            {phase === 'fetching' ? 'Getting recent scrobbles' : 'Processing tracks'}: {progress.toFixed(2)}%
+          </p>
         </div>
       )}
 

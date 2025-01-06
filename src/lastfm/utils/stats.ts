@@ -7,10 +7,15 @@ export async function fetchStats(
   apiKey: string,
   fromDate: Date,
   toDate: Date,
-  onProgress: (current: number, total: number) => void,
+  onProgress: (current: number, total: number, phase: 'fetching' | 'processing') => void,
   onPartialResult: (partialStats: Partial<Stats>) => void
 ): Promise<Stats> {
-  const tracks = await fetchTracks(username, apiKey, fromDate, toDate)
+  // First phase: fetching tracks
+  const tracks = await fetchTracks(username, apiKey, fromDate, toDate, (current, total) =>
+    onProgress(current, total, 'fetching')
+  )
+
+  // Initialize stats
   const stats: Stats = {
     totalMinutes: 0,
     totalTracks: tracks.length,
@@ -28,62 +33,36 @@ export async function fetchStats(
   const dailyMap = new Map<string, number>()
   const trackMap = new Map<string, TrackStats>()
 
-  for (let i = 0; i < tracks.length; i++) {
-    const track = tracks[i]
-    onProgress(i + 1, tracks.length)
+  // Split tracks into cached and uncached
+  const tracksWithCache: [Track, number | null][] = tracks.map((track) => {
+    const cacheKey = `${track.artist['#text']}-${track.name}`
+    return [track, cache.get(cacheKey) ?? null]
+  })
 
+  const cachedTracks = tracksWithCache.filter(([_, duration]) => duration !== null)
+  const uncachedTracks = tracksWithCache.filter(([_, duration]) => duration === null).map(([track]) => track)
+
+  // Process cached tracks first (this will be very fast)
+  for (const [track, duration] of cachedTracks) {
+    processTrackStats(track, duration as number, stats, albumMap, monthlyMap, dailyMap, trackMap)
+    onProgress(cachedTracks.indexOf([track, duration]) + 1, tracks.length, 'processing')
+  }
+
+  // Then process uncached tracks
+  for (let i = 0; i < uncachedTracks.length; i++) {
+    const track = uncachedTracks[i]
     const duration = await getTrackDuration(track, apiKey)
+
     if (duration === null) {
       stats.unmatchedTracks.push(track)
       continue
     }
 
-    stats.totalMinutes += duration
-
-    // Artist stats
-    const artistName = track.artist['#text']
-    if (!stats.artists[artistName]) {
-      stats.artists[artistName] = { count: 0, minutes: 0, mbid: track.artist.mbid || null }
-    }
-    stats.artists[artistName].count++
-    stats.artists[artistName].minutes += duration
-
-    // Album stats
-    const albumKey = `${track.album['#text']}-${artistName}`
-    if (!albumMap.has(albumKey)) {
-      albumMap.set(albumKey, {
-        name: track.album['#text'],
-        artist: artistName,
-        minutes: 0,
-        imageUrl: await getAlbumImage(track.album['#text'], artistName, apiKey),
-      })
-    }
-    albumMap.get(albumKey)!.minutes += duration
-
-    // Monthly stats
-    const month = new Date(parseInt(track.date.uts) * 1000).toISOString().slice(0, 7)
-    monthlyMap.set(month, (monthlyMap.get(month) || 0) + duration)
-
-    // Daily stats
-    const day = new Date(parseInt(track.date.uts) * 1000).toISOString().slice(0, 10)
-    dailyMap.set(day, (dailyMap.get(day) || 0) + duration)
-
-    // Track stats
-    const trackKey = `${track.artist['#text']}-${track.name}`
-    if (!trackMap.has(trackKey)) {
-      trackMap.set(trackKey, {
-        name: track.name,
-        artist: track.artist['#text'],
-        count: 0,
-        minutes: 0,
-      })
-    }
-    const trackStats = trackMap.get(trackKey)!
-    trackStats.count++
-    trackStats.minutes += duration
+    processTrackStats(track, duration, stats, albumMap, monthlyMap, dailyMap, trackMap)
+    onProgress(cachedTracks.length + i + 1, tracks.length, 'processing')
 
     // Provide partial results every 10 tracks or on the last track
-    if (i % 10 === 0 || i === tracks.length - 1) {
+    if (i % 10 === 0 || i === uncachedTracks.length - 1) {
       onPartialResult({ ...stats })
     }
   }
@@ -119,12 +98,36 @@ export async function fetchStats(
   return stats
 }
 
-async function fetchTracks(username: string, apiKey: string, fromDate: Date, toDate: Date): Promise<Track[]> {
+async function fetchTracks(
+  username: string,
+  apiKey: string,
+  fromDate: Date,
+  toDate: Date,
+  onProgress?: (current: number, total: number) => void
+): Promise<Track[]> {
   const tracks: Track[] = []
   let page = 1
   const limit = 200
 
-  while (true) {
+  // Get first page to determine total pages
+  const firstPageUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json&limit=${limit}&page=1&from=${Math.floor(
+    fromDate.getTime() / 1000
+  )}&to=${Math.floor(toDate.getTime() / 1000)}`
+
+  const firstResponse = await fetch(firstPageUrl)
+  if (!firstResponse.ok) throw new Error('Failed to fetch tracks')
+  const firstData = await firstResponse.json()
+
+  if (!firstData.recenttracks?.track) return []
+
+  const totalPages = parseInt(firstData.recenttracks['@attr'].totalPages)
+  const pageTracks = firstData.recenttracks.track.filter((track: Track) => !track['@attr']?.nowplaying)
+  tracks.push(...pageTracks)
+  onProgress?.(1, totalPages)
+
+  // Fetch remaining pages
+  while (page < totalPages) {
+    page++
     const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apiKey}&format=json&limit=${limit}&page=${page}&from=${Math.floor(
       fromDate.getTime() / 1000
     )}&to=${Math.floor(toDate.getTime() / 1000)}`
@@ -133,15 +136,11 @@ async function fetchTracks(username: string, apiKey: string, fromDate: Date, toD
     if (!response.ok) throw new Error('Failed to fetch tracks')
 
     const data = await response.json()
-
     if (!data.recenttracks?.track) break
 
     const pageTracks = data.recenttracks.track.filter((track: Track) => !track['@attr']?.nowplaying)
-
     tracks.push(...pageTracks)
-
-    if (page >= parseInt(data.recenttracks['@attr'].totalPages)) break
-    page++
+    onProgress?.(page, totalPages)
   }
 
   return tracks
@@ -152,7 +151,6 @@ async function getTrackDuration(track: Track, apiKey: string): Promise<number | 
   const cachedDuration = cache.get(cacheKey)
 
   if (cachedDuration) {
-    console.log('Using cached duration for:', cacheKey, cachedDuration)
     return cachedDuration
   }
 
@@ -278,4 +276,58 @@ export function updateStats(stats: Stats, track: Track, duration: number): Stats
   })
 
   return updatedStats
+}
+
+function processTrackStats(
+  track: Track,
+  duration: number,
+  stats: Stats,
+  albumMap: Map<string, AlbumStats>,
+  monthlyMap: Map<string, number>,
+  dailyMap: Map<string, number>,
+  trackMap: Map<string, TrackStats>
+) {
+  stats.totalMinutes += duration
+
+  // Artist stats
+  const artistName = track.artist['#text']
+  if (!stats.artists[artistName]) {
+    stats.artists[artistName] = { count: 0, minutes: 0, mbid: track.artist.mbid || null }
+  }
+  stats.artists[artistName].count++
+  stats.artists[artistName].minutes += duration
+
+  // Album stats
+  const albumKey = `${track.album['#text']}-${artistName}`
+  if (!albumMap.has(albumKey)) {
+    albumMap.set(albumKey, {
+      name: track.album['#text'],
+      artist: artistName,
+      minutes: 0,
+      imageUrl: '', // We'll need to fetch this separately
+    })
+  }
+  albumMap.get(albumKey)!.minutes += duration
+
+  // Monthly stats
+  const month = new Date(parseInt(track.date.uts) * 1000).toISOString().slice(0, 7)
+  monthlyMap.set(month, (monthlyMap.get(month) || 0) + duration)
+
+  // Daily stats
+  const day = new Date(parseInt(track.date.uts) * 1000).toISOString().slice(0, 10)
+  dailyMap.set(day, (dailyMap.get(day) || 0) + duration)
+
+  // Track stats
+  const trackKey = `${track.artist['#text']}-${track.name}`
+  if (!trackMap.has(trackKey)) {
+    trackMap.set(trackKey, {
+      name: track.name,
+      artist: track.artist['#text'],
+      count: 0,
+      minutes: 0,
+    })
+  }
+  const trackStats = trackMap.get(trackKey)!
+  trackStats.count++
+  trackStats.minutes += duration
 }

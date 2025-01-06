@@ -102,6 +102,7 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
               </th>
             </tr>
           </thead>
+          focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300
           <tbody className='bg-white divide-y divide-gray-200'>
             {Object.values(uniqueTracks).map((track) => {
               const key = `${track.artist['#text']}-${track.name}`
@@ -112,7 +113,7 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
                       type='text'
                       value={getTrackValues(track, key).artist}
                       onChange={(e) => handleTrackChange(key, 'artist', e.target.value)}
-                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300'
                     />
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap'>
@@ -120,7 +121,7 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
                       type='text'
                       value={getTrackValues(track, key).name}
                       onChange={(e) => handleTrackChange(key, 'name', e.target.value)}
-                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300'
                     />
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap'>
@@ -131,7 +132,7 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
                       value={manualDurations[key] || ''}
                       onChange={(e) => handleDurationChange(key, e.target.value)}
                       placeholder='Enter duration'
-                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300'
                     />
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap'>
@@ -139,13 +140,13 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
                       <button
                         onClick={() => handleMatch(track, parseFloat(manualDurations[key]))}
                         disabled={!manualDurations[key]}
-                        className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50'>
+                        className='px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300 focus:ring-opacity-50 disabled:opacity-50'>
                         Match
                       </button>
                       <button
                         onClick={() => handleSearchRecordings(track)}
                         disabled={loading[key]}
-                        className='px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50'>
+                        className='px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300 focus:ring-opacity-50'>
                         {loading[key] ? 'Searching...' : 'Search MusicBrainz'}
                       </button>
                     </div>
@@ -185,7 +186,7 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
 
                   {recordings[showModal] && recordings[showModal].length > 0 ? (
                     <select
-                      className='mt-1 block w-full p-3 pr-10 text-base border-gray-300 bg-gray-200 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md'
+                      className='mt-1 block w-full p-3 pr-10 text-base border-gray-300 bg-gray-200 focus:outline-none focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300 sm:text-sm rounded-md'
                       onChange={(e) => handleMatch(uniqueTracks[showModal], parseInt(e.target.value) / 60000)}>
                       <option value=''>Select a recording</option>
                       {recordings[showModal].map((recording) => (
@@ -203,7 +204,7 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
               <div className='bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'>
                 <button
                   type='button'
-                  className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm'
+                  className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm'
                   onClick={() => setShowModal(null)}>
                   Close
                 </button>
