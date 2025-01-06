@@ -1,5 +1,5 @@
 import { cache } from './cache'
-import { Track, Stats, AlbumStats } from '../types'
+import { Track, Stats, AlbumStats, TrackStats } from '../types'
 import { searchMusicBrainz } from './music-brainz'
 
 export async function fetchStats(
@@ -20,11 +20,13 @@ export async function fetchStats(
     topAlbums: [],
     unmatchedTracks: [],
     dailyStats: [],
+    topTracks: [],
   }
 
   const albumMap = new Map<string, AlbumStats>()
   const monthlyMap = new Map<string, number>()
   const dailyMap = new Map<string, number>()
+  const trackMap = new Map<string, TrackStats>()
 
   for (let i = 0; i < tracks.length; i++) {
     const track = tracks[i]
@@ -66,6 +68,20 @@ export async function fetchStats(
     const day = new Date(parseInt(track.date.uts) * 1000).toISOString().slice(0, 10)
     dailyMap.set(day, (dailyMap.get(day) || 0) + duration)
 
+    // Track stats
+    const trackKey = `${track.artist['#text']}-${track.name}`
+    if (!trackMap.has(trackKey)) {
+      trackMap.set(trackKey, {
+        name: track.name,
+        artist: track.artist['#text'],
+        count: 0,
+        minutes: 0,
+      })
+    }
+    const trackStats = trackMap.get(trackKey)!
+    trackStats.count++
+    trackStats.minutes += duration
+
     // Provide partial results every 10 tracks or on the last track
     if (i % 10 === 0 || i === tracks.length - 1) {
       onPartialResult({ ...stats })
@@ -84,6 +100,10 @@ export async function fetchStats(
     .map(([date, minutes]) => ({ date, minutes }))
     .sort((a, b) => a.date.localeCompare(b.date))
 
+  stats.topTracks = Array.from(trackMap.values())
+    .sort((a, b) => b.minutes - a.minutes)
+    .slice(0, 10)
+
   // Ensure all stats are numbers
   stats.totalMinutes = Number(stats.totalMinutes.toFixed(2))
   stats.monthlyStats.forEach((stat) => (stat.minutes = Number(stat.minutes.toFixed(2))))
@@ -93,6 +113,8 @@ export async function fetchStats(
     artist.minutes = Number(artist.minutes.toFixed(2))
     artist.count = Math.round(artist.count)
   })
+
+  console.log(stats)
 
   return stats
 }
@@ -153,7 +175,7 @@ async function getTrackDuration(track: Track, apiKey: string): Promise<number | 
     }
 
     // If Last.fm fails, try MusicBrainz
-    let mbDuration = await searchMusicBrainz(track.artist['#text'], track.name)
+    let mbDuration = await searchMusicBrainz(track.artist['#text'], track.name, track.mbid, track.artist.mbid)
 
     if (mbDuration.length > 0) {
       const duration = mbDuration[0].length / 1000 / 60

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Track } from '../types'
+import { Track, type MusicBrainzRecording } from '../types'
 import { formatNumber } from '../utils'
 import { searchMusicBrainz } from '../utils/music-brainz'
 
@@ -9,17 +9,12 @@ interface UnmatchedTracksProps {
   apiKey: string
 }
 
-interface Recording {
-  id: string
-  title: string
-  length: number
-}
-
-export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatch, apiKey }) => {
+export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatch }) => {
   const [manualDurations, setManualDurations] = useState<{ [key: string]: string }>({})
-  const [recordings, setRecordings] = useState<{ [key: string]: Recording[] }>({})
+  const [recordings, setRecordings] = useState<{ [key: string]: MusicBrainzRecording[] }>({})
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({})
   const [showModal, setShowModal] = useState<string | null>(null)
+  const [editedTracks, setEditedTracks] = useState<{ [key: string]: { artist: string; name: string } }>({})
 
   const uniqueTracks = tracks.reduce((acc, track) => {
     const key = `${track.artist['#text']}-${track.name}`
@@ -29,8 +24,28 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
     return acc
   }, {} as { [key: string]: Track })
 
+  const getTrackValues = (track: Track, key: string) => {
+    if (editedTracks[key]) {
+      return editedTracks[key]
+    }
+    return {
+      artist: track.artist['#text'],
+      name: track.name,
+    }
+  }
+
   const handleDurationChange = (key: string, value: string) => {
     setManualDurations((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const handleTrackChange = (key: string, field: 'artist' | 'name', value: string) => {
+    setEditedTracks((prev) => ({
+      ...prev,
+      [key]: {
+        ...(prev[key] || { artist: uniqueTracks[key].artist['#text'], name: uniqueTracks[key].name }),
+        [field]: value,
+      },
+    }))
   }
 
   const handleMatch = (track: Track, duration: number) => {
@@ -49,9 +64,10 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
 
   const handleSearchRecordings = async (track: Track) => {
     const key = `${track.artist['#text']}-${track.name}`
+    const { artist, name } = getTrackValues(track, key)
     setLoading((prev) => ({ ...prev, [key]: true }))
     try {
-      const results = await searchMusicBrainz(track.artist['#text'], track.name)
+      const results = await searchMusicBrainz(artist, name, track.mbid, track.artist.mbid)
       setRecordings((prev) => ({ ...prev, [key]: results }))
     } catch (error) {
       console.error('Error searching MusicBrainz:', error)
@@ -91,8 +107,22 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
               const key = `${track.artist['#text']}-${track.name}`
               return (
                 <tr key={key}>
-                  <td className='px-6 py-4 whitespace-nowrap'>{track.artist['#text']}</td>
-                  <td className='px-6 py-4 whitespace-nowrap'>{track.name}</td>
+                  <td className='px-6 py-4 whitespace-nowrap'>
+                    <input
+                      type='text'
+                      value={getTrackValues(track, key).artist}
+                      onChange={(e) => handleTrackChange(key, 'artist', e.target.value)}
+                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    />
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap'>
+                    <input
+                      type='text'
+                      value={getTrackValues(track, key).name}
+                      onChange={(e) => handleTrackChange(key, 'name', e.target.value)}
+                      className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    />
+                  </td>
                   <td className='px-6 py-4 whitespace-nowrap'>
                     <input
                       type='number'
@@ -143,14 +173,25 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
                   Choose a matching recording
                 </h3>
                 <div className='mt-2'>
+                  <h3 className='text-md text-gray-700'>Original track</h3>
+                  <p className='text-sm text-gray-500'>
+                    {uniqueTracks[showModal].artist['#text']} - {uniqueTracks[showModal].name}
+                  </p>
+                  <h3 className='text-md text-gray-700'>Artist</h3>
+                  <p className='text-sm text-gray-500'>{uniqueTracks[showModal].artist['#text']}</p>
+                  <h3 className='text-md text-gray-700'>Album</h3>
+                  <p className='text-sm text-gray-500'>{uniqueTracks[showModal].album['#text']}</p>
+                  <h3 className='text-md text-gray-700 mt-2'>Matching recordings</h3>
+
                   {recordings[showModal] && recordings[showModal].length > 0 ? (
                     <select
-                      className='mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md'
+                      className='mt-1 block w-full p-3 pr-10 text-base border-gray-300 bg-gray-200 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md'
                       onChange={(e) => handleMatch(uniqueTracks[showModal], parseInt(e.target.value) / 60000)}>
                       <option value=''>Select a recording</option>
                       {recordings[showModal].map((recording) => (
                         <option key={recording.id} value={recording.length.toString()}>
-                          {recording.title} ({formatNumber(recording.length / 60000)} minutes)
+                          {recording.title} from {recording.album['#text']} by {recording.artist['#text']} (
+                          {formatNumber(recording.length / 60000)} minutes)
                         </option>
                       ))}
                     </select>

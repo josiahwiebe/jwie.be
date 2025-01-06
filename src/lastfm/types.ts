@@ -19,6 +19,13 @@ export interface AlbumStats {
   imageUrl: string
 }
 
+export interface TrackStats {
+  name: string
+  artist: string
+  count: number
+  minutes: number
+}
+
 export interface Stats {
   totalMinutes: number
   totalTracks: number
@@ -28,4 +35,13 @@ export interface Stats {
   dailyStats: { date: string; minutes: number }[]
   topAlbums: AlbumStats[]
   unmatchedTracks: Track[]
+  topTracks: TrackStats[]
+}
+
+export interface MusicBrainzRecording {
+  id: string
+  title: string
+  length: number
+  artist: { '#text': string; mbid: string }
+  album: { '#text': string; mbid: string }
 }
