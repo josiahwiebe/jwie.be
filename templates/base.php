@@ -69,7 +69,7 @@ ray($document);
       </a>
     </h1>
     <nav class="site-nav">
-      <ul class="flex flex-row gap-4 list-none">
+      <ul class="flex flex-row flex-wrap gap-4 list-none">
         <?php foreach ($nav_items as $nav_item) : ?>
           <li><a class="<?= $uri_segment && str_starts_with($nav_item['slug'], $uri_segment) ? 'is-active' : '' ?>" href="<?= $nav_item['slug']; ?>"><?= $nav_item['name']; ?></a></li>
         <?php endforeach; ?>
