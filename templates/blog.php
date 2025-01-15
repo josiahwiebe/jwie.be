@@ -15,11 +15,11 @@ $posts = get_all_posts($type);
   <?php foreach ($posts as $post) : ?>
     <article key={post.slug} class='flex flex-col space-y-4'>
       <div class='flex flex-col space-y-2'>
-        <a href="<?= $post->slug; ?>">
-          <h2 class='max-w-[80%] text-2xl font-heading font-bold leading-normal sm:text-3xl md:text-3xl'>
+        <h2 class='max-w-[80%] text-2xl font-heading font-bold leading-normal sm:text-3xl md:text-3xl'>
+          <a href="<?= $post->slug; ?>">
             <?= $post->front_matter->title; ?>
-          </h2>
-        </a>
+          </a>
+        </h2>
         <p class='text-sm text-slate-600'><?php echo date('F j, Y', $post->front_matter->date); ?></p>
       </div>
       <?php if (isset($post->front_matter->excerpt)) : ?><p class='text-slate-600 dark:text-slate-400'><?= $post->front_matter->excerpt; ?></p><?php endif; ?>

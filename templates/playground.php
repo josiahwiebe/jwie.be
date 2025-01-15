@@ -12,11 +12,11 @@ $posts = get_all_posts('playground');
     <article key={post.slug} class='flex flex-col space-y-4'>
       <div class='flex flex-col space-y-2'>
         <datetime class='text-xs font-bold text-slate-600'><?php echo date('Y', $post->front_matter->date); ?></datetime>
-        <a href="<?= $post->slug; ?>">
-          <h2 class='max-w-[80%] text-2xl font-heading font-bold leading-normal sm:text-3xl md:text-3xl'>
+        <h2 class='max-w-[80%] text-2xl font-heading font-bold leading-normal sm:text-3xl md:text-3xl'>
+          <a href="<?= $post->slug; ?>">
             <?= $post->front_matter->title; ?>
-          </h2>
-        </a>
+          </a>
+        </h2>
       </div>
       <?php if (isset($post->front_matter->excerpt)) : ?><p class='text-slate-600 dark:text-slate-400'><?= $post->front_matter->excerpt; ?></p><?php endif; ?>
       <div class='py-8 md:py-10 lg:py-12'>
