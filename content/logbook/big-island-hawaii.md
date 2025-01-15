@@ -45,7 +45,7 @@ It's simplest to divide the Big Island up into a few distinct regions:
   - the northernmost region, known for its beaches, golf courses, and the town of Waimea.
   - includes the **Waikoloa Beach** resort area (not to be confused with Waikoloa Village), the Mauna Lani Resort, and the **Hapuna Beach** State Recreation Area.
   - home to some of the best beaches and sunny weather on the island.
-  - the town of Waimea is also in northeast Kohala - Hawaiia's "cowboy" town.
+  - the town of Waimea is also in northeast Kohala - Hawaii's "cowboy" town.
 - **Hamakua**
   - the easternmost region, known for its waterfalls, rainforests, and awe-inspiring views.
   - rolling green hills as well as the summit of Mauna Kea, the tallest mountain in the world.

@@ -6,6 +6,8 @@ use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkRenderer;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
@@ -24,6 +26,19 @@ $config = [
     'noopener' => 'external',
     'noreferrer' => 'external',
   ],
+  'heading_permalink' => [
+    'html_class' => 'heading-permalink',
+    'id_prefix' => '',
+    'apply_id_to_heading' => false,
+    'heading_class' => '',
+    'fragment_prefix' => '',
+    'insert' => 'before',
+    'min_heading_level' => 1,
+    'max_heading_level' => 6,
+    'title' => 'Permalink',
+    'symbol' => '#',
+    'aria_hidden' => true,
+  ],
 ];
 
 $environment = new Environment($config);
@@ -32,6 +47,7 @@ $environment->addExtension(new GithubFlavoredMarkdownExtension());
 $environment->addExtension(new AttributesExtension());
 $environment->addExtension(new ExternalLinkExtension());
 $environment->addExtension(new FigureExtension());
+$environment->addExtension(new HeadingPermalinkExtension());
 $environment->addExtension(new ContainerExtension());
 $environment->addRenderer(FencedCode::class, new FencedCodeRenderer());
 $environment->addRenderer(IndentedCode::class, new IndentedCodeRenderer());

@@ -68,23 +68,21 @@ h4,
 h5,
 h6 {
   @apply font-heading;
-
-  /* &:has(.heading-permalink):hover {
-    cursor: pointer;
-  } */
+  position: relative;
 }
 
 .heading-permalink {
-  /* position: absolute; */
+  position: absolute;
   top: 0;
-  right: 1rem;
+  padding-right: 0.25rem;
   transform: translateX(-100%);
   opacity: 0;
   transition: opacity 120ms ease-in-out;
-  color: var(--color-primary-invert) !important;
-  background: none;
-  background-clip: unset;
   border: none !important;
+}
+
+.heading-permalink:hover {
+  opacity: 1;
 }
 
 h1:hover .heading-permalink,
@@ -94,6 +92,7 @@ h4:hover .heading-permalink,
 h5:hover .heading-permalink,
 h6:hover .heading-permalink {
   opacity: 1;
+  color: var(--color-primary);
 }
 
 .prose h1,
