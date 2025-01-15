@@ -42,6 +42,11 @@
       "headers": { "Location": "/playground/feed" }
     },
     {
+      "src": "/hawaii",
+      "status": 308,
+      "headers": { "Location": "/logbook/big-island-hawaii" }
+    },
+    {
       "src": "/api/og",
       "dest": "/api/og.mjs"
     },

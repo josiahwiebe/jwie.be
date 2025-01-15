@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:serve": "php -S localhost:8008 -t public",
+    "dev:js": "vite",
+    "dev:php": "php -S localhost:8008 -t public",
     "dev:og": "vc dev",
-    "dev:php": "npm-run-all --parallel dev dev:serve",
+    "dev": "npm-run-all --parallel dev:js dev:php",
     "build": "vite build"
   },
   "author": "@josiahwiebe",
