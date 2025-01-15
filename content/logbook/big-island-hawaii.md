@@ -74,10 +74,12 @@ It's simplest to divide the Big Island up into a few distinct regions:
 #### [Volcanoes National Park](https://www.google.ca/maps/place/Hawai%CA%BBi+Volcanoes+National+Park/@19.3091251,-155.5758142,11z/data=!3m1!4b1!4m5!3m4!1s0x795161b6c0b9c9b1:0x3e5b7b263c84ae26!8m2!3d19.4193697!4d-155.2884969)
 
 - has a number of interesting day hikes, lava fields and lava tubes included
+- spend the day here just exploring if you need a break from the beach
 
 #### [Waimea Reservoir hike](https://maps.app.goo.gl/Ph3v5QpJCFSbgKas7)
 
 - One of our favourite hikes is in the Waimea area called the Waimea Reservoir hike. It starts [here](https://maps.app.goo.gl/Ph3v5QpJCFSbgKas7)
+- You'll have to climb over a gate at the beginning with some warning signs
 - There are these irrigation tunnels and chutes that you can walk through, as well as slide down
 - [GPS route](https://www.gaiagps.com/public/AJdD64SMoHWJgIq2kGkSuXXS) - 8km out and back, 105m elevation gain
 
@@ -110,8 +112,10 @@ It's simplest to divide the Big Island up into a few distinct regions:
 
 #### [Waipi'o Valley](https://www.google.ca/maps/place/Waipio+Valley/@20.1114675,-155.5972385,17z/data=!3m1!4b1!4m5!3m4!1s0x7953768b433a794f:0xbf30be6da781af6!8m2!3d20.1114625!4d-155.5950498)
 
-- this is an amazing valley, but you shouldn't really drive down – it's too steep for most cards.
+- this is an amazing valley, but you shouldn't really drive down – it's too steep for most cars.
+- the view even from the top is impressive
 - you can try hitching a ride down from some locals or walking down the road. You'll feel like a champ if you walk back up.
+- there used to be a hike to Hi’ilawe Falls at the back of the valley, but it crossed through private property and is no longer accessible. Do not attempt it.
 
 #### [Kiholo Bay](https://goo.gl/maps/W45NTRzfuQqfPNoPA)
 
@@ -136,13 +140,24 @@ It's simplest to divide the Big Island up into a few distinct regions:
 ^^^ Turtle at Kiholo Bay
 :::
 
-- If you can manage, go to the summit of Mauna Kea. It's a long drive, but the views are absolutely incredible. 4WD is recommended, and your car might struggle with the altitude.
-  - Go at sunset for the best views.
+#### Mauna Kea Summit
+
+- it's a long drive, but the views are absolutely incredible. 4WD is recommended, and your car might struggle with the altitude.
+- go at sunset for the best views.
 
 ^^^
 ![](/img/hawaii/mauna-kea-clouds.jpg)
 ^^^ Views from Mauna Kea at sunset. We couldn't make it to the top this time as the car struggled with the altitude.
 :::
+
+#### [End of the World Cliff Jumping](https://maps.app.goo.gl/pfdkSU72EATG7x1MA)
+
+- a popular spot for cliff jumping at the end of Ali'i drive
+
+#### [South Point](https://maps.app.goo.gl/hYaDUzgEX8oD39JBA)
+
+- the southernmost point in the United States
+- some folks do cliff jumping here
 
 ## Beaches
 
@@ -178,9 +193,10 @@ I'd recommend hitting up both Mahaiula Beach and Makalawena Beach back to back, 
 - one of the more popular beaches, as it's very easy to access.
 - super fun to play in the waves here
 
-####[Kikaua Beach](https://maps.app.goo.gl/MTyuJ9JjTC3pAwRP8)
+#### [Kikaua Beach](https://maps.app.goo.gl/MTyuJ9JjTC3pAwRP8)
 
 - this is a public beach, but you have to access it via private property.
+- it's generally very quiet as the parking is so limited. It's also very calm as it's protected by the reef and breakwater.
 - first, get a parking pass from the guard shack at the gate (see map)
 - if the parking lot is full, you'll have to come back later
 
@@ -200,9 +216,10 @@ I'd recommend hitting up both Mahaiula Beach and Makalawena Beach back to back, 
 
 ### Green Sand Beach
 
-#### [Papakolea Beach](#)
+#### [Papakolea Beach](https://maps.app.goo.gl/91qgW1hofd8brhNG7)
 
 - one of four green sand beaches in the world
+- you can access it by walking from the [parking lot](https://maps.app.goo.gl/qjYKbQb7vUsvpLaz9) or paying for a ride from some locals
 
 :::image-half
 ^^^
