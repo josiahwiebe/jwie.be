@@ -102,7 +102,6 @@ export const UnmatchedTracks: React.FC<UnmatchedTracksProps> = ({ tracks, onMatc
               </th>
             </tr>
           </thead>
-          focus:ring-primary dark:bg-slate-400 dark:focus:ring-amber-300
           <tbody className='bg-white divide-y divide-gray-200'>
             {Object.values(uniqueTracks).map((track) => {
               const key = `${track.artist['#text']}-${track.name}`
