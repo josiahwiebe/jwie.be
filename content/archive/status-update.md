@@ -3,7 +3,7 @@ title: Status Update
 date: 2014-04-25
 ---
 
-This is a follow-up post to my earlier post; [Choosing a Web-Presence](http://jwie.be/choosing-blog-format).
+This is a follow-up post to my earlier post; [Choosing a Web-Presence](http://jwww.me/choosing-blog-format).
 
 Firstly, I'd like to apologise for my lack of keeping up-to-date. It's not like I haven't been writing; [Josh](http://thenewsprint.co) got me into Field Notes, but it's primarily been for [Collectif](http://collectif.co) or for [trip planning](http://thewieb.es).
 

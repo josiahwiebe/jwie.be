@@ -10,10 +10,10 @@ $feed->registerAtomNamespace()
   ->registerNamespace('content', 'http://purl.org/rss/1.0/modules/content/');
 $channel = $feed->addChannel();
 $channel->title('Josiah Wiebe – Blog')
-  ->link('https://jwie.be/blog')
-  ->addAtomLink('https://jwie.be/feed.xml', 'self')
-  ->description('Feed of blog posts from jwie.be')
-  ->link('https://jwie.be/feed.xml')
+  ->link('https://jwww.me/blog')
+  ->addAtomLink('https://jwww.me/feed.xml', 'self')
+  ->description('Feed of blog posts from jwww.me')
+  ->link('https://jwww.me/feed.xml')
   ->pubDate(new DateTime())
   ->lastBuildDate(new DateTime())
   ->copyright('2011-' . date('Y') . ' Josiah Wiebe')
@@ -26,10 +26,10 @@ $posts = array_merge($blog_posts, $logbook_posts, $archive_posts);
 foreach ($posts as $post) {
   $item = $channel->addItem()
     ->title($post->front_matter->title)
-    ->link('https://jwie.be' . $post->slug)
+    ->link('https://jwww.me' . $post->slug)
     ->pubDate(new DateTime('@' . $post->front_matter->date))
     ->encodedContent($post->markdown)
-    ->guid('https://jwie.be' . $post->slug, true);
+    ->guid('https://jwww.me' . $post->slug, true);
 }
 
 header('Content-Type: ' . $feed->getMimeType());

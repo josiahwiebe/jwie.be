@@ -5,7 +5,7 @@ date: 2024-02-11
 
 > A quick disclaimer. This article is not intended to disparage Next.js – I work with Next.js every day, and really quite enjoy it. This is simply a study in using an outsized solution for a trivial problem.
 
-In 2023, I decided to re-create my personal website using Next.js. I even [wrote about it](https://jwie.be/blog/building-a-personal-blog-with-next-13-part-1). The building process was a lot of fun, and I even built a fun personal [Twitter feed alternative](https://jwie.be/feed).
+In 2023, I decided to re-create my personal website using Next.js. I even [wrote about it](https://jwww.me/blog/building-a-personal-blog-with-next-13-part-1). The building process was a lot of fun, and I even built a fun personal [Twitter feed alternative](https://jwww.me/feed).
 
 Unfortunately, when it came to updating the blog, things didn't quite go so well. It can be hard enough to motivate yourself to write on your blog (especially if you're just getting back into it), and having a site that doesn't build correctly due to a dependency issue or a platform issues doesn't make it any easier.
 

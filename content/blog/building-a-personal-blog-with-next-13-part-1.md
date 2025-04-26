@@ -203,4 +203,4 @@ That's all for the base layout and index page. At this point, we should have a f
 
 In my next post, I'll walk through the method I used to setup the blog and pages routes. I'll also show you how I use `next-mdx-remote` to render the blog posts and pages, combined with the power of dynamic catch-all route segments.
 
-To keep up to date with my latest posts, you can follow me on [Twitter](https://twitter.com/josiahwiebe) or [Mastodon](https://mastodon.social/@josiahwiebe), or subscribe to my [RSS feed](https://jwie.be/feed.xml).
+To keep up to date with my latest posts, you can follow me on [Twitter](https://twitter.com/josiahwiebe) or [Mastodon](https://mastodon.social/@josiahwiebe), or subscribe to my [RSS feed](https://jwww.me/feed.xml).
