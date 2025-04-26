@@ -5,13 +5,17 @@ subtitle: Elsewhere on the Internet.
 layout: page
 ---
 
+#### Twitter
+
+[@josiahwiebe](https://x.com/josiahwiebe)
+
+#### Bluesky
+
+[@jwie.be](https://bsky.app/profile/jwie.be)
+
 #### Mastodon
 
 [@josiahwiebe@mastodon.social](https://mastodon.social/@josiahwiebe)
-
-#### Twitter
-
-[@josiahwiebe](https://twitter.com/josiahwiebe)
 
 #### Github
 
@@ -43,4 +47,4 @@ layout: page
 
 #### Email
 
-[hi@jwie.be](mailto:hi@jwie.be)
+[hi@jwww.me](mailto:hi@jwww.me)

@@ -92,6 +92,9 @@ ray($document);
         <a href='https://twitter.com/josiahwiebe' rel="me" class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           Twitter
         </a>
+        <a href='https://bsky.app/profile/jwie.be' rel="me" class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
+          Bluesky
+        </a>
         <a href='https://mastodon.social/@josiahwiebe' rel="me" class='text-gray-500 dark:text-slate-400 no-underline hover:no-underline'>
           Mastodon
         </a>
