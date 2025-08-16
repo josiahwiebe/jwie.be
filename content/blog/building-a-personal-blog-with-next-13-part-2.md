@@ -1,16 +1,32 @@
 ---
 title: Building A Personal Blog With Next.js 13 - Part 2
-date: 2023-02-23
-published: false
-excerpt: Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote, Planetscale, and Prisma.
----
+slug: building-a-personal-blog-with-next-13-part-2
+date: 2023-02-23T00:00:00.000Z
+updated: 2025-08-16T03:23:37.000Z
+excerpt: >-
+  Building The Blog
 
+
+  This article is going to be a multi-part series. I'm going to be building a
+  personal blog using Next.js 13, Tailwind CSS, next-mdx-remote, Planetscale,
+  and Prisma. I'm going to be writing about the process of building the site, as
+  well as the tools I'm using.
+
+   1. Getting Started with Next.js 13
+   2. Building the Blog (this post)
+   3. Creating a Personal Feed with Planetscale and Prisma
+   4. Adding Authentication with Next-Auth.js
+
+  In my next post, I'll walk through the method I 
+feature_image: null
+published: true
+---
 # Building The Blog
 
 This article is going to be a multi-part series. I'm going to be building a personal blog using Next.js 13, Tailwind CSS, next-mdx-remote, Planetscale, and Prisma. I'm going to be writing about the process of building the site, as well as the tools I'm using.
 
-1. [Getting Started with Next.js 13](/blog/building-a-personal-blog-with-nextjs-13-part-1)
-2. [Building the Blog](/blog/building-a-personal-blog-with-nextjs-13-part-1) (this post)
+1. [Getting Started with Next.js 13](https://ghost.burwal.de/blog/building-a-personal-blog-with-nextjs-13-part-1)
+2. [Building the Blog](https://ghost.burwal.de/blog/building-a-personal-blog-with-nextjs-13-part-1) (this post)
 3. Creating a Personal Feed with Planetscale and Prisma
 4. Adding Authentication with Next-Auth.js
 
