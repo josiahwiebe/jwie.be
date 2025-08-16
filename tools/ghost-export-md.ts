@@ -10,7 +10,6 @@
  *
  * Env:
  *   GHOST_URL, GHOST_ADMIN_KEY
- *   INCLUDE_DRAFTS=true (optional, defaults to false)
  */
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
@@ -23,7 +22,6 @@ import GhostAdminAPI from '@tryghost/admin-api';
 
 const GHOST_URL = process.env.GHOST_URL!;
 const GHOST_ADMIN_KEY = process.env.GHOST_ADMIN_KEY!;
-const INCLUDE_DRAFTS = process.env.INCLUDE_DRAFTS === 'true';
 
 if (!GHOST_URL || !GHOST_ADMIN_KEY) {
   console.error('Set GHOST_URL and GHOST_ADMIN_KEY');
@@ -244,10 +242,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
     }
   }
 
-  // Filter based on INCLUDE_DRAFTS setting
-  return INCLUDE_DRAFTS
-    ? allPosts
-    : allPosts.filter(post => post.status === 'published');
+  return allPosts;
 }
 
 (async () => {
@@ -304,10 +299,8 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
   }
 
   const totalPosts = posts.length;
-  const drafts = posts.filter(p => p.status === 'draft').length;
   const published = posts.filter(p => p.status === 'published').length;
 
   console.log(`Exported ${changed} changed files to content/blog`);
-  console.log(`Total posts processed: ${totalPosts} (${published} published, ${drafts} drafts)`);
-  console.log(`Draft inclusion: ${INCLUDE_DRAFTS ? 'enabled' : 'disabled'}`);
+  console.log(`Total posts processed: ${totalPosts} (${published} published)`);
 })().catch(err => { console.error(err); process.exit(1); });

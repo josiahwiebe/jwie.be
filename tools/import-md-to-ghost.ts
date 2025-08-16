@@ -78,7 +78,7 @@ if (!GHOST_URL || !GHOST_ADMIN_KEY) {
 const api = new GhostAdminAPI({
   url: GHOST_URL,
   key: GHOST_ADMIN_KEY,
-  version: "v5", // Ghost 5.x
+  version: "v6.0",
 });
 
 function listMarkdownFiles(dir: string): string[] {
@@ -102,7 +102,7 @@ type FrontMatter = {
   excerpt?: string;
   feature_image?: string;
   canonical_url?: string;
-  draft?: boolean;
+  published?: boolean;
 };
 
 function classifyByPath(file: string): { kind: 'post' | 'page'; folder?: string } {
@@ -135,7 +135,7 @@ async function upsertPostOrPage(file: string) {
     : undefined;
 
   const { kind, folder } = classifyByPath(file);
-  const status: 'draft' | 'published' = fm.draft ? 'draft' : 'published';
+  const status: 'draft' | 'published' = fm.published ? 'published' : 'draft';
   const published_at = fm.date ? new Date(fm.date).toISOString() : undefined;
 
   // For posts under content/<folder>, add folder tag unless folder is 'blog'
