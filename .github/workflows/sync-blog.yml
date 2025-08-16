@@ -1,0 +1,36 @@
+name: Sync blog (Ghost → MD)
+
+on:
+  repository_dispatch:
+    types: [ghost-publish]
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"  # safety net
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install
+
+      - name: Export posts → content/blog
+        run: bun tools/ghost-export-md.ts
+        env:
+          GHOST_URL: ${{ secrets.GHOST_URL }}
+          GHOST_CONTENT_KEY: ${{ secrets.GHOST_CONTENT_KEY }}
+
+      - name: Commit changes (if any)
+        run: |
+          git config user.name "ghost-bot"
+          git config user.email "ghost-bot@users.noreply.github.com"
+          git add content/blog public/img
+          git diff --cached --quiet || git commit -m "chore: export blog"
+          git push
+
+      - name: Trigger Vercel deploy
+        run: curl -sS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"

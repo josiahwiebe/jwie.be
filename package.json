@@ -7,7 +7,8 @@
     "dev:php": "php -S localhost:8008 -t public",
     "dev:og": "vc dev",
     "dev": "npm-run-all --parallel dev:js dev:php",
-    "build": "vite build"
+    "build": "vite build",
+    "ghost-export": "bun tools/ghost-export-md.ts"
   },
   "author": "@josiahwiebe",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "@vercel/node": "^5.3.13",
     "@vitejs/plugin-react": "^4.3.4",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.35",
@@ -26,10 +28,16 @@
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.0-beta.8",
+    "@tryghost/admin-api": "^1.14.0",
     "@vercel/og": "^0.6.2",
+    "gray-matter": "^4.0.3",
+    "marked": "^16.1.2",
+    "node-html-markdown": "^1.3.0",
+    "node-html-parser": "^7.0.1",
     "nuqs": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.0"
+    "recharts": "^2.15.0",
+    "sanitize-filename": "^1.6.3"
   }
 }
