@@ -4,8 +4,6 @@ on:
   repository_dispatch:
     types: [ghost-publish]
   workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *"  # safety net
 
 jobs:
   export:
