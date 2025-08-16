@@ -16,7 +16,7 @@ $posts = get_all_posts('logbook');
             <?= $post->front_matter->title; ?>
           </a>
         </h2>
-        <datetime class='text-sm text-slate-600'><?php echo date('F j, Y', $post->front_matter->date); ?></datetime>
+        <datetime class='text-sm text-slate-600'><?php echo date('F j, Y', strtotime($post->front_matter->date)); ?></datetime>
       </div>
       <?php if (isset($post->front_matter->excerpt)) : ?><p class='text-slate-600 dark:text-slate-400'><?= $post->front_matter->excerpt; ?></p><?php endif; ?>
       <div class='py-8 md:py-10 lg:py-12'>

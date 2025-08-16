@@ -11,7 +11,7 @@ $posts = get_all_posts('playground');
   <?php foreach ($posts as $post) : ?>
     <article key={post.slug} class='flex flex-col space-y-4'>
       <div class='flex flex-col space-y-2'>
-        <datetime class='text-xs font-bold text-slate-600'><?php echo date('Y', $post->front_matter->date); ?></datetime>
+        <datetime class='text-xs font-bold text-slate-600'><?php echo date('Y', strtotime($post->front_matter->date)); ?></datetime>
         <h2 class='max-w-[80%] text-2xl font-heading font-bold leading-normal sm:text-3xl md:text-3xl'>
           <a href="<?= $post->slug; ?>">
             <?= $post->front_matter->title; ?>

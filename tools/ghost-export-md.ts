@@ -56,13 +56,13 @@ function htmlToCommonMark(html: string): string {
         const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
         if (figureMatch) {
           const [, src, alt, caption] = figureMatch;
-          result += `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}\n`;
+          result += `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}\n\n`;
         } else {
           // Handle images without captions in grid
           const imgMatch = figureHtml.match(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>/i);
           if (imgMatch) {
             const [, src, alt] = imgMatch;
-            result += `^^^\n![${alt}](${src})\n`;
+            result += `^^^\n![${alt}](${src})\n\n`;
           }
         }
       });
@@ -81,13 +81,13 @@ function htmlToCommonMark(html: string): string {
         const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
         if (figureMatch) {
           const [, src, alt, caption] = figureMatch;
-          return `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}\n`;
+          return `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}`;
         }
         // Handle images without captions
         const imgMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<\/figure>/i);
         if (imgMatch) {
           const [, src, alt] = imgMatch;
-          return `^^^\n![${alt}](${src})\n`;
+          return `^^^\n![${alt}](${src})`;
         }
         return null;
       };
@@ -96,7 +96,8 @@ function htmlToCommonMark(html: string): string {
       const converted2 = convertFigure(figure2);
 
       if (converted1 && converted2) {
-        return `:::image-half\n${converted1}${converted2}:::`;
+        // Create the final :::image-half block directly
+        return `:::image-half\n${converted1}\n\n${converted2}\n:::`;
       }
 
       // If conversion failed, fall back to individual figure processing
@@ -140,6 +141,71 @@ async function downloadAndRewriteImages(html?: string, feature?: string | null, 
   const manifest: Record<string,string> = {};
   for (const u of collectImageUrls(html, feature)) {
     try {
+      const url = new URL(u);
+
+      // Check if this is already pointing to our organized structure
+      if (url.hostname === 'jwie.be' && url.pathname.startsWith('/img/') && postSlug) {
+        const pathParts = url.pathname.split('/');
+        if (pathParts.length >= 4 && pathParts[2] === postSlug) {
+          // This image is already in our organized structure, check if it exists locally
+          const localPath = path.join(OUT_IMG, ...pathParts.slice(2));
+          if (fs.existsSync(localPath)) {
+            // File already exists, just use the existing path
+            manifest[u] = url.pathname;
+            continue;
+          }
+
+          // Check if there's a similar file without hash suffix
+          const postDir = path.join(OUT_IMG, postSlug);
+          if (fs.existsSync(postDir)) {
+            const requestedFile = path.basename(url.pathname);
+            const files = fs.readdirSync(postDir);
+
+            // Try to find a matching file by removing hash suffix pattern
+            const baseName = requestedFile.replace(/-[a-f0-9]{8}(\.[^.]+)$/, '$1');
+            const matchingFile = files.find(f => f === baseName);
+
+            if (matchingFile) {
+              manifest[u] = `/img/${postSlug}/${matchingFile}`;
+              continue;
+            }
+          }
+
+          // Try alternative directory names (in case of manual organization)
+          const alternativeDirs = [
+            postSlug.replace(/-/g, ''),
+            postSlug.split('-')[0],
+            postSlug.split('-').slice(-1)[0],
+            // Handle specific cases like vercel-og for using-vercel-og-without-nextjs
+            ...(postSlug.includes('vercel-og') ? ['vercel-og'] : []),
+            ...(postSlug.includes('keychron') ? ['keychron-k3'] : [])
+          ];
+
+          for (const altSlug of alternativeDirs) {
+            const altDir = path.join(OUT_IMG, altSlug);
+            if (fs.existsSync(altDir)) {
+              const requestedFile = path.basename(url.pathname);
+              const files = fs.readdirSync(altDir);
+
+              // Try exact match first
+              if (files.includes(requestedFile)) {
+                manifest[u] = `/img/${altSlug}/${requestedFile}`;
+                continue;
+              }
+
+              // Try removing hash suffix
+              const baseName = requestedFile.replace(/-[a-f0-9]{8}(\.[^.]+)$/, '$1');
+              const matchingFile = files.find(f => f === baseName);
+
+              if (matchingFile) {
+                manifest[u] = `/img/${altSlug}/${matchingFile}`;
+                continue;
+              }
+            }
+          }
+        }
+      }
+
       const buf = await download(u);
       const hash = sha1(buf).slice(0,16);
       const ext = extFrom(u);
@@ -150,7 +216,7 @@ async function downloadAndRewriteImages(html?: string, feature?: string | null, 
         fs.mkdirSync(postDir, { recursive: true });
 
         // Try to use a meaningful filename from the URL, fallback to hash
-        const urlPath = new URL(u).pathname;
+        const urlPath = url.pathname;
         const originalName = path.basename(urlPath, path.extname(urlPath));
         const cleanName = originalName.replace(/[^a-z0-9-]/gi, '-').toLowerCase().replace(/^-+|-+$/g, '');
 
@@ -201,6 +267,7 @@ interface GhostPost {
   title: string;
   html?: string;
   excerpt?: string;
+  custom_excerpt?: string;
   feature_image?: string|null;
   published_at?: string|null;
   updated_at?: string|null;
@@ -213,7 +280,7 @@ interface BrowseResp { posts: GhostPost[]; meta: any }
 const api = new GhostAdminAPI({
   url: GHOST_URL,
   key: GHOST_ADMIN_KEY,
-  version: 'v5.0'
+  version: 'v6.0'
 });
 
 async function fetchAllPosts(): Promise<GhostPost[]> {
@@ -258,19 +325,40 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
     const processedHtml = html ? htmlToCommonMark(html) : '';
     const mdBody = nhm.translate(processedHtml);
 
-    // Post-process to fix line breaks in :::image-half blocks and unescape markdown
+    // Post-process to fix line breaks in :::image-half blocks and escaped markdown
     const fixedMdBody = mdBody
-      .replace(/:::image-half ([^:]+):::/g, (match, content) => {
-        // Restore proper line breaks in image-half blocks
-        const fixed = content
-          .replace(/\^\^\^\s*/g, '\n^^^\n')
-          .replace(/!\\?\[([^\]]*)\]\\?\(([^)]+)\)\s*/g, '![$1]($2)\n')
-          .replace(/\n\s*\n/g, '\n')
-          .replace(/\n+/g, '\n')
-          .trim();
-        return `:::image-half\n${fixed}\n:::`;
+            // Fix collapsed :::image-half blocks by adding proper line breaks
+      .replace(/:::image-half\s+([^:]+?):::/g, (match, content) => {
+        // Only process if this looks like a real :::image-half block (multiple ^^^ patterns)
+        const tripleCaretCount = (content.match(/\^\^\^/g) || []).length;
+        if (tripleCaretCount < 3) {
+          // Not enough ^^^ markers to be a valid image-half block, return as-is
+          return match;
+        }
+
+        // Split content and rebuild with proper formatting
+        const parts = content.split(/\s*\^\^\^\s*/);
+        let result = ':::image-half\n';
+
+        for (let i = 1; i < parts.length; i += 2) {
+          const imagePart = parts[i]?.trim();
+          const captionPart = parts[i + 1]?.trim();
+
+          if (imagePart) {
+            result += '^^^\n' + imagePart + '\n';
+            if (captionPart && !captionPart.match(/^!\[/)) {
+              result += '^^^ ' + captionPart + '\n';
+            }
+          }
+          if (i + 2 < parts.length) {
+            result += '\n';
+          }
+        }
+
+        result += ':::';
+        return result;
       })
-      // Fix escaped markdown in the rest of the content
+      // Fix escaped markdown
       .replace(/!\\?\[([^\]]*)\]\\?\(([^)]+)\)/g, '![$1]($2)')
       // Fix escaped brackets and parentheses
       .replace(/\\\[/g, '[')
@@ -282,18 +370,15 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
       slug: p.slug,
       date: p.published_at || undefined,
       updated: p.updated_at || undefined,
-      excerpt: p.excerpt || null,
+      excerpt: p.custom_excerpt || "",
       feature_image: feature || null,
       published: p.status === 'published',
     } as const;
 
     const outPath = path.join(OUT_BLOG, `${p.slug}.md`);
 
-    // Generate file with matter.stringify, then post-process to unquote dates
-    let file = matter.stringify(fixedMdBody.trim() + '\n', fm as any);
+    const file = matter.stringify(fixedMdBody.trim() + '\n', fm as any);
 
-    // Remove quotes from date and updated fields in the frontmatter
-    file = file.replace(/^(date|updated):\s*['"]([^'"]+)['"]$/gm, '$1: $2');
     const prev = fs.existsSync(outPath) ? await fsp.readFile(outPath, 'utf8') : '';
     if (prev !== file) { await fsp.writeFile(outPath, file); changed++; }
   }

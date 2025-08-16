@@ -88,6 +88,7 @@ function listMarkdownFiles(dir: string): string[] {
     const full = path.join(dir, name);
     const st = fs.statSync(full);
     if (st.isDirectory()) out.push(...listMarkdownFiles(full));
+    else if (name.toLowerCase() === 'index.md') continue;
     else if (name.toLowerCase().endsWith(".md")) out.push(full);
   }
   return out;
@@ -155,6 +156,7 @@ async function upsertPostOrPage(file: string) {
         tags: finalTags,
         feature_image: fm.feature_image,
         canonical_url: fm.canonical_url,
+        custom_excerpt: fm.excerpt || "",
         status,
         updated_at: existing.updated_at,
         ...(published_at ? { published_at } : {}),
@@ -168,6 +170,7 @@ async function upsertPostOrPage(file: string) {
             slug,
             html,
             tags: finalTags,
+            custom_excerpt: fm.excerpt || "",
             feature_image: fm.feature_image,
             canonical_url: fm.canonical_url,
             status,
