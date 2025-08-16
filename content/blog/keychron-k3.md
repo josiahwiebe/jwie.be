@@ -2,6 +2,7 @@
 title: 'Keychron K3: The Ideal First Mechanical Keyboard'
 date: 2023-12-21
 excerpt: A brief review of my initial foray in to the vast world of mechanical keyboards.
+published: true
 ---
 
 My first foray into the world of mechanical keyboards actually started with the Keychron K8. I backed their [Kickstarter launch](https://www.kickstarter.com/projects/keytron/keychron-k8-a-tenkeyless-wireless-mechanical-keyboard) in July of 2020, and received it in September. Unfortunately, I was not a fan, and I sold it on Kijiji a few months later.

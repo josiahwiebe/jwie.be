@@ -90,7 +90,6 @@ We also launched two all-new products this year, and we made a plan to head to K
 ^^^
 ![](/img/2022-in-review/kelowna-shoot-rig.jpg)
 ^^^ Our [car-to-car rig](https://tilta.com/shop/hydra-alien-car-mounting-system-pro-kit/)
-
 ^^^
 ![](/img/2022-in-review/kelowna-shoot-temperature.jpg)
 ^^^ Temperatures in the coach climbed over 40C
@@ -116,7 +115,6 @@ Highlight of the trip was probably the [Triple Ferry Ride](https://www.strava.co
 ^^^
 ![](/img/2022-in-review/triple-ferry-1.jpg)
 ^^^ Crossing Salt Spring Island
-
 ^^^
 ![](/img/2022-in-review/triple-ferry-2.gif)
 ^^^
@@ -126,7 +124,6 @@ Highlight of the trip was probably the [Triple Ferry Ride](https://www.strava.co
 ^^^
 ![](/img/2022-in-review/triple-ferry-4.jpg)
 ^^^ Waiting for the ferry
-
 ^^^
 ![](/img/2022-in-review/triple-ferry-3.gif)
 ^^^ Wine tasting at [Enrico](https://www.enricowinery.com/)
@@ -160,7 +157,6 @@ We spent a lot of time with family and friends, eating lots of good food and [dr
 ^^^
 ![](/img/2022-in-review/charcuterie-2.jpg)
 ^^^ We hosted an office holiday party with a charcuterie table
-
 ^^^
 ![](/img/2022-in-review/charcuterie-1.jpg)
 ^^^ Another evening, another spread
@@ -172,7 +168,6 @@ After a long hiatus from a lifetime growing up Nordic Skiing, I finally got back
 ^^^
 ![Skiing through the snowy Burwalde woods](/img/2022-in-review/skiing-1.jpg)
 ^^^ Skiing through the snowy Burwalde woods
-
 ^^^
 ![Nordic skiing with the family](/img/2022-in-review/skiing-2.jpg)
 ^^^ Lainey & Olsen came to love skiing, so we often make it a whole family affair

@@ -1,6 +1,7 @@
 ---
 title: Using @vercel/og without Next.js
 date: 2024-02-12
+published: true
 ---
 
 I've used the helpful [@vercel/og](https://vercel.com/docs/functions/og-image-generation) package before to generate OpenGraph images within Next.js projects, but since I re-wrote this blog using PHP, this was no longer possible.

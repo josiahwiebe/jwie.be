@@ -119,7 +119,6 @@ First time in New Mexico (also in west Texas to get there), and I had zero expec
 ^^^
 ![Las Cruces](/img/2024-in-review/las-cruces.jpg)
 ^^^ Hiking in the Organ Mountains
-:::
 
 **Favourite Podcast** - The live episode of [Syntax.fm](https://syntax.fm/) at React Miami.
 
@@ -128,7 +127,6 @@ I'm not a podcast listener (like, at all), but I used to listen to Syntax.fm a l
 ^^^
 ![Syntax.fm](/img/2024-in-review/syntax-fm.jpg)
 ^^^ Syntax.fm at React Miami
-:::
 
 **Best Paddleboarding** - [Revelstoke Reservoir](https://www.strava.com/activities/11817838597) - Revelstoke, BC.
 
@@ -148,14 +146,12 @@ Spent the best day paddling with the family and some friends on the Revelstoke R
 ^^^
 ![Seared Scallops](/img/2024-in-review/snack.jpg)
 ^^^ Seared Scallops
-:::
 
 **Most Insane Lasagna** - Porzia's - Toronto
 
 ^^^
 ![Porzia's](/img/2024-in-review/porzias.jpg)
 ^^^ This is ridiculous. Those layers 👨‍🍳😘
-:::
 
 **Favourite Song** - [Backfire](https://open.spotify.com/track/2IPshLLh6a1bzS9hDHqJ36?si=8093e701a62c46fb) by Wild Rivers. We were in Toronto to see them play at HISTORY. I also had [Two Friends](https://soundcloud.com/bigbootiemix) on the speakers a lot this year, especially out on the golf course.
 

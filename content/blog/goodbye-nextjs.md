@@ -1,6 +1,7 @@
 ---
 title: Goodbye, Next.js 👋
 date: 2024-02-11
+published: true
 ---
 
 > A quick disclaimer. This article is not intended to disparage Next.js – I work with Next.js every day, and really quite enjoy it. This is simply a study in using an outsized solution for a trivial problem.
