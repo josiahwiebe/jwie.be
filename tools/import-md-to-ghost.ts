@@ -19,6 +19,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import { micromark } from "micromark";
 import { gfm, gfmHtml } from "micromark-extension-gfm";
+import { htmlToLexical } from "@tryghost/kg-html-to-lexical";
 import GhostAdminAPI from "@tryghost/admin-api";
 
 const GHOST_URL = process.env.GHOST_URL;
@@ -26,47 +27,80 @@ const GHOST_ADMIN_KEY = process.env.GHOST_ADMIN_KEY;
 
 const SITE_BASE = process.env.SITE_BASE || "https://jwie.be"; // used to absolutize /img/... for Ghost editor
 
+function convertMarkdownCaptions(text: string): string {
+  // Use micromark for better markdown support in captions (links, bold, italic, etc.)
+  const html = micromark(text, {
+    extensions: [gfm()],
+    htmlExtensions: [gfmHtml()]
+  });
+  // Remove wrapping <p> tags for inline use
+  return html.replace(/^<p>|<\/p>\s*$/g, '');
+}
+
+function cleanStandaloneCarets(md: string) {
+  // Remove standalone ^^^ lines that aren't image captions
+  return md.replace(/^\^\^\^\s*$/gm, '');
+}
+
 function mdCaptionToFigure(md: string) {
   // Convert ![alt](src)\n^^^ caption to <figure><img /><figcaption>...
   return md.replace(
     /!\[([^\]]*)\]\(([^)\s]+)\)\s*\n\^\^\^\s*([^\n]+)/g,
-    (_m, alt, src, cap) => `<figure><img alt="${alt}" src="${src}" /><figcaption>${cap}</figcaption></figure>`
+    (_m, alt, src, cap) => `<figure><img alt="${alt}" src="${src}" /><figcaption>${convertMarkdownCaptions(cap)}</figcaption></figure>`
   );
 }
 
 function imageHalf(md: string) {
-  // :::image-half \n ^^^ \n ![...](...) \n ^^^ caption \n ^^^ \n ![...](...) \n ^^^ caption \n :::
+  // :::image-half \n ![...](...) \n ^^^ caption \n ![...](...) \n ^^^ caption \n :::
   return md.replace(
     /:::image-half\s*\n([\s\S]*?)\n:::/g,
     (_m, content) => {
-      // Split content by ^^^ markers to extract images and captions
-      const parts = content.split(/\^\^\^\s*/);
-      const images: string[] = [];
-
-      // Process each part - images are at even indices (after ^^^), captions at odd indices
-      for (let i = 1; i < parts.length; i += 2) {
-        const imagePart = parts[i].trim();
-        const captionPart = parts[i + 1]?.trim() || '';
-
-        if (imagePart.match(/!\[.*?\]\(.*?\)/)) {
-          if (captionPart && !captionPart.match(/!\[.*?\]\(.*?\)/)) {
-            // Has caption
-            const figureHtml = mdCaptionToFigure(`${imagePart}\n^^^ ${captionPart}`);
-            images.push(figureHtml);
-          } else {
-            // No caption, just convert image
-            const imgHtml = micromark(imagePart, {
-              extensions: [gfm()],
-              htmlExtensions: [gfmHtml()],
-              allowDangerousHtml: true,
-            });
-            images.push(imgHtml);
+      const images: { src: string; alt: string; caption?: string }[] = [];
+      
+      // Split content into lines and process
+      const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Check if this line is an image
+        const imgMatch = line.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+        if (imgMatch) {
+          const [, alt, src] = imgMatch;
+          
+          // Check if the next line is a caption (starts with ^^^)
+          const nextLine = lines[i + 1];
+          let caption: string | undefined;
+          
+          if (nextLine && nextLine.startsWith('^^^')) {
+            caption = convertMarkdownCaptions(nextLine.replace(/^\^\^\^\s*/, ''));
+            i++; // Skip the caption line since we've processed it
           }
+          
+          images.push({ src, alt, caption });
         }
+        // Skip standalone ^^^ lines that aren't image captions
       }
 
-      // Return grid layout with processed images
-      return `<div style="display:grid;gap:1rem;grid-template-columns:1fr 1fr;align-items:start">${images.join('')}</div>`;
+      if (images.length === 0) return _m; // Return original if no images found
+
+      // Create Ghost gallery card HTML structure
+      const galleryImages = images.map(img =>
+        `<div class="kg-gallery-image">
+          <img src="${img.src}" width="1200" height="800" loading="lazy" alt="${img.alt}" />
+        </div>`
+      ).join('\n        ');
+
+      // Combine all captions for overall gallery caption
+      const galleryCaption = images.map(img => img.caption).filter(Boolean).join(' | ');
+
+      return `<figure class="kg-card kg-gallery-card kg-width-wide">
+  <div class="kg-gallery-container">
+    <div class="kg-gallery-row">
+        ${galleryImages}
+    </div>
+  </div>${galleryCaption ? `\n  <figcaption>${galleryCaption}</figcaption>` : ''}
+</figure>`;
     }
   );
 }
@@ -131,6 +165,7 @@ async function upsertPostOrPage(file: string) {
   const title = String(fm.title ?? path.basename(file, '.md'));
   const slug = String(fm.slug ?? path.basename(file, '.md')).trim().toLowerCase();
   let md = content;
+  md = cleanStandaloneCarets(md);
   md = imageHalf(md);
   md = mdCaptionToFigure(md);
   const htmlRaw = micromark(md, {
@@ -139,6 +174,17 @@ async function upsertPostOrPage(file: string) {
     allowDangerousHtml: true,
   });
   const html = absolutizeImgs(htmlRaw);
+
+  // Convert HTML to Lexical format and stringify for Ghost API
+  const lexicalObj = htmlToLexical(html);
+
+  // Validate lexical structure
+  if (!lexicalObj?.root?.children) {
+    console.error(`Invalid lexical structure for ${file}`);
+    return;
+  }
+
+  const lexical = JSON.stringify(lexicalObj);
 
   const tags = Array.isArray(fm.tags)
     ? (fm.tags as any[]).map(t => (typeof t === 'string' ? { name: t } : t))
@@ -156,12 +202,12 @@ async function upsertPostOrPage(file: string) {
   if (kind === 'post') {
     // Posts
     try {
-      const existing = await api.posts.read({ slug }, { formats: ['html'] });
+      const existing = await api.posts.read({ slug });
       await api.posts.edit({
         id: existing.id,
         title,
         slug,
-        html,
+        lexical,
         tags: finalTags,
         feature_image: fm.feature_image,
         canonical_url: fm.canonical_url,
@@ -169,7 +215,7 @@ async function upsertPostOrPage(file: string) {
         status,
         updated_at: existing.updated_at,
         ...(published_at ? { published_at } : {}),
-      }, { source: 'html' });
+      });
       console.log(`Updated post: ${slug}`);
     } catch (err: any) {
       if (err?.response?.status === 404 || /not found/i.test(String(err))) {
@@ -177,14 +223,14 @@ async function upsertPostOrPage(file: string) {
           await api.posts.add({
             title,
             slug,
-            html,
+            lexical,
             tags: finalTags,
             custom_excerpt: fm.excerpt || "",
             feature_image: fm.feature_image,
             canonical_url: fm.canonical_url,
             status,
             ...(published_at ? { published_at } : {}),
-          }, { source: 'html' });
+          });
           console.log(`Created post: ${slug}`);
         } catch (e: any) {
           dumpGhostError('ADD_POST', slug, e);
@@ -198,18 +244,18 @@ async function upsertPostOrPage(file: string) {
   } else {
     // Pages
     try {
-      const existing = await (api as any).pages.read({ slug }, { formats: ['html'] });
+      const existing = await (api as any).pages.read({ slug });
       await (api as any).pages.edit({
         id: existing.id,
         title,
         slug,
-        html,
+        lexical,
         feature_image: fm.feature_image,
         canonical_url: fm.canonical_url,
         status,
         updated_at: existing.updated_at,
         ...(published_at ? { published_at } : {}),
-      }, { source: 'html' });
+      });
       console.log(`Updated page: ${slug}`);
     } catch (err: any) {
       if (err?.response?.status === 404 || /not found/i.test(String(err))) {
@@ -217,12 +263,12 @@ async function upsertPostOrPage(file: string) {
           await (api as any).pages.add({
             title,
             slug,
-            html,
+            lexical,
             feature_image: fm.feature_image,
             canonical_url: fm.canonical_url,
             status,
             ...(published_at ? { published_at } : {}),
-          }, { source: 'html' });
+          });
           console.log(`Created page: ${slug}`);
         } catch (e: any) {
           dumpGhostError('ADD_PAGE', slug, e);
@@ -240,6 +286,16 @@ function dumpGhostError(stage: string, slug: string, e: any) {
   const payload =
     e?.response?.data ?? e?.errors ?? e?.message ?? JSON.stringify(e, null, 2);
   console.error(`Ghost error during ${stage} for ${slug}:`);
+
+  // Enhanced error logging
+  if (e?.response) {
+    console.error(`Status: ${e.response.status}`);
+    console.error(`Status Text: ${e.response.statusText}`);
+    if (e.response.data) {
+      console.error(`Response data:`, JSON.stringify(e.response.data, null, 2));
+    }
+  }
+
   try {
     console.error(
       typeof payload === "string" ? payload : JSON.stringify(payload, null, 2)

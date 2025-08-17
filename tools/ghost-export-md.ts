@@ -51,20 +51,41 @@ function htmlToCommonMark(html: string): string {
       if (figureMatches.length === 0) return _m; // Return original if no figures found
 
       let result = ':::image-half\n';
+      
+      // First, collect all captions and split by |
+      const allCaptions: string[] = [];
       figureMatches.forEach(figureHtml => {
+        const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
+        if (figureMatch) {
+          const [, , , caption] = figureMatch;
+          allCaptions.push(caption.trim());
+        }
+      });
+      
+      // Split the first caption by | if it exists
+      const splitCaptions = allCaptions.length > 0 ? allCaptions[0].split('|').map(c => c.trim()) : [];
+      
+      figureMatches.forEach((figureHtml, index) => {
         // Convert each figure to CommonMark format
         const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
         if (figureMatch) {
-          const [, src, alt, caption] = figureMatch;
-          result += `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}\n\n`;
+          const [, src, alt] = figureMatch;
+          const caption = splitCaptions[index] || '';
+          if (caption) {
+            result += `![${alt}](${src})\n^^^ ${caption}`;
+          } else {
+            result += `![${alt}](${src})`;
+          }
         } else {
           // Handle images without captions in grid
           const imgMatch = figureHtml.match(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>/i);
           if (imgMatch) {
             const [, src, alt] = imgMatch;
-            result += `^^^\n![${alt}](${src})\n\n`;
+            result += `![${alt}](${src})`;
           }
         }
+        // Add newline after each image
+        result += '\n';
       });
       result += ':::';
       return result;
@@ -76,28 +97,40 @@ function htmlToCommonMark(html: string): string {
   processed = processed.replace(
     /(<figure[^>]*class="[^"]*kg-card[^"]*"[^>]*>[\s\S]*?<\/figure>)\s*(<figure[^>]*class="[^"]*kg-card[^"]*"[^>]*>[\s\S]*?<\/figure>)/gi,
     (match, figure1, figure2) => {
-      const convertFigure = (figureHtml: string) => {
+      const convertFigure = (figureHtml: string, captionIndex: number, allCaptions: string[]) => {
         // Match Ghost's HTML structure: src comes before alt in the img tag
         const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
         if (figureMatch) {
-          const [, src, alt, caption] = figureMatch;
-          return `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}`;
+          const [, src, alt, rawCaption] = figureMatch;
+          // If this is the first figure, split the caption by |
+          const splitCaptions = captionIndex === 0 ? rawCaption.split('|').map(c => c.trim()) : allCaptions;
+          const caption = splitCaptions[captionIndex] || '';
+          
+          if (caption) {
+            return `![${alt}](${src})\n^^^ ${caption}`;
+          } else {
+            return `![${alt}](${src})`;
+          }
         }
         // Handle images without captions
         const imgMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<\/figure>/i);
         if (imgMatch) {
           const [, src, alt] = imgMatch;
-          return `^^^\n![${alt}](${src})`;
+          return `![${alt}](${src})`;
         }
         return null;
       };
 
-      const converted1 = convertFigure(figure1);
-      const converted2 = convertFigure(figure2);
+      // First get the caption from the first figure to split
+      const firstFigureMatch = figure1.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
+      const allCaptions = firstFigureMatch ? firstFigureMatch[3].split('|').map(c => c.trim()) : [];
+
+      const converted1 = convertFigure(figure1, 0, allCaptions);
+      const converted2 = convertFigure(figure2, 1, allCaptions);
 
       if (converted1 && converted2) {
         // Create the final :::image-half block directly
-        return `:::image-half\n${converted1}\n\n${converted2}\n:::`;
+        return `:::image-half\n${converted1}\n${converted2}\n:::`;
       }
 
       // If conversion failed, fall back to individual figure processing
@@ -325,46 +358,46 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
     const processedHtml = html ? htmlToCommonMark(html) : '';
     const mdBody = nhm.translate(processedHtml);
 
-    // Post-process to fix line breaks in :::image-half blocks and escaped markdown
+    // Post-process to fix escaped markdown and clean up formatting
     const fixedMdBody = mdBody
-            // Fix collapsed :::image-half blocks by adding proper line breaks
-      .replace(/:::image-half\s+([^:]+?):::/g, (match, content) => {
-        // Only process if this looks like a real :::image-half block (multiple ^^^ patterns)
-        const tripleCaretCount = (content.match(/\^\^\^/g) || []).length;
-        if (tripleCaretCount < 3) {
-          // Not enough ^^^ markers to be a valid image-half block, return as-is
-          return match;
-        }
-
-        // Split content and rebuild with proper formatting
-        const parts = content.split(/\s*\^\^\^\s*/);
-        let result = ':::image-half\n';
-
-        for (let i = 1; i < parts.length; i += 2) {
-          const imagePart = parts[i]?.trim();
-          const captionPart = parts[i + 1]?.trim();
-
-          if (imagePart) {
-            result += '^^^\n' + imagePart + '\n';
-            if (captionPart && !captionPart.match(/^!\[/)) {
-              result += '^^^ ' + captionPart + '\n';
-            }
-          }
-          if (i + 2 < parts.length) {
-            result += '\n';
-          }
-        }
-
-        result += ':::';
-        return result;
-      })
       // Fix escaped markdown
       .replace(/!\\?\[([^\]]*)\]\\?\(([^)]+)\)/g, '![$1]($2)')
       // Fix escaped brackets and parentheses
       .replace(/\\\[/g, '[')
       .replace(/\\\]/g, ']')
       .replace(/\\\(/g, '(')
-      .replace(/\\\)/g, ')');
+      .replace(/\\\)/g, ')')
+      // Fix standalone images with captions that got collapsed to one line
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)\s+\^\^\^\s+([^\n]+)/g, '![$1]($2)\n^^^ $3')
+      // Fix :::image-half blocks that are on one line by adding proper newlines
+      .replace(/:::image-half\s+([^:]+?)\s*:::/g, (match, content) => {
+        // More sophisticated parsing of image-half content
+        let result = ':::image-half\n';
+        
+        // Match image + optional caption pattern
+        const imageWithCaptionPattern = /!\[[^\]]*\]\([^)]+\)(?:\s*\n?\s*\^\^\^[^\n!]*)?/g;
+        const parts = content.match(imageWithCaptionPattern) || [];
+        
+        parts.forEach(part => {
+          // Clean up and ensure proper formatting
+          const cleanPart = part.trim().replace(/\s+/g, ' ');
+          
+          // If it has a caption, make sure it's on separate lines
+          if (cleanPart.includes('^^^')) {
+            const imgMatch = cleanPart.match(/(!\[[^\]]*\]\([^)]+\))\s+\^\^\^\s*(.+)/);
+            if (imgMatch) {
+              result += imgMatch[1] + '\n^^^ ' + imgMatch[2].trim() + '\n';
+            } else {
+              result += cleanPart + '\n';
+            }
+          } else {
+            result += cleanPart + '\n';
+          }
+        });
+        
+        result += ':::';
+        return result;
+      });
     const fm = {
       title: p.title,
       slug: p.slug,
