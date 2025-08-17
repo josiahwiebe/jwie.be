@@ -38,113 +38,73 @@ fs.mkdirSync(OUT_IMG, { recursive: true });
 const sha1 = (buf: Uint8Array | string) => crypto.createHash('sha1').update(buf).digest('hex');
 
 // Convert Ghost HTML back to CommonMark format
-function htmlToCommonMark(html: string): string {
+function htmlToCommonMark(html: string): { processed: string; galleryPlaceholders: Record<string, string> } {
   let processed = html;
+  const galleryPlaceholders: Record<string, string> = {};
 
-  // First handle grid layouts before converting individual figures
-  // Convert grid layouts back to :::image-half containers
+  // Handle Ghost gallery cards first (these are the proper :::image-half blocks)
   processed = processed.replace(
-    /<div[^>]+style="[^"]*display\s*:\s*grid[^"]*grid-template-columns\s*:\s*1fr\s+1fr[^"]*"[^>]*>([\s\S]*?)<\/div>/gi,
-    (_m, content) => {
-      // Extract figures from the grid content
-      const figureMatches = content.match(/<figure[^>]*>[\s\S]*?<\/figure>/gi) || [];
-      if (figureMatches.length === 0) return _m; // Return original if no figures found
+    /<figure[^>]*class="[^"]*kg-gallery-card[^"]*"[^>]*>([\s\S]*?)<\/figure>/gi,
+    (match, content) => {
+      // Extract images from gallery
+      const imageMatches = content.match(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi) || [];
+      if (imageMatches.length === 0) return match;
+
+      // Extract gallery caption if it exists
+      const captionMatch = content.match(/<figcaption[^>]*>([^<]+)<\/figcaption>/);
+      const galleryCaption = captionMatch ? captionMatch[1].trim() : '';
+      
+      // Split caption by | for individual images
+      const splitCaptions = galleryCaption ? galleryCaption.split('|').map(c => c.trim()) : [];
 
       let result = ':::image-half\n';
       
-      // First, collect all captions and split by |
-      const allCaptions: string[] = [];
-      figureMatches.forEach(figureHtml => {
-        const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
-        if (figureMatch) {
-          const [, , , caption] = figureMatch;
-          allCaptions.push(caption.trim());
-        }
-      });
-      
-      // Split the first caption by | if it exists
-      const splitCaptions = allCaptions.length > 0 ? allCaptions[0].split('|').map(c => c.trim()) : [];
-      
-      figureMatches.forEach((figureHtml, index) => {
-        // Convert each figure to CommonMark format
-        const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
-        if (figureMatch) {
-          const [, src, alt] = figureMatch;
-          const caption = splitCaptions[index] || '';
-          if (caption) {
-            result += `![${alt}](${src})\n^^^ ${caption}`;
-          } else {
-            result += `![${alt}](${src})`;
-          }
-        } else {
-          // Handle images without captions in grid
-          const imgMatch = figureHtml.match(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>/i);
-          if (imgMatch) {
-            const [, src, alt] = imgMatch;
-            result += `![${alt}](${src})`;
-          }
-        }
-        // Add newline after each image
-        result += '\n';
-      });
-      result += ':::';
-      return result;
-    }
-  );
-
-  // Handle consecutive figures - assume they should be :::image-half
-  // Convert pairs of consecutive <figure> elements to :::image-half
-  processed = processed.replace(
-    /(<figure[^>]*class="[^"]*kg-card[^"]*"[^>]*>[\s\S]*?<\/figure>)\s*(<figure[^>]*class="[^"]*kg-card[^"]*"[^>]*>[\s\S]*?<\/figure>)/gi,
-    (match, figure1, figure2) => {
-      const convertFigure = (figureHtml: string, captionIndex: number, allCaptions: string[]) => {
-        // Match Ghost's HTML structure: src comes before alt in the img tag
-        const figureMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
-        if (figureMatch) {
-          const [, src, alt, rawCaption] = figureMatch;
-          // If this is the first figure, split the caption by |
-          const splitCaptions = captionIndex === 0 ? rawCaption.split('|').map(c => c.trim()) : allCaptions;
-          const caption = splitCaptions[captionIndex] || '';
-          
-          if (caption) {
-            return `![${alt}](${src})\n^^^ ${caption}`;
-          } else {
-            return `![${alt}](${src})`;
-          }
-        }
-        // Handle images without captions
-        const imgMatch = figureHtml.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<\/figure>/i);
+      imageMatches.forEach((imgHtml, index) => {
+        const imgMatch = imgHtml.match(/src="([^"]*)"[^>]*alt="([^"]*)"/);
         if (imgMatch) {
           const [, src, alt] = imgMatch;
-          return `![${alt}](${src})`;
+          
+          // Only add opening ^^^ for the first image
+          if (index === 0) {
+            result += '^^^\n';
+          }
+          
+          result += `![${alt}](${src})\n`;
+          
+          const caption = splitCaptions[index] || '';
+          if (caption) {
+            result += `^^^ ${caption}\n`;
+          }
+          
+          // Add separator ^^^ except for the last image
+          if (index < imageMatches.length - 1) {
+            result += '^^^\n';
+          }
         }
-        return null;
-      };
-
-      // First get the caption from the first figure to split
-      const firstFigureMatch = figure1.match(/<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/i);
-      const allCaptions = firstFigureMatch ? firstFigureMatch[3].split('|').map(c => c.trim()) : [];
-
-      const converted1 = convertFigure(figure1, 0, allCaptions);
-      const converted2 = convertFigure(figure2, 1, allCaptions);
-
-      if (converted1 && converted2) {
-        // Create the final :::image-half block directly
-        return `:::image-half\n${converted1}\n${converted2}\n:::`;
-      }
-
-      // If conversion failed, fall back to individual figure processing
-      return match;
+      });
+      
+      result += '\n:::';
+      
+      // Create a placeholder to prevent NodeHtmlMarkdown from messing with our format
+      const placeholder = `\n\nGALLERYPLACEHOLDER${Object.keys(galleryPlaceholders).length}\n\n`;
+      galleryPlaceholders[placeholder] = `\n\n${result}\n\n`;
+      return placeholder;
     }
   );
 
-  // Then convert remaining standalone <figure><img><figcaption> back to ![]()\n^^^ caption format
+  // Handle standalone figures (single images)
   processed = processed.replace(
-    /<figure[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/gi,
-    (_m, src, alt, caption) => `![${alt}](${src})\n^^^ ${caption.trim()}`
+    /<figure[^>]*class="[^"]*kg-image-card[^"]*"[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<\/figure>/gi,
+    (match, src, alt) => `![${alt}](${src})`
   );
 
-  return processed;
+  // Handle standalone figures with captions
+  processed = processed.replace(
+    /<figure[^>]*class="[^"]*kg-image-card[^"]*"[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/gi,
+    (match, src, alt, caption) => `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}`
+  );
+
+  return { processed, galleryPlaceholders };
 }
 
 function extFrom(u: string, def = 'jpg') {
@@ -355,8 +315,16 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
     const { html, feature } = await downloadAndRewriteImages(p.html, p.feature_image, p.slug);
 
     // Convert Ghost HTML back to CommonMark format before converting to markdown
-    const processedHtml = html ? htmlToCommonMark(html) : '';
-    const mdBody = nhm.translate(processedHtml);
+    const { processed: processedHtml, galleryPlaceholders } = html ? htmlToCommonMark(html) : { processed: '', galleryPlaceholders: {} };
+    let mdBody = nhm.translate(processedHtml);
+
+    // Restore gallery placeholders after NodeHtmlMarkdown processing
+    Object.keys(galleryPlaceholders).forEach(placeholder => {
+      console.log(`Replacing placeholder: "${placeholder}"`);
+      console.log(`With content: "${galleryPlaceholders[placeholder]}"`);
+      console.log(`Found at index: ${mdBody.indexOf(placeholder)}`);
+      mdBody = mdBody.replace(placeholder, galleryPlaceholders[placeholder]);
+    });
 
     // Post-process to fix escaped markdown and clean up formatting
     const fixedMdBody = mdBody
@@ -368,36 +336,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
       .replace(/\\\(/g, '(')
       .replace(/\\\)/g, ')')
       // Fix standalone images with captions that got collapsed to one line
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)\s+\^\^\^\s+([^\n]+)/g, '![$1]($2)\n^^^ $3')
-      // Fix :::image-half blocks that are on one line by adding proper newlines
-      .replace(/:::image-half\s+([^:]+?)\s*:::/g, (match, content) => {
-        // More sophisticated parsing of image-half content
-        let result = ':::image-half\n';
-        
-        // Match image + optional caption pattern
-        const imageWithCaptionPattern = /!\[[^\]]*\]\([^)]+\)(?:\s*\n?\s*\^\^\^[^\n!]*)?/g;
-        const parts = content.match(imageWithCaptionPattern) || [];
-        
-        parts.forEach(part => {
-          // Clean up and ensure proper formatting
-          const cleanPart = part.trim().replace(/\s+/g, ' ');
-          
-          // If it has a caption, make sure it's on separate lines
-          if (cleanPart.includes('^^^')) {
-            const imgMatch = cleanPart.match(/(!\[[^\]]*\]\([^)]+\))\s+\^\^\^\s*(.+)/);
-            if (imgMatch) {
-              result += imgMatch[1] + '\n^^^ ' + imgMatch[2].trim() + '\n';
-            } else {
-              result += cleanPart + '\n';
-            }
-          } else {
-            result += cleanPart + '\n';
-          }
-        });
-        
-        result += ':::';
-        return result;
-      });
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)\s+\^\^\^\s+([^\n]+)/g, '![$1]($2)\n^^^ $3');
     const fm = {
       title: p.title,
       slug: p.slug,
