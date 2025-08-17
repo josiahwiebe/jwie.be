@@ -17,7 +17,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import { marked } from "marked";
+import { micromark } from "micromark";
+import { gfm, gfmHtml } from "micromark-extension-gfm";
 import GhostAdminAPI from "@tryghost/admin-api";
 
 const GHOST_URL = process.env.GHOST_URL;
@@ -54,7 +55,11 @@ function imageHalf(md: string) {
             images.push(figureHtml);
           } else {
             // No caption, just convert image
-            const imgHtml = marked.parse(imagePart) as string;
+            const imgHtml = micromark(imagePart, {
+              extensions: [gfm()],
+              htmlExtensions: [gfmHtml()],
+              allowDangerousHtml: true,
+            });
             images.push(imgHtml);
           }
         }
@@ -128,7 +133,11 @@ async function upsertPostOrPage(file: string) {
   let md = content;
   md = imageHalf(md);
   md = mdCaptionToFigure(md);
-  const htmlRaw = marked.parse(md) as string;
+  const htmlRaw = micromark(md, {
+    extensions: [gfm()],
+    htmlExtensions: [gfmHtml()],
+    allowDangerousHtml: true,
+  });
   const html = absolutizeImgs(htmlRaw);
 
   const tags = Array.isArray(fm.tags)
