@@ -37,6 +37,47 @@ fs.mkdirSync(OUT_IMG, { recursive: true });
 // ---- helpers ----
 const sha1 = (buf: Uint8Array | string) => crypto.createHash('sha1').update(buf).digest('hex');
 
+// Process lexical content to handle video blocks and preserved markdown
+function processLexicalContent(lexicalStr?: string): { videos: Array<{src: string, caption: string, alt: string}>, markdownBlocks: string[] } {
+  const videos: Array<{src: string, caption: string, alt: string}> = [];
+  const markdownBlocks: string[] = [];
+
+  if (!lexicalStr) return { videos, markdownBlocks };
+
+  try {
+    const lexical = JSON.parse(lexicalStr);
+
+    function processNode(node: any) {
+      // Handle video blocks
+      if (node.type === 'video') {
+        videos.push({
+          src: node.src || '',
+          caption: node.caption || '',
+          alt: node.alt || node.fileName || ''
+        });
+      }
+
+      // Handle code blocks that might contain preserved markdown (both 'code' and 'codeblock' types)
+      if ((node.type === 'code' || node.type === 'codeblock') && node.language === 'markdown') {
+        markdownBlocks.push(node.code || '');
+      }
+
+      // Recursively process children
+      if (node.children && Array.isArray(node.children)) {
+        node.children.forEach(processNode);
+      }
+    }
+
+    if (lexical?.root?.children) {
+      lexical.root.children.forEach(processNode);
+    }
+  } catch (e) {
+    console.error('Error processing lexical content:', e);
+  }
+
+  return { videos, markdownBlocks };
+}
+
 // Pre-process Ghost HTML to handle special elements before markdown conversion
 function preprocessGhostHtml(html: string): { html: string; placeholders: Record<string, string> } {
   const doc = parse(html);
@@ -121,12 +162,32 @@ function preprocessGhostHtml(html: string): { html: string; placeholders: Record
     figure.replaceWith(placeholderNode);
   });
 
+  // Process markdown code blocks (preserved :::image-half blocks)
+  const codeBlocks = doc.querySelectorAll('pre code.language-markdown');
+  codeBlocks.forEach((code, index) => {
+    const markdownContent = code.innerHTML
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&');
+
+    // Create a unique placeholder for this markdown content
+    const placeholder = `GHOSTMARKDOWN${index}`;
+    placeholders[placeholder] = markdownContent;
+
+    // Replace the entire pre block with a paragraph containing the placeholder
+    const preElement = code.closest('pre');
+    if (preElement) {
+      const placeholderNode = parse(`<p>${placeholder}</p>`);
+      preElement.replaceWith(placeholderNode);
+    }
+  });
+
   return { html: doc.toString(), placeholders };
 }
 
 function extFrom(u: string, def = 'jpg') {
   try {
-    const m = new URL(u).pathname.match(/\.(avif|webp|png|jpe?g|gif|bmp|svg)$/i);
+    const m = new URL(u).pathname.match(/\.(avif|webp|png|jpe?g|gif|bmp|svg|mp4|webm|mov)$/i);
     return (m ? m[1].toLowerCase() : def).replace('jpeg','jpg');
   } catch { return def; }
 }
@@ -136,7 +197,7 @@ async function download(u: string): Promise<Uint8Array> {
   if (!r.ok) throw new Error(`HTTP ${r.status} ${u}`);
   return new Uint8Array(await r.arrayBuffer());
 }
-function collectImageUrls(html?: string, feature?: string | null) {
+function collectImageUrls(html?: string, feature?: string | null, videos?: Array<{src: string}>) {
   const urls = new Set<string>();
   if (feature && /^https?:\/\//.test(feature)) urls.add(feature);
   if (!html) return [...urls];
@@ -145,11 +206,17 @@ function collectImageUrls(html?: string, feature?: string | null) {
     const src = img.getAttribute('src');
     if (src && /^https?:\/\//.test(src)) urls.add(src);
   });
+  // Add video URLs
+  if (videos) {
+    videos.forEach(video => {
+      if (video.src && /^https?:\/\//.test(video.src)) urls.add(video.src);
+    });
+  }
   return [...urls];
 }
-async function downloadAndRewriteImages(html?: string, feature?: string | null, postSlug?: string) {
+async function downloadAndRewriteImages(html?: string, feature?: string | null, postSlug?: string, videos?: Array<{src: string}>) {
   const manifest: Record<string,string> = {};
-  for (const u of collectImageUrls(html, feature)) {
+  for (const u of collectImageUrls(html, feature, videos)) {
     try {
       const url = new URL(u);
 
@@ -276,6 +343,7 @@ interface GhostPost {
   slug: string;
   title: string;
   html?: string;
+  lexical?: string;
   excerpt?: string;
   custom_excerpt?: string;
   feature_image?: string|null;
@@ -304,7 +372,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
         limit: 50,
         page: page,
         include: 'tags,authors',
-        formats: ['html']
+        formats: ['html', 'lexical']
       });
 
       const posts = response || [];
@@ -329,8 +397,11 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
   let changed = 0;
 
   for (const p of posts) {
+    // Process lexical content first to extract videos and preserved markdown
+    const { videos, markdownBlocks } = processLexicalContent(p.lexical);
+
     // We ignore tags and pages; everything from Ghost is a blog post
-    const { html, feature } = await downloadAndRewriteImages(p.html, p.feature_image, p.slug);
+    const { html, feature } = await downloadAndRewriteImages(p.html, p.feature_image, p.slug, videos);
 
     // Pre-process Ghost HTML to handle special elements, then convert to markdown
     const { html: preprocessedHtml, placeholders } = html ? preprocessGhostHtml(html) : { html: '', placeholders: {} };
@@ -341,21 +412,51 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
       mdBody = mdBody.replace(placeholder, placeholders[placeholder]);
     });
 
+    // Add standalone videos from lexical as markdown (but skip if they're already in preserved markdown blocks)
+    videos.forEach((video, index) => {
+      // Check if this video is already part of a preserved markdown block
+      const isInMarkdownBlock = markdownBlocks.some(block =>
+        block.includes(video.src) || block.includes(`<video src="${video.src}"`)
+      );
+
+      if (!isInMarkdownBlock) {
+        const videoPlaceholder = `LEXICALVIDEO${index}`;
+        const videoMarkdown = video.caption
+          ? `![${video.alt}](${video.src})\n^^^ ${video.caption}`
+          : `![${video.alt}](${video.src})`;
+
+        // Add video placeholder to placeholders for restoration
+        placeholders[videoPlaceholder] = videoMarkdown;
+        mdBody += `\n\n${videoPlaceholder}\n`;
+      }
+    });
+
+    // Note: Preserved markdown blocks are now handled in preprocessGhostHtml
+
+    // Restore all placeholders including the preserved markdown
+    Object.keys(placeholders).forEach(placeholder => {
+      mdBody = mdBody.replace(placeholder, placeholders[placeholder]);
+    });
+
+    // Remove any remaining fenced markdown code blocks that weren't replaced
+    mdBody = mdBody.replace(/```markdown\n([\s\S]*?)\n```/g, '$1');
+
     // Post-process to fix NodeHtmlMarkdown's quirks
     const fixedMdBody = mdBody
       // Fix URL encoding of underscores (NodeHtmlMarkdown encodes them)
       .replace(/%5F/g, '_')
       // Fix escaped periods after numbers (NodeHtmlMarkdown escapes them)
       .replace(/(\d)\\\./g, '$1.')
-      .replace(/\\-/g, '-');
+      .replace(/\\-/g, '-')
+      .replace(/https?:\/\/ghost\.burwal\.de\//g, '/');
 
     const fm = {
       title: p.title,
       slug: p.slug,
-      date: p.published_at || undefined,
-      updated: p.updated_at || undefined,
+      ...(p.published_at ? { date: p.published_at } : {}),
+      ...(p.updated_at ? { updated: p.updated_at } : {}),
       excerpt: p.custom_excerpt || "",
-      feature_image: feature || null,
+      ...(feature ? { feature_image: feature } : {}),
       published: p.status === 'published',
     } as const;
 

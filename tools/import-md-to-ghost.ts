@@ -39,7 +39,25 @@ function convertMarkdownCaptions(text: string): string {
 
 function cleanStandaloneCarets(md: string) {
   // Remove standalone ^^^ lines that aren't image captions
-  return md.replace(/^\^\^\^\s*$/gm, '');
+  // But preserve them inside :::image-half blocks where they serve as structural markers
+  
+  // First, protect :::image-half blocks
+  const imageHalfBlocks: string[] = [];
+  md = md.replace(/:::image-half\s*\n([\s\S]*?)\n:::/g, (match, content) => {
+    const placeholder = `___IMAGEHALF_${imageHalfBlocks.length}___`;
+    imageHalfBlocks.push(match);
+    return placeholder;
+  });
+  
+  // Now remove standalone ^^^ lines from the protected content
+  md = md.replace(/^\^\^\^\s*$/gm, '');
+  
+  // Restore the protected :::image-half blocks
+  imageHalfBlocks.forEach((block, index) => {
+    md = md.replace(`___IMAGEHALF_${index}___`, block);
+  });
+  
+  return md;
 }
 
 function mdCaptionToFigure(md: string) {
