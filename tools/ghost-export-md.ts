@@ -34,7 +34,6 @@ const OUT_IMG = path.join(process.cwd(), 'public', 'img');
 fs.mkdirSync(OUT_BLOG, { recursive: true });
 fs.mkdirSync(OUT_IMG, { recursive: true });
 
-// ---- helpers ----
 const sha1 = (buf: Uint8Array | string) => crypto.createHash('sha1').update(buf).digest('hex');
 
 // Process lexical content to handle video blocks and preserved markdown
@@ -58,6 +57,7 @@ function processLexicalContent(lexicalStr?: string): { videos: Array<{src: strin
       }
 
       // Handle code blocks that might contain preserved markdown (both 'code' and 'codeblock' types)
+      // We're using this to support :::image-half blocks that contain videos (workaround since Ghost doesn't support videos in galleries)
       if ((node.type === 'code' || node.type === 'codeblock') && node.language === 'markdown') {
         markdownBlocks.push(node.code || '');
       }
@@ -81,7 +81,6 @@ function processLexicalContent(lexicalStr?: string): { videos: Array<{src: strin
 // Pre-process Ghost HTML to handle special elements before markdown conversion
 function preprocessGhostHtml(html: string): { html: string; placeholders: Record<string, string> } {
   const doc = parse(html);
-  // Use default NodeHtmlMarkdown for caption processing
   const nhm = new NodeHtmlMarkdown();
   const placeholders: Record<string, string> = {};
 
@@ -174,10 +173,10 @@ function preprocessGhostHtml(html: string): { html: string; placeholders: Record
     const placeholder = `GHOSTMARKDOWN${index}`;
     placeholders[placeholder] = markdownContent;
 
-    // Replace the entire pre block with a paragraph containing the placeholder
+    // Replace the entire pre block with a simple text node containing the placeholder
     const preElement = code.closest('pre');
     if (preElement) {
-      const placeholderNode = parse(`<p>${placeholder}</p>`);
+      const placeholderNode = parse(placeholder);
       preElement.replaceWith(placeholderNode);
     }
   });
@@ -185,16 +184,16 @@ function preprocessGhostHtml(html: string): { html: string; placeholders: Record
   return { html: doc.toString(), placeholders };
 }
 
-function extFrom(u: string, def = 'jpg') {
+function extFrom(url: string, defaultExt = 'jpg') {
   try {
-    const m = new URL(u).pathname.match(/\.(avif|webp|png|jpe?g|gif|bmp|svg|mp4|webm|mov)$/i);
-    return (m ? m[1].toLowerCase() : def).replace('jpeg','jpg');
-  } catch { return def; }
+    const m = new URL(url).pathname.match(/\.(avif|webp|png|jpe?g|gif|bmp|svg|mp4|webm|mov)$/i);
+    return (m ? m[1].toLowerCase() : defaultExt).replace('jpeg','jpg');
+  } catch { return defaultExt; }
 }
 
-async function download(u: string): Promise<Uint8Array> {
-  const r = await fetch(u, { redirect: 'follow' });
-  if (!r.ok) throw new Error(`HTTP ${r.status} ${u}`);
+async function download(url: string): Promise<Uint8Array> {
+  const r = await fetch(url, { redirect: 'follow' });
+  if (!r.ok) throw new Error(`HTTP ${r.status} ${url}`);
   return new Uint8Array(await r.arrayBuffer());
 }
 function collectImageUrls(html?: string, feature?: string | null, videos?: Array<{src: string}>) {
@@ -214,6 +213,7 @@ function collectImageUrls(html?: string, feature?: string | null, videos?: Array
   }
   return [...urls];
 }
+
 async function downloadAndRewriteImages(html?: string, feature?: string | null, postSlug?: string, videos?: Array<{src: string}>) {
   const manifest: Record<string,string> = {};
   for (const u of collectImageUrls(html, feature, videos)) {
@@ -221,7 +221,7 @@ async function downloadAndRewriteImages(html?: string, feature?: string | null, 
       const url = new URL(u);
 
       // Check if this is already pointing to our organized structure
-      if (url.hostname === 'jwie.be' && url.pathname.startsWith('/img/') && postSlug) {
+      if ((url.hostname === 'jwie.be' || url.hostname === 'jwww.me') && url.pathname.startsWith('/img/') && postSlug) {
         const pathParts = url.pathname.split('/');
         if (pathParts.length >= 4 && pathParts[2] === postSlug) {
           // This image is already in our organized structure, check if it exists locally
@@ -333,7 +333,6 @@ async function downloadAndRewriteImages(html?: string, feature?: string | null, 
   };
 }
 
-// ---- fetch posts only ----
 interface GhostTag { slug: string }
 interface GhostPost {
   id: string;
@@ -349,10 +348,8 @@ interface GhostPost {
   status?: 'draft' | 'published';
   tags?: GhostTag[]
 }
-interface BrowseResp { posts: GhostPost[]; meta: any }
 
-// Initialize Ghost Admin API
-const api = new GhostAdminAPI({
+const api = new (GhostAdminAPI as any)({
   url: GHOST_URL,
   key: GHOST_ADMIN_KEY,
   version: 'v6.0'
@@ -365,7 +362,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
 
   while (hasMore) {
     try {
-      const response = await (api as any).posts.browse({
+      const response = await api.posts.browse({
         limit: 50,
         page: page,
         include: 'tags,authors',
@@ -388,7 +385,6 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
 }
 
 (async () => {
-  // Use default NodeHtmlMarkdown
   const nhm = new NodeHtmlMarkdown();
   const posts = await fetchAllPosts();
   let changed = 0;
@@ -427,8 +423,6 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
         mdBody += `\n\n${videoPlaceholder}\n`;
       }
     });
-
-    // Note: Preserved markdown blocks are now handled in preprocessGhostHtml
 
     // Restore all placeholders including the preserved markdown
     Object.keys(placeholders).forEach(placeholder => {

@@ -2,7 +2,7 @@
 title: "Goodbye, Next.js \U0001F44B"
 slug: goodbye-nextjs
 date: '2024-02-11T00:00:00.000Z'
-updated: '2025-08-18T02:14:32.000Z'
+updated: '2025-08-18T13:24:00.000Z'
 excerpt: ''
 published: true
 ---

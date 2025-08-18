@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json',
-        'User-Agent': 'vercel-webhook' // GitHub likes this
+        'User-Agent': 'vercel-webhook'
       },
       body: JSON.stringify({
         ref: 'main',

@@ -2,7 +2,7 @@
 title: Using Vite to Develop Wordpress Themes
 slug: using-vite-to-develop-wordpress-themes
 date: '2023-02-07T00:00:00.000Z'
-updated: '2025-08-18T02:14:31.000Z'
+updated: '2025-08-18T13:23:57.000Z'
 excerpt: ''
 published: false
 ---

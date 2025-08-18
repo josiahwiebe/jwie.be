@@ -2,7 +2,7 @@
 title: Using @vercel/og without Next.js
 slug: using-vercel-og-without-nextjs
 date: '2024-02-12T00:00:00.000Z'
-updated: '2025-08-18T02:14:29.000Z'
+updated: '2025-08-18T13:37:58.000Z'
 excerpt: ''
 published: true
 ---
@@ -173,7 +173,7 @@ The library also supports TailwindCSS through the use of the `tw` property, so w
 Put that all together, then access `/api/og?title=Your Title Here` and it should return a PNG of your freshly minted on-demand OG image!
 
 ^^^
-![](https://jwie.be/img/vercel-og/og.png)
+![](/img/using-vercel-og-without-nextjs/og.png)
 ^^^ Our generated OG image
 
 To add this OG image to your HTML, simply include this HTML in the `<head>` of your page:

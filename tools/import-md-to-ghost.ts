@@ -40,7 +40,7 @@ function convertMarkdownCaptions(text: string): string {
 function cleanStandaloneCarets(md: string) {
   // Remove standalone ^^^ lines that aren't image captions
   // But preserve them inside :::image-half blocks where they serve as structural markers
-  
+
   // First, protect :::image-half blocks
   const imageHalfBlocks: string[] = [];
   md = md.replace(/:::image-half\s*\n([\s\S]*?)\n:::/g, (match, content) => {
@@ -48,15 +48,15 @@ function cleanStandaloneCarets(md: string) {
     imageHalfBlocks.push(match);
     return placeholder;
   });
-  
+
   // Now remove standalone ^^^ lines from the protected content
   md = md.replace(/^\^\^\^\s*$/gm, '');
-  
+
   // Restore the protected :::image-half blocks
   imageHalfBlocks.forEach((block, index) => {
     md = md.replace(`___IMAGEHALF_${index}___`, block);
   });
-  
+
   return md;
 }
 
@@ -70,7 +70,7 @@ function mdCaptionToFigure(md: string) {
       if (codeContent !== undefined) {
         return match;
       }
-      
+
       // Otherwise process the image/video caption
       const isVideo = /\.(mp4|webm|mov)$/i.test(src);
       if (isVideo) {
@@ -89,34 +89,34 @@ function imageHalf(md: string) {
     (_m, content) => {
       // Check if content contains video elements or video file references
       const hasVideo = content.includes('<video') || /!\[[^\]]*\]\([^)]*\.(mp4|webm|mov)\)/i.test(content);
-      
+
       if (hasVideo) {
         // Preserve as markdown block if videos are detected
         return `\`\`\`markdown\n:::image-half\n${content}\n:::\n\`\`\``;
       }
 
       const images: { src: string; alt: string; caption?: string }[] = [];
-      
+
       // Split content into lines and process
       const lines = content.split('\n').map(line => line.trim()).filter(Boolean);
-      
+
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Check if this line is an image
         const imgMatch = line.match(/!\[([^\]]*)\]\(([^)]+)\)/);
         if (imgMatch) {
           const [, alt, src] = imgMatch;
-          
+
           // Check if the next line is a caption (starts with ^^^)
           const nextLine = lines[i + 1];
           let caption: string | undefined;
-          
+
           if (nextLine && nextLine.startsWith('^^^')) {
             caption = convertMarkdownCaptions(nextLine.replace(/^\^\^\^\s*/, ''));
             i++; // Skip the caption line since we've processed it
           }
-          
+
           images.push({ src, alt, caption });
         }
         // Skip standalone ^^^ lines that aren't image captions
@@ -155,6 +155,27 @@ function absolutizeImgs(html: string) {
   return html;
 }
 
+function cleanCodeBlocks(lexicalObj: any) {
+  function processNode(node: any) {
+    // Clean up extra trailing newlines in code blocks
+    if (node.type === 'codeblock' && node.code) {
+      // Remove trailing newlines but preserve one if it exists
+      node.code = node.code.replace(/\n+$/, (match: string) =>
+        match.length > 1 ? '\n' : match
+      );
+    }
+
+    // Recursively process children
+    if (node.children && Array.isArray(node.children)) {
+      node.children.forEach(processNode);
+    }
+  }
+
+  if (lexicalObj?.root?.children) {
+    lexicalObj.root.children.forEach(processNode);
+  }
+}
+
 function convertVideoImagesToVideoBlocks(lexicalObj: any) {
   function processNode(node: any) {
     // Convert image blocks with video file extensions to video blocks
@@ -162,14 +183,14 @@ function convertVideoImagesToVideoBlocks(lexicalObj: any) {
       // Extract filename from URL
       const filename = node.src.split('/').pop() || '';
       const extension = filename.split('.').pop()?.toLowerCase() || '';
-      
+
       // Convert to video block
       node.type = 'video';
       node.fileName = filename;
-      node.mimeType = extension === 'mp4' ? 'video/mp4' : 
-                     extension === 'webm' ? 'video/webm' : 
+      node.mimeType = extension === 'mp4' ? 'video/mp4' :
+                     extension === 'webm' ? 'video/webm' :
                      extension === 'mov' ? 'video/quicktime' : 'video/mp4';
-      
+
       // Set default video properties (Ghost will handle these on the frontend)
       node.width = node.width || 1920;
       node.height = node.height || 1080;
@@ -180,17 +201,17 @@ function convertVideoImagesToVideoBlocks(lexicalObj: any) {
       node.thumbnailHeight = node.height;
       node.cardWidth = node.cardWidth || 'regular';
       node.loop = false;
-      
+
       // Keep existing caption if present
       node.caption = node.caption || '';
     }
-    
+
     // Recursively process children
     if (node.children && Array.isArray(node.children)) {
       node.children.forEach(processNode);
     }
   }
-  
+
   if (lexicalObj?.root?.children) {
     lexicalObj.root.children.forEach(processNode);
   }
@@ -201,7 +222,7 @@ if (!GHOST_URL || !GHOST_ADMIN_KEY) {
   process.exit(1);
 }
 
-const api = new GhostAdminAPI({
+const api = new (GhostAdminAPI as any)({
   url: GHOST_URL,
   key: GHOST_ADMIN_KEY,
   version: "v6.0",
@@ -273,6 +294,10 @@ async function upsertPostOrPage(file: string) {
 
   // Post-process lexical to convert image blocks with video files to video blocks
   convertVideoImagesToVideoBlocks(lexicalObj);
+
+  // Clean up extra trailing newlines in codeblocks
+  cleanCodeBlocks(lexicalObj);
+
 
   const lexical = JSON.stringify(lexicalObj);
 
