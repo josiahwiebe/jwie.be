@@ -1,9 +1,13 @@
 name: Sync blog (Ghost → MD)
 
 on:
-  repository_dispatch:
-    types: [ghost-publish]
   workflow_dispatch:
+    inputs:
+      event_type:
+        description: 'Event Type'
+        required: true
+        default: 'ghost-publish'
+        type: string
 
 jobs:
   export:
