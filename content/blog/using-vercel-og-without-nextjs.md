@@ -2,7 +2,7 @@
 title: Using @vercel/og without Next.js
 slug: using-vercel-og-without-nextjs
 date: '2024-02-12T00:00:00.000Z'
-updated: '2025-08-18T13:37:58.000Z'
+updated: '2025-08-18T14:03:31.000Z'
 excerpt: ''
 published: true
 ---
@@ -24,14 +24,12 @@ First, let's setup the route in the `vercel.json` config file. This step is opti
     }
   ]
 }
-
 ```
 
 Now, let's install the dependencies.
 
 ```bash
 npm install @vercel/og -S
-
 ```
 
 We're going to use the undocumented `unstable_createNodejsStream` method to generate our OG images. This is at odds with some of what the [documentation says](https://vercel.com/docs/functions/og-image-generation/og-image-api):
@@ -94,7 +92,6 @@ export default async function handler(req, res) {
     })
   }
 }
-
 ```
 
 Both the `unstable_createNodeJsStream` and `ImageResponse` methods expect a JSX `ReactElement` property to be passed. However, we're not using Next.js here, and we don't have React installed in the project. Luckily, we can simply manually create the structure of the expected JSX output:
@@ -165,7 +162,6 @@ const html = {
     },
   },
 }
-
 ```
 
 The library also supports TailwindCSS through the use of the `tw` property, so we can simply pass any desired Tailwind classes there.
@@ -180,7 +176,6 @@ To add this OG image to your HTML, simply include this HTML in the `<head>` of y
 
 ```html
 <meta name="og:image" content="/api/og?title=Using @vercel/og without Next.js" />
-
 ```
 
 That's it!
