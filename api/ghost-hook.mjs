@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         "User-Agent": "ghost-webhook",
         "X-GitHub-Api-Version": "2022-11-28",
       },
-      body: JSON.stringify({ event_type: "ghost-publish" }),
+      body: JSON.stringify({ ref: 'main', inputs: { event_type: "ghost-publish" } }),
     });
 
     return res.status(200).end("webhook sent");
