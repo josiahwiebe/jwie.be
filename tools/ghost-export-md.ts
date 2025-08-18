@@ -37,74 +37,90 @@ fs.mkdirSync(OUT_IMG, { recursive: true });
 // ---- helpers ----
 const sha1 = (buf: Uint8Array | string) => crypto.createHash('sha1').update(buf).digest('hex');
 
-// Convert Ghost HTML back to CommonMark format
-function htmlToCommonMark(html: string): { processed: string; galleryPlaceholders: Record<string, string> } {
-  let processed = html;
-  const galleryPlaceholders: Record<string, string> = {};
+// Pre-process Ghost HTML to handle special elements before markdown conversion
+function preprocessGhostHtml(html: string): { html: string; placeholders: Record<string, string> } {
+  const doc = parse(html);
+  const nhm = new NodeHtmlMarkdown();
+  const placeholders: Record<string, string> = {};
 
-  // Handle Ghost gallery cards first (these are the proper :::image-half blocks)
-  processed = processed.replace(
-    /<figure[^>]*class="[^"]*kg-gallery-card[^"]*"[^>]*>([\s\S]*?)<\/figure>/gi,
-    (match, content) => {
-      // Extract images from gallery
-      const imageMatches = content.match(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi) || [];
-      if (imageMatches.length === 0) return match;
+  // Process Ghost gallery cards first (these become :::image-half blocks)
+  const galleryCards = doc.querySelectorAll('figure.kg-gallery-card');
+  galleryCards.forEach((figure, index) => {
+    const images = figure.querySelectorAll('img');
+    if (images.length === 0) return;
 
-      // Extract gallery caption if it exists
-      const captionMatch = content.match(/<figcaption[^>]*>([^<]+)<\/figcaption>/);
-      const galleryCaption = captionMatch ? captionMatch[1].trim() : '';
-      
-      // Split caption by | for individual images
-      const splitCaptions = galleryCaption ? galleryCaption.split('|').map(c => c.trim()) : [];
-
-      let result = ':::image-half\n';
-      
-      imageMatches.forEach((imgHtml, index) => {
-        const imgMatch = imgHtml.match(/src="([^"]*)"[^>]*alt="([^"]*)"/);
-        if (imgMatch) {
-          const [, src, alt] = imgMatch;
-          
-          // Only add opening ^^^ for the first image
-          if (index === 0) {
-            result += '^^^\n';
-          }
-          
-          result += `![${alt}](${src})\n`;
-          
-          const caption = splitCaptions[index] || '';
-          if (caption) {
-            result += `^^^ ${caption}\n`;
-          }
-          
-          // Add separator ^^^ except for the last image
-          if (index < imageMatches.length - 1) {
-            result += '^^^\n';
-          }
-        }
-      });
-      
-      result += '\n:::';
-      
-      // Create a placeholder to prevent NodeHtmlMarkdown from messing with our format
-      const placeholder = `\n\nGALLERYPLACEHOLDER${Object.keys(galleryPlaceholders).length}\n\n`;
-      galleryPlaceholders[placeholder] = `\n\n${result}\n\n`;
-      return placeholder;
+    // Extract and convert gallery caption to markdown if it exists
+    const figcaption = figure.querySelector('figcaption');
+    let galleryCaption = '';
+    if (figcaption) {
+      // Convert caption HTML to markdown to preserve formatting
+      galleryCaption = nhm.translate(figcaption.innerHTML).trim();
     }
-  );
 
-  // Handle standalone figures (single images)
-  processed = processed.replace(
-    /<figure[^>]*class="[^"]*kg-image-card[^"]*"[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<\/figure>/gi,
-    (match, src, alt) => `![${alt}](${src})`
-  );
+    // Split caption by | for individual images
+    const splitCaptions = galleryCaption ? galleryCaption.split('|').map(c => c.trim()) : [];
 
-  // Handle standalone figures with captions
-  processed = processed.replace(
-    /<figure[^>]*class="[^"]*kg-image-card[^"]*"[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?\s*>\s*<figcaption[^>]*>([^<]+)<\/figcaption>\s*<\/figure>/gi,
-    (match, src, alt, caption) => `^^^\n![${alt}](${src})\n^^^ ${caption.trim()}`
-  );
+    let result = ':::image-half\n';
 
-  return { processed, galleryPlaceholders };
+    images.forEach((img, imgIndex) => {
+      // Start each image block with ^^^
+      result += '^^^\n';
+
+      const src = img.getAttribute('src') || '';
+      const alt = img.getAttribute('alt') || '';
+      result += `![${alt}](${src})\n`;
+
+      // Add caption if exists (this also serves as the closing ^^^)
+      const caption = splitCaptions[imgIndex] || '';
+      if (caption) {
+        result += `^^^ ${caption}\n`;
+      } else {
+        // No caption, but we still need the closing ^^^
+        result += '^^^\n';
+      }
+    });
+
+    result += ':::';
+
+    // Create a unique placeholder
+    const placeholder = `GHOSTGALLERY${index}`;
+    placeholders[placeholder] = result;
+
+    // Replace the figure with a paragraph containing the placeholder to preserve spacing
+    const placeholderNode = parse(`<p>${placeholder}</p>`);
+    figure.replaceWith(placeholderNode);
+  });
+
+  // Process standalone image cards with captions
+  const imageFigures = doc.querySelectorAll('figure.kg-image-card');
+  imageFigures.forEach((figure, index) => {
+    const img = figure.querySelector('img');
+    if (!img) return;
+
+    const src = img.getAttribute('src') || '';
+    const alt = img.getAttribute('alt') || '';
+    const figcaption = figure.querySelector('figcaption');
+
+    let result: string;
+    if (figcaption) {
+      // Convert caption HTML to markdown to preserve formatting
+      const captionMarkdown = nhm.translate(figcaption.innerHTML).trim();
+      result = `^^^\n![${alt}](${src})\n^^^ ${captionMarkdown}`;
+    } else {
+      // No caption, just the image
+      result = `![${alt}](${src})`;
+    }
+
+    // Create a unique placeholder
+    const placeholder = `GHOSTIMAGE${index}`;
+    placeholders[placeholder] = result;
+
+    // Replace the figure with a paragraph containing the placeholder to preserve spacing
+    const placeholderNode = parse(`<p>${placeholder}</p>`);
+    figure.replaceWith(placeholderNode);
+  });
+
+  return { html: doc.toString(), placeholders };
 }
 
 function extFrom(u: string, def = 'jpg') {
@@ -314,16 +330,13 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
     // We ignore tags and pages; everything from Ghost is a blog post
     const { html, feature } = await downloadAndRewriteImages(p.html, p.feature_image, p.slug);
 
-    // Convert Ghost HTML back to CommonMark format before converting to markdown
-    const { processed: processedHtml, galleryPlaceholders } = html ? htmlToCommonMark(html) : { processed: '', galleryPlaceholders: {} };
-    let mdBody = nhm.translate(processedHtml);
+    // Pre-process Ghost HTML to handle special elements, then convert to markdown
+    const { html: preprocessedHtml, placeholders } = html ? preprocessGhostHtml(html) : { html: '', placeholders: {} };
+    let mdBody = preprocessedHtml ? nhm.translate(preprocessedHtml) : '';
 
-    // Restore gallery placeholders after NodeHtmlMarkdown processing
-    Object.keys(galleryPlaceholders).forEach(placeholder => {
-      console.log(`Replacing placeholder: "${placeholder}"`);
-      console.log(`With content: "${galleryPlaceholders[placeholder]}"`);
-      console.log(`Found at index: ${mdBody.indexOf(placeholder)}`);
-      mdBody = mdBody.replace(placeholder, galleryPlaceholders[placeholder]);
+    // Restore placeholders after markdown conversion
+    Object.keys(placeholders).forEach(placeholder => {
+      mdBody = mdBody.replace(placeholder, placeholders[placeholder]);
     });
 
     // Post-process to fix escaped markdown and clean up formatting
@@ -334,9 +347,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
       .replace(/\\\[/g, '[')
       .replace(/\\\]/g, ']')
       .replace(/\\\(/g, '(')
-      .replace(/\\\)/g, ')')
-      // Fix standalone images with captions that got collapsed to one line
-      .replace(/!\[([^\]]*)\]\(([^)]+)\)\s+\^\^\^\s+([^\n]+)/g, '![$1]($2)\n^^^ $3');
+      .replace(/\\\)/g, ')');
     const fm = {
       title: p.title,
       slug: p.slug,
