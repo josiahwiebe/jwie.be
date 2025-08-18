@@ -40,6 +40,7 @@ const sha1 = (buf: Uint8Array | string) => crypto.createHash('sha1').update(buf)
 // Pre-process Ghost HTML to handle special elements before markdown conversion
 function preprocessGhostHtml(html: string): { html: string; placeholders: Record<string, string> } {
   const doc = parse(html);
+  // Use default NodeHtmlMarkdown for caption processing
   const nhm = new NodeHtmlMarkdown();
   const placeholders: Record<string, string> = {};
 
@@ -322,6 +323,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
 }
 
 (async () => {
+  // Use default NodeHtmlMarkdown
   const nhm = new NodeHtmlMarkdown();
   const posts = await fetchAllPosts();
   let changed = 0;
@@ -339,15 +341,14 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
       mdBody = mdBody.replace(placeholder, placeholders[placeholder]);
     });
 
-    // Post-process to fix escaped markdown and clean up formatting
+    // Post-process to fix NodeHtmlMarkdown's quirks
     const fixedMdBody = mdBody
-      // Fix escaped markdown
-      .replace(/!\\?\[([^\]]*)\]\\?\(([^)]+)\)/g, '![$1]($2)')
-      // Fix escaped brackets and parentheses
-      .replace(/\\\[/g, '[')
-      .replace(/\\\]/g, ']')
-      .replace(/\\\(/g, '(')
-      .replace(/\\\)/g, ')');
+      // Fix URL encoding of underscores (NodeHtmlMarkdown encodes them)
+      .replace(/%5F/g, '_')
+      // Fix escaped periods after numbers (NodeHtmlMarkdown escapes them)
+      .replace(/(\d)\\\./g, '$1.')
+      .replace(/\\-/g, '-');
+
     const fm = {
       title: p.title,
       slug: p.slug,

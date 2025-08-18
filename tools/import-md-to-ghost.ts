@@ -43,10 +43,24 @@ function cleanStandaloneCarets(md: string) {
 }
 
 function mdCaptionToFigure(md: string) {
-  // Convert ![alt](src)\n^^^ caption to <figure><img /><figcaption>...
+  // Convert ![alt](src)\n^^^ caption to <figure><img /><figcaption>... or <figure><video /><figcaption>...
+  // But skip content inside markdown code blocks
   return md.replace(
-    /!\[([^\]]*)\]\(([^)\s]+)\)\s*\n\^\^\^\s*([^\n]+)/g,
-    (_m, alt, src, cap) => `<figure><img alt="${alt}" src="${src}" /><figcaption>${convertMarkdownCaptions(cap)}</figcaption></figure>`
+    /```markdown\n([\s\S]*?)\n```|!\[([^\]]*)\]\(([^)\s]+)\)\s*\n\^\^\^\s*([^\n]+)/g,
+    (match, codeContent, alt, src, cap) => {
+      // If this is a markdown code block, return it unchanged
+      if (codeContent !== undefined) {
+        return match;
+      }
+      
+      // Otherwise process the image/video caption
+      const isVideo = /\.(mp4|webm|mov)$/i.test(src);
+      if (isVideo) {
+        return `<figure><video src="${src}" controls></video><figcaption>${convertMarkdownCaptions(cap)}</figcaption></figure>`;
+      } else {
+        return `<figure><img alt="${alt}" src="${src}" /><figcaption>${convertMarkdownCaptions(cap)}</figcaption></figure>`;
+      }
+    }
   );
 }
 
@@ -55,6 +69,14 @@ function imageHalf(md: string) {
   return md.replace(
     /:::image-half\s*\n([\s\S]*?)\n:::/g,
     (_m, content) => {
+      // Check if content contains video elements or video file references
+      const hasVideo = content.includes('<video') || /!\[[^\]]*\]\([^)]*\.(mp4|webm|mov)\)/i.test(content);
+      
+      if (hasVideo) {
+        // Preserve as markdown block if videos are detected
+        return `\`\`\`markdown\n:::image-half\n${content}\n:::\n\`\`\``;
+      }
+
       const images: { src: string; alt: string; caption?: string }[] = [];
       
       // Split content into lines and process
@@ -106,7 +128,54 @@ function imageHalf(md: string) {
 }
 
 function absolutizeImgs(html: string) {
-  return html.replace(/(<img[^>]+src=["'])(\/img\/[^"']+)(["'])/gi, (_m, a, src, b) => `${a}${SITE_BASE}${src}${b}`);
+  // Handle img src attributes
+  html = html.replace(/(<img[^>]+src=["'])(\/img\/[^"']+)(["'])/gi, (_m, a, src, b) => `${a}${SITE_BASE}${src}${b}`);
+  // Handle video source src attributes
+  html = html.replace(/(<source[^>]+src=["'])(\/img\/[^"']+)(["'])/gi, (_m, a, src, b) => `${a}${SITE_BASE}${src}${b}`);
+  // Handle video src attributes
+  html = html.replace(/(<video[^>]+src=["'])(\/img\/[^"']+)(["'])/gi, (_m, a, src, b) => `${a}${SITE_BASE}${src}${b}`);
+  return html;
+}
+
+function convertVideoImagesToVideoBlocks(lexicalObj: any) {
+  function processNode(node: any) {
+    // Convert image blocks with video file extensions to video blocks
+    if (node.type === 'image' && node.src && /\.(mp4|webm|mov)$/i.test(node.src)) {
+      // Extract filename from URL
+      const filename = node.src.split('/').pop() || '';
+      const extension = filename.split('.').pop()?.toLowerCase() || '';
+      
+      // Convert to video block
+      node.type = 'video';
+      node.fileName = filename;
+      node.mimeType = extension === 'mp4' ? 'video/mp4' : 
+                     extension === 'webm' ? 'video/webm' : 
+                     extension === 'mov' ? 'video/quicktime' : 'video/mp4';
+      
+      // Set default video properties (Ghost will handle these on the frontend)
+      node.width = node.width || 1920;
+      node.height = node.height || 1080;
+      node.duration = 0; // Unknown duration
+      node.thumbnailSrc = ''; // No thumbnail
+      node.customThumbnailSrc = '';
+      node.thumbnailWidth = node.width;
+      node.thumbnailHeight = node.height;
+      node.cardWidth = node.cardWidth || 'regular';
+      node.loop = false;
+      
+      // Keep existing caption if present
+      node.caption = node.caption || '';
+    }
+    
+    // Recursively process children
+    if (node.children && Array.isArray(node.children)) {
+      node.children.forEach(processNode);
+    }
+  }
+  
+  if (lexicalObj?.root?.children) {
+    lexicalObj.root.children.forEach(processNode);
+  }
 }
 
 if (!GHOST_URL || !GHOST_ADMIN_KEY) {
@@ -183,6 +252,9 @@ async function upsertPostOrPage(file: string) {
     console.error(`Invalid lexical structure for ${file}`);
     return;
   }
+
+  // Post-process lexical to convert image blocks with video files to video blocks
+  convertVideoImagesToVideoBlocks(lexicalObj);
 
   const lexical = JSON.stringify(lexicalObj);
 
