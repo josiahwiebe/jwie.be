@@ -160,9 +160,7 @@ function cleanCodeBlocks(lexicalObj: any) {
     // Clean up extra trailing newlines in code blocks
     if (node.type === 'codeblock' && node.code) {
       // Remove trailing newlines but preserve one if it exists
-      node.code = node.code.replace(/\n+$/, (match: string) =>
-        match.length > 1 ? '\n' : match
-      );
+      node.code = node.code.replace(/\n+$/, '');
     }
 
     // Recursively process children
