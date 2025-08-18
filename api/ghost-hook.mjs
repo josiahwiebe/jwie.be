@@ -1,12 +1,8 @@
-// api/ghost-hook.ts
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(200).end("ok");
 
-  // Optional: verify Ghost signature here if you set one on the webhook
-  const repo = process.env.GH_REPO; // e.g. "josiahwiebe/jwie.be"
-  const token = process.env.GH_TOKEN; // fine-grained PAT with repo:actions:write
+  const repo = process.env.GH_REPO;
+  const token = process.env.GH_TOKEN;
   if (!repo || !token) return res.status(500).send("missing GH_REPO/GH_TOKEN");
 
   const r = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
