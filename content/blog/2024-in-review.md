@@ -2,7 +2,7 @@
 title: 2024 - Haves and Have Nots
 slug: 2024-in-review
 date: '2025-01-02T00:00:00.000Z'
-updated: '2025-08-18T02:14:41.000Z'
+updated: '2025-08-18T02:35:43.000Z'
 excerpt: ''
 published: true
 ---
