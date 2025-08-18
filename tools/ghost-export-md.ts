@@ -253,9 +253,6 @@ async function downloadAndRewriteImages(html?: string, feature?: string | null, 
             postSlug.replace(/-/g, ''),
             postSlug.split('-')[0],
             postSlug.split('-').slice(-1)[0],
-            // Handle specific cases like vercel-og for using-vercel-og-without-nextjs
-            ...(postSlug.includes('vercel-og') ? ['vercel-og'] : []),
-            ...(postSlug.includes('keychron') ? ['keychron-k3'] : [])
           ];
 
           for (const altSlug of alternativeDirs) {

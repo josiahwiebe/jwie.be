@@ -1,11 +1,13 @@
 ---
 title: Building A Personal Blog With Next.js 13 - Part 1
-date: 2023-01-26
+slug: building-a-personal-blog-with-next-13-part-1
+date: '2023-01-26T00:00:00.000Z'
+updated: '2025-08-18T02:14:35.000Z'
+excerpt: >-
+  Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote,
+  Planetscale, and Prisma.
 published: true
-excerpt: Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote, Planetscale, and Prisma.
-layout: post
 ---
-
 In the last number of years, I'd completely come to rely on using Twitter as a way to "put things out into the world", as well as keep up to date with what's going on in the world.
 
 The sale of Twitter had folks thinking about "owning their own platform" and I was no different. In late 2022, I decided to re-vitalize my website by building my own personal feed. Next.js 13 had just launched with the new `appDir` beta, and I thought it would be a a great opportunity to test out some new tools.
@@ -21,13 +23,12 @@ This article is going to be a multi-part series. I'm going to be building a pers
 
 ## The Stack
 
-- [Next.js 13](https://nextjs.org/blog/next-13) (using `appDir` beta)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Planetscale](https://planetscale.com/)
-- [Prisma](https://www.prisma.io/)
-- [Next-Auth.js](https://next-auth.js.org/)
-
-- Vercel
+* [Next.js 13](https://nextjs.org/blog/next-13) (using `appDir` beta)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [Planetscale](https://planetscale.com/)
+* [Prisma](https://www.prisma.io/)
+* [Next-Auth.js](https://next-auth.js.org/)
+* Vercel
 
 ## The Process
 
@@ -35,27 +36,29 @@ This article is going to be a multi-part series. I'm going to be building a pers
 
 My personal website was already built using Next.js, so the first step was to upgrade to Next.js 13. I followed the [upgrade guide](https://nextjs.org/docs/upgrading) and everything went smoothly. They allow you to move to the new `appDir` beta incrementally by adding a `next.config.js` file to the root of your project.
 
-```js title="next.config.js"
+```js
 module.exports = {
   experimental: {
     appDir: true,
   },
 }
+
 ```
 
 With that configured, I could start to move my `pages` directory into the `app` directory. I would also start converting my components to React Server Components.
 
-I was previously using the `@next/mdx` package for MDX support, but I wanted some additional flexibility to be able to work with MDX in a more dynamic way. I also wanted to be able to use traditional Markdown style front-matter. I decided to use [`next-mdx-remote`](https://github.com/hashicorp/next-mdx-remote) instead. As a result, I removed the `withMDX` config from my `next.config.js` file.
+I was previously using the `@next/mdx` package for MDX support, but I wanted some additional flexibility to be able to work with MDX in a more dynamic way. I also wanted to be able to use traditional Markdown style front-matter. I decided to use [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) instead. As a result, I removed the `withMDX` config from my `next.config.js` file.
 
 Since I was already using Tailwind CSS on the site, the only change I had to make to `tailwind.config.js` was to add the `app` directory to the `content` array.
 
-```js title="tailwind.config.js"
+```js
 module.exports = {
   content: [
     './app/**/*.{js,jsx,ts,tsx}', // added this line
     './pages/**/*.{js,jsx,ts,tsx}',
   ],
 },
+
 ```
 
 ### Converting Pages to React Server Components
@@ -78,6 +81,7 @@ Here's how my `pages` directory looked before:
 ├── posts
 │   ├── post-name.mdx
 │   └── another-post.mdx
+
 ```
 
 And here's how it looks now:
@@ -99,6 +103,7 @@ And here's how it looks now:
 │   │   └── page.tsx
 │   └── denied
 │       └── page.tsx
+
 ```
 
 Note the `layout.tsx`, and `page.tsx` files at the top of the directory. These are the bare minimum files you need to create a React Server Component route. I've also used the `head.tsx` special file to define the `<Head>` component for each route.
@@ -115,7 +120,7 @@ Now that the new directory structure has been configured, it's time to start con
 
 I started with the root layout file, since this is going to define the overall base layout for the site. For brevity, I'm not going to post the entire contents of these files, but you can find the full source code on [GitHub](https://github.com/josiahwiebe/jwie.be).
 
-```jsx title="app/layout.tsx"
+```jsx
 import '@styles/styles.css'
 import Link from 'next/link'
 
@@ -143,13 +148,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
+
 ```
 
 Note the `{children}` prop. This is where the content for each page will be rendered.
 
 Next, I created the `page.tsx` file for the root route. This will be our index page. Just like the convention for the previous `pages` directory, this file should simply export a React component.
 
-```jsx title="app/page.tsx"
+```jsx
 export default async function IndexPage() {
   return (
     <section class='page-content grid items-center'>
@@ -160,13 +166,14 @@ export default async function IndexPage() {
     </section>
   )
 }
+
 ```
 
 The `head.tsx` file is a special file that will be used to define the `<Head>` component for the route. This is where you can define the title, meta tags, and other things that will be rendered in the `<head>` element of the page.
 
 I created a custom `PageHead` component that will be used to define the `<Head>` component for each page. This component will accept a `title` prop, and will automatically append the site name to the end of the title.
 
-```jsx title="@components/page-head.tsx"
+```jsx
 interface PageHeadProps {
   params: {
     title: string,
@@ -185,16 +192,18 @@ export default function PageHead({ params = { title: '' } }: PageHeadProps) {
     </>
   )
 }
+
 ```
 
 Now we can load that component in the `head.tsx` file for the root route.
 
-```jsx title="app/head.tsx"
+```jsx
 import PageHead from '@components/page-head'
 
 export default function Head() {
   return <PageHead params={{ title: 'Josiah Wiebe', overrideTitle: true }} />
 }
+
 ```
 
 Since we'll want each page to have a unique title, we'll have to create a `head.tsx` special file in each route directory. We can re-use the `PageHead` component, but we'll need to pass in the title for each page. This is probably my least favourite convention with the new `appDir` directory structure, but creating a reusable component makes it easier.

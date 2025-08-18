@@ -1,9 +1,11 @@
 ---
 title: 2022 In Review
-date: 2023-01-22
+slug: 2022-in-review
+date: '2023-01-22T00:00:00.000Z'
+updated: '2025-08-18T02:14:38.000Z'
+excerpt: ''
 published: true
 ---
-
 Now that we're a good three weeks into the new year, and all of the dust has settled from the other 2022 recaps, I figured it's as good a time as any to post my own.
 
 Since I have to make up for publishing exactly zero blog posts in 2022, this is a pretty long post. _TL;DR: 2022 was a great year, and I'm looking forward to 2023._
@@ -12,7 +14,7 @@ In 2022, I began to settle into my new role at Leisure Travel Vans as the Market
 
 ## First Quarter
 
-Winter felt a little bit more challenging than past years, but we made the most of it and got outside almost daily, regardless of the weather. We typically like to break up our winter with a Hawaiian vacation (this was an ongoing tradition pre-pandemic), but we didn't quite feel ready for travel at that time – Olsen was still 1yo and travel was still in a bit of a state of disarray.
+Winter felt a little bit more challenging than past years, but we made the most of it and got outside almost daily, regardless of the weather. We typically like to break up our winter with a Hawaiian vacation (this was an ongoing tradition pre-pandemic), but we didn't quite feel ready for travel at that time – Olsen was still 1yo and travel was still in a bit of a state of disarray.
 
 ![forest walk](/img/2022-in-review/forest-walk.jpg)
 
@@ -57,6 +59,7 @@ Spring felt like it settled in nicely, and we took full advantage of the outdoor
 :::image-half
 ^^^
 ![](/img/2022-in-review/stroller-golfing.jpg)
+^^^
 ^^^
 ![](/img/2022-in-review/morning-golfing.jpg)
 ^^^
@@ -162,7 +165,7 @@ We spent a lot of time with family and friends, eating lots of good food and [dr
 ^^^ Another evening, another spread
 :::
 
-After a long hiatus from a lifetime growing up Nordic Skiing, I finally got back on the skis this year. Katie and I both purchased a new set of skis which we've been really happy with. They are the [Saloman Escape 6 Skin](https://www.salomon.com/en-int/shop-int/product/escape-6-skin-and-prolink-access.html#color=67766) – I've been really impressed with the skin technology.
+After a long hiatus from a lifetime growing up Nordic Skiing, I finally got back on the skis this year. Katie and I both purchased a new set of skis which we've been really happy with. They are the [Saloman Escape 6 Skin](https://www.salomon.com/en-int/shop-int/product/escape-6-skin-and-prolink-access.html#color=67766) – I've been really impressed with the skin technology.
 
 :::image-half
 ^^^
@@ -187,20 +190,20 @@ You can also follow me on [Twitter](https://twitter.com/josiahwiebe)/[Mastodon](
 
 ### Travel:
 
-- 26,014 kilometres flown on 22 flights
-- 6,500+ kilometres driven with the camper, across three provinces
-- Stayed at 13 different campsites
-- Commuted over 300 kilometres via e-scooter (I have the Apollo Phantom v2)
+* 26,014 kilometres flown on 22 flights
+* 6,500+ kilometres driven with the camper, across three provinces
+* Stayed at 13 different campsites
+* Commuted over 300 kilometres via e-scooter (I have the Apollo Phantom v2)
 
 ### Activity:
 
-- Cycled 1,201 kilometres
-- Ran 91 kilometres
-- Walked 2,708,130 steps (about 2,400 kilometres)
+* Cycled 1,201 kilometres
+* Ran 91 kilometres
+* Walked 2,708,130 steps (about 2,400 kilometres)
 
 ### Media:
 
-- [Read 24 books](https://www.goodreads.com/user/year_in_books/2022/3921541)
-- Listened to as little podcasts as possible
-- Wrote 0 blog posts (but that changes now)
-- [Listened to 7,481 songs](https://www.last.fm/user/josiahbenjamin/listening-report/year)
+* [Read 24 books](https://www.goodreads.com/user/year_in_books/2022/3921541)
+* Listened to as little podcasts as possible
+* Wrote 0 blog posts (but that changes now)
+* [Listened to 7,481 songs](https://www.last.fm/user/josiahbenjamin/listening-report/year)

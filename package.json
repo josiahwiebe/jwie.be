@@ -29,6 +29,7 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.0.0-beta.8",
     "@tryghost/admin-api": "^1.14.0",
+    "@tryghost/kg-html-to-lexical": "^1.2.24",
     "@vercel/og": "^0.6.2",
     "gray-matter": "^4.0.3",
     "micromark": "^4.0.2",

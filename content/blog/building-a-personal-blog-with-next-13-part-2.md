@@ -1,10 +1,13 @@
 ---
 title: Building A Personal Blog With Next.js 13 - Part 2
-date: 2023-02-23
+slug: building-a-personal-blog-with-next-13-part-2
+date: '2023-02-23T00:00:00.000Z'
+updated: '2025-08-18T02:14:33.000Z'
+excerpt: >-
+  Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote,
+  Planetscale, and Prisma.
 published: false
-excerpt: Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote, Planetscale, and Prisma.
 ---
-
 # Building The Blog
 
 This article is going to be a multi-part series. I'm going to be building a personal blog using Next.js 13, Tailwind CSS, next-mdx-remote, Planetscale, and Prisma. I'm going to be writing about the process of building the site, as well as the tools I'm using.

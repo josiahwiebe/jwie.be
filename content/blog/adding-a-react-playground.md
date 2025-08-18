@@ -1,10 +1,13 @@
 ---
 title: Adding a Vite-Powered Playground to my Website
-date: 2025-01-04
+slug: adding-a-react-playground
+date: '2025-01-04T00:00:00.000Z'
+updated: '2025-08-18T02:14:44.000Z'
+excerpt: >-
+  You can easily use Vite to power a React/Solid/Vue/etc. application within
+  your PHP website.
 published: true
-excerpt: You can easily use Vite to power a React/Solid/Vue/etc. application within your PHP website.
 ---
-
 I was playing around with a React project locally and I wanted a way to share it within the context of my own website.
 
 In this particular case, I'm configuring React, but you could use Vite to configure any other frontend framework.
@@ -15,11 +18,12 @@ First, we'll need [Vite](https://vite.dev/). I was already using TailwindCSS on 
 
 ```bash
 npm i vite tailwindcss@next @tailwindcss/vite@next
+
 ```
 
 We'll need to create a `vite.config.ts` file in the root of the project to handle the build process.
 
-```ts title="vite.config.ts"
+```ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
@@ -45,21 +49,23 @@ export default defineConfig({
     origin: 'http://localhost:5173',
   },
 })
+
 ```
 
 Vite's [documentation for this](https://vite.dev/guide/backend-integration.html) is very good, but I just thought I'd get into a specific PHP example.
 
 I'm going to assume you already have a React application created. Put that application in the `src/playground` directory, where `index.tsx` is the entry point for the application. If you're moving an existing application into this project, you'll need to update the `index.tsx` file with the module preload polyfill.
 
-```ts title="src/playground/index.tsx"
+```ts
 import 'vite/modulepreload-polyfill'
 
 // ...existing react application code
+
 ```
 
 We're going to create a PHP function that loads the Vite server and returns the HTML for the application in development mode.
 
-```php title="util/dev.php"
+```php
 <?php
 
 function dev_load_vite_module($path) {
@@ -85,11 +91,12 @@ function dev_load_vite_module($path) {
 
   echo $response;
 }
+
 ```
 
 Hook this function into our router, perhaps with something like this:
 
-```php title="handler.php"
+```php
 <?php
 
 if (isset($_ENV['DEV'])) {
@@ -97,13 +104,14 @@ if (isset($_ENV['DEV'])) {
 }
 
 // ...existing template code
+
 ```
 
 This will load the Vite server and return the HTML for the application in development mode.
 
 Now we'll need to create a function to handle the assets in production mode.
 
-```php title="util/vite.php"
+```php
 <?php
 
 function vite_assets() {
@@ -123,11 +131,12 @@ function vite_assets() {
     'js' => '/dist/' . $manifest['src/playground/index.tsx']['file']
   ];
 }
+
 ```
 
 Update your root template to include the Vite assets in the `<head>` tag. You'll also need to add a root element for the React application to mount into.
 
-```html title="templates/base.php"
+```html
 <?php $assets = vite_assets(); ?>
 <head>
   <?php $isDev = isset($_ENV['DEV']); ?>
@@ -154,24 +163,27 @@ Update your root template to include the Vite assets in the `<head>` tag. You'll
   <script type="module" src="<?= $assets['js'] ?>"></script>
   <?php endif; ?>
 </body>
+
 ```
 
 Since TailwindCSS v4 uses CSS for configuration, you'll want to update your root `src/style.css` file to use the new directives. You'll also want to add the `@source` directive to include the PHP files and the React application files.
 
-```css title="src/style.css"
+```css
 @import 'tailwindcss';
 
 @source '../**/*.php';
 @source './playground/**/*.tsx';
+
 ```
 
 Now, simply update your `package.json` to use Vite.
 
-```json title="package.json"
+```json
 "scripts": {
   "dev": "vite",
   "build": "vite build"
 }
+
 ```
 
 Now you can run `npm run dev` to start the Vite server and `npm run build` to build the application. You should see the playground running on your site.

@@ -1,10 +1,12 @@
 ---
-title: Goodbye, Next.js 👋
-date: 2024-02-11
+title: "Goodbye, Next.js \U0001F44B"
+slug: goodbye-nextjs
+date: '2024-02-11T00:00:00.000Z'
+updated: '2025-08-18T02:14:32.000Z'
+excerpt: ''
 published: true
 ---
-
-> A quick disclaimer. This article is not intended to disparage Next.js – I work with Next.js every day, and really quite enjoy it. This is simply a study in using an outsized solution for a trivial problem.
+> A quick disclaimer. This article is not intended to disparage Next.js – I work with Next.js every day, and really quite enjoy it. This is simply a study in using an outsized solution for a trivial problem.
 
 In 2023, I decided to re-create my personal website using Next.js. I even [wrote about it](https://jwww.me/blog/building-a-personal-blog-with-next-13-part-1). The building process was a lot of fun, and I even built a fun personal [Twitter feed alternative](https://jwww.me/feed).
 
@@ -12,9 +14,9 @@ Unfortunately, when it came to updating the blog, things didn't quite go so well
 
 For example, I recently tried to update the Twitter authentication (used solely by me to post statuses to the aforementioned feed page) to use Mastodon. This meant I had to update NextAuth.js, which meant I had to rewrite most of the session config for the whole site. The latest version of NextAuth.js is in beta, and I ran into a number of bugs that prevented me from proceeding.
 
-This sentiment kind of echos my overall experience of using the Next.js App Router has been – feels like beta and a lot of unreconcilable issues. I'm not [the only one](https://www.flightcontrol.dev/blog/nextjs-app-router-migration-the-good-bad-and-ugly). I'm a huge fan of their Pages Router though, and will continue to use and recommend it.
+This sentiment kind of echos my overall experience of using the Next.js App Router has been – feels like beta and a lot of unreconcilable issues. I'm not [the only one](https://www.flightcontrol.dev/blog/nextjs-app-router-migration-the-good-bad-and-ugly). I'm a huge fan of their Pages Router though, and will continue to use and recommend it.
 
-I love JavaScript. I love Deno, Express, Remix, Bun, Vite, and jQuery. I love Next.js. I might even say I love TypeScript. Those, and so many more JavaScript frameworks, tools, and libraries have pushed the web forward, along with my career. However, it didn't make a whole lot of sense to me to use a JS based tool to build and serve my website – particularly since this site has no client facing JS.
+I love JavaScript. I love Deno, Express, Remix, Bun, Vite, and jQuery. I love Next.js. I might even say I love TypeScript. Those, and so many more JavaScript frameworks, tools, and libraries have pushed the web forward, along with my career. However, it didn't make a whole lot of sense to me to use a JS based tool to build and serve my website – particularly since this site has no client facing JS.
 
 In the end, I rewrote the blog in PHP, hosted on Vercel using the unsupported [vercel-php runtime](https://github.com/vercel-community/php). It's probably brittle and is not really production battle-tested, but I don't forsee running into a whole lot of scaling issues on my personal website.
 

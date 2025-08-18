@@ -1,9 +1,11 @@
 ---
 title: Using @vercel/og without Next.js
-date: 2024-02-12
+slug: using-vercel-og-without-nextjs
+date: '2024-02-12T00:00:00.000Z'
+updated: '2025-08-18T02:14:29.000Z'
+excerpt: ''
 published: true
 ---
-
 I've used the helpful [@vercel/og](https://vercel.com/docs/functions/og-image-generation) package before to generate OpenGraph images within Next.js projects, but since I re-wrote this blog using PHP, this was no longer possible.
 
 The documentation has some hints of "using @vercel/og without Next.js" but there is no real documentation for it.
@@ -12,7 +14,7 @@ After some scouring, I discovered `unstable_createNodejsStream` in the TypeScrip
 
 First, let's setup the route in the `vercel.json` config file. This step is optional, depending on your configuration. Since I have PHP endpoints in my `/api` directory as well, I need to make sure that accessing `/api/og` points to the right place.
 
-```json {title="vercel.json"}
+```json
 // vercel.json
 {
   "routes": [
@@ -22,12 +24,14 @@ First, let's setup the route in the `vercel.json` config file. This step is opti
     }
   ]
 }
+
 ```
 
 Now, let's install the dependencies.
 
 ```bash
 npm install @vercel/og -S
+
 ```
 
 We're going to use the undocumented `unstable_createNodejsStream` method to generate our OG images. This is at odds with some of what the [documentation says](https://vercel.com/docs/functions/og-image-generation/og-image-api):
@@ -90,6 +94,7 @@ export default async function handler(req, res) {
     })
   }
 }
+
 ```
 
 Both the `unstable_createNodeJsStream` and `ImageResponse` methods expect a JSX `ReactElement` property to be passed. However, we're not using Next.js here, and we don't have React installed in the project. Luckily, we can simply manually create the structure of the expected JSX output:
@@ -160,6 +165,7 @@ const html = {
     },
   },
 }
+
 ```
 
 The library also supports TailwindCSS through the use of the `tw` property, so we can simply pass any desired Tailwind classes there.
@@ -167,13 +173,14 @@ The library also supports TailwindCSS through the use of the `tw` property, so w
 Put that all together, then access `/api/og?title=Your Title Here` and it should return a PNG of your freshly minted on-demand OG image!
 
 ^^^
-![](/img/vercel-og/og.png)
+![](/img/using-vercel-og-without-nextjs/og.png)
 ^^^ Our generated OG image
 
 To add this OG image to your HTML, simply include this HTML in the `<head>` of your page:
 
 ```html
 <meta name="og:image" content="/api/og?title=Using @vercel/og without Next.js" />
+
 ```
 
 That's it!
