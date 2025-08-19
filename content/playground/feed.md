@@ -1,7 +1,7 @@
 ---
 title: Feed
 subtitle: This project has been archived.
-date: 2023-01-01
+date: '2023-01-01T21:22:43.000Z'
 excerpt: A custom "Twitter" style feed.
 ---
 

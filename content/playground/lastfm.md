@@ -1,7 +1,7 @@
 ---
 title: Last.fm Listening Stats
 layout: react-app
-date: 2025-01-03
+date: '2025-01-03T06:43:11.000Z'
 app_url: /js/lastfm.js
 excerpt: Calculate your last.fm listening stats.
 subtitle: A tool to calculate your last.fm listening stats.

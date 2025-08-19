@@ -1,6 +1,6 @@
 ---
 title: Uses
-date: 2021-11-11
+date: '2021-11-11T16:53:22.000Z'
 ---
 
 Occassionally somebody will ask me "what **\_** do you use". This is the page I point them to. It also helps me look back and see how my tools have evolved.

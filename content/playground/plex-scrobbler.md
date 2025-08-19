@@ -1,9 +1,9 @@
 ---
 title: Plex → Letterboxd Scrobbler
-layout: post 
-date: 2025-08-01
-excerpt: I've long wanted a tool that would sync my movie history from Plex to Letterboxd, but since there is no public API for Letterboxd, I had to build it myself. 
-subtitle: Automatically sync your Plex watch and rating history with Letterboxd. 
+layout: post
+date: '2025-08-01T13:21:43.000Z'
+excerpt: I've long wanted a tool that would sync my movie history from Plex to Letterboxd, but since there is no public API for Letterboxd, I had to build it myself.
+subtitle: Automatically sync your Plex watch and rating history with Letterboxd.
 ---
 
 Plex is the best way to manage your personal media library, and I love using [Letterboxd](https://letterboxd.com/josiahwiebe/films/diary) to keep track of movies that I enjoyed. Since there was no way to connect these two services easily, I built this one. This tool uses Puppeteer on the server to log in to your Letterboxd account.

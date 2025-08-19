@@ -1,6 +1,6 @@
 ---
 title: Not here
-date: 2022-01-24
+date: '2022-01-24T16:21:55.000Z'
 subtitle: Elsewhere on the Internet.
 layout: page
 ---
