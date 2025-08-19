@@ -1,15 +1,20 @@
 ---
 title: Launch Center Pro & Daily Journaling
-date: 2014-02-03
+slug: launch-center-pro-daily-journaling
+date: '2014-02-03T00:00:00.000Z'
+updated: '2025-08-19T02:31:10.000Z'
+excerpt: ''
+tags:
+  - archive
+published: true
 ---
-
 **Update**: Launch Center Pro was updated to version 2.3 with all kinds of amazing features! Read more about it [here](/archive/launch-center-pro-updated)
 
 I was recently reading about [meal logging](https://thenewsprint.co/blog/launch-center-pro-action-to-log-meals/) with [Day One](https://dayoneapp.com/) & [Launch Center Pro](https://contrast.co/launch-center-pro/) on [The Newsprint](https://thenewsprint.co). I’m not very disciplined at digital journaling, and [Josh](https://twitter.com/joshuaginter) got me thinking. I began to devise a few of my own actions, generally based around menial events that had a daily significance.
 
 Most of these actions are based around things that I’ve enjoyed throughout the day– a good glass of wine, a favourite beer, a perfect coffee or a great book. In fact, I compiled so many actions that I created a dedicated group in Launch Center Pro; Input. Here’s what it looks like right now:
 
-![screenshot of launch center pro on iOS](/img/archive/lcp-daily.png')
+![screenshot of launch center pro on iOS](/img/archive/lcp-daily.png)
 
 It’s far easier for me to keep on top of documenting these very tangible things throughout my day. My Daily Summary action has a very important “Physical Notebook Reference” field at the end. This is because I still primarily write my thoughts down on physical paper, usually in [Field Notes](http://fieldnotesbrand.com) Brand notebooks or [Moleskine Cahiers](http://shop.moleskine.com/en-us/notebooks-journals/cahier/). This field allows me to easily make reference to which notebook I’ve written in that day (thanks to Josh for giving me this idea).
 

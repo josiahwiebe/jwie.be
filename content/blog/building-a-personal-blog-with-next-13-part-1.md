@@ -2,7 +2,7 @@
 title: Building A Personal Blog With Next.js 13 - Part 1
 slug: building-a-personal-blog-with-next-13-part-1
 date: '2023-01-26T00:00:00.000Z'
-updated: '2025-08-18T02:14:35.000Z'
+updated: '2025-08-19T02:31:56.000Z'
 excerpt: >-
   Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote,
   Planetscale, and Prisma.
@@ -23,12 +23,12 @@ This article is going to be a multi-part series. I'm going to be building a pers
 
 ## The Stack
 
-* [Next.js 13](https://nextjs.org/blog/next-13) (using `appDir` beta)
-* [Tailwind CSS](https://tailwindcss.com/)
-* [Planetscale](https://planetscale.com/)
-* [Prisma](https://www.prisma.io/)
-* [Next-Auth.js](https://next-auth.js.org/)
-* Vercel
+- [Next.js 13](https://nextjs.org/blog/next-13) (using `appDir` beta)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Planetscale](https://planetscale.com/)
+- [Prisma](https://www.prisma.io/)
+- [Next-Auth.js](https://next-auth.js.org/)
+- Vercel
 
 ## The Process
 
@@ -42,7 +42,6 @@ module.exports = {
     appDir: true,
   },
 }
-
 ```
 
 With that configured, I could start to move my `pages` directory into the `app` directory. I would also start converting my components to React Server Components.
@@ -58,7 +57,6 @@ module.exports = {
     './pages/**/*.{js,jsx,ts,tsx}',
   ],
 },
-
 ```
 
 ### Converting Pages to React Server Components
@@ -81,7 +79,6 @@ Here's how my `pages` directory looked before:
 ├── posts
 │   ├── post-name.mdx
 │   └── another-post.mdx
-
 ```
 
 And here's how it looks now:
@@ -103,7 +100,6 @@ And here's how it looks now:
 │   │   └── page.tsx
 │   └── denied
 │       └── page.tsx
-
 ```
 
 Note the `layout.tsx`, and `page.tsx` files at the top of the directory. These are the bare minimum files you need to create a React Server Component route. I've also used the `head.tsx` special file to define the `<Head>` component for each route.
@@ -148,7 +144,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-
 ```
 
 Note the `{children}` prop. This is where the content for each page will be rendered.
@@ -166,7 +161,6 @@ export default async function IndexPage() {
     </section>
   )
 }
-
 ```
 
 The `head.tsx` file is a special file that will be used to define the `<Head>` component for the route. This is where you can define the title, meta tags, and other things that will be rendered in the `<head>` element of the page.
@@ -192,7 +186,6 @@ export default function PageHead({ params = { title: '' } }: PageHeadProps) {
     </>
   )
 }
-
 ```
 
 Now we can load that component in the `head.tsx` file for the root route.
@@ -203,7 +196,6 @@ import PageHead from '@components/page-head'
 export default function Head() {
   return <PageHead params={{ title: 'Josiah Wiebe', overrideTitle: true }} />
 }
-
 ```
 
 Since we'll want each page to have a unique title, we'll have to create a `head.tsx` special file in each route directory. We can re-use the `PageHead` component, but we'll need to pass in the title for each page. This is probably my least favourite convention with the new `appDir` directory structure, but creating a reusable component makes it easier.

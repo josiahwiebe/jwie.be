@@ -2,7 +2,7 @@
 title: Adding a Vite-Powered Playground to my Website
 slug: adding-a-react-playground
 date: '2025-01-04T00:00:00.000Z'
-updated: '2025-08-18T02:14:44.000Z'
+updated: '2025-08-19T02:32:10.000Z'
 excerpt: >-
   You can easily use Vite to power a React/Solid/Vue/etc. application within
   your PHP website.
@@ -18,7 +18,6 @@ First, we'll need [Vite](https://vite.dev/). I was already using TailwindCSS on 
 
 ```bash
 npm i vite tailwindcss@next @tailwindcss/vite@next
-
 ```
 
 We'll need to create a `vite.config.ts` file in the root of the project to handle the build process.
@@ -49,7 +48,6 @@ export default defineConfig({
     origin: 'http://localhost:5173',
   },
 })
-
 ```
 
 Vite's [documentation for this](https://vite.dev/guide/backend-integration.html) is very good, but I just thought I'd get into a specific PHP example.
@@ -60,7 +58,6 @@ I'm going to assume you already have a React application created. Put that appli
 import 'vite/modulepreload-polyfill'
 
 // ...existing react application code
-
 ```
 
 We're going to create a PHP function that loads the Vite server and returns the HTML for the application in development mode.
@@ -91,7 +88,6 @@ function dev_load_vite_module($path) {
 
   echo $response;
 }
-
 ```
 
 Hook this function into our router, perhaps with something like this:
@@ -104,7 +100,6 @@ if (isset($_ENV['DEV'])) {
 }
 
 // ...existing template code
-
 ```
 
 This will load the Vite server and return the HTML for the application in development mode.
@@ -131,7 +126,6 @@ function vite_assets() {
     'js' => '/dist/' . $manifest['src/playground/index.tsx']['file']
   ];
 }
-
 ```
 
 Update your root template to include the Vite assets in the `<head>` tag. You'll also need to add a root element for the React application to mount into.
@@ -163,7 +157,6 @@ Update your root template to include the Vite assets in the `<head>` tag. You'll
   <script type="module" src="<?= $assets['js'] ?>"></script>
   <?php endif; ?>
 </body>
-
 ```
 
 Since TailwindCSS v4 uses CSS for configuration, you'll want to update your root `src/style.css` file to use the new directives. You'll also want to add the `@source` directive to include the PHP files and the React application files.
@@ -173,7 +166,6 @@ Since TailwindCSS v4 uses CSS for configuration, you'll want to update your root
 
 @source '../**/*.php';
 @source './playground/**/*.tsx';
-
 ```
 
 Now, simply update your `package.json` to use Vite.
@@ -183,7 +175,6 @@ Now, simply update your `package.json` to use Vite.
   "dev": "vite",
   "build": "vite build"
 }
-
 ```
 
 Now you can run `npm run dev` to start the Vite server and `npm run build` to build the application. You should see the playground running on your site.

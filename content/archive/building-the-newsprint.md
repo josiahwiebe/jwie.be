@@ -1,13 +1,16 @@
 ---
 title: Building The Newsprint
-date: 2014-12-02
+slug: building-the-newsprint
+date: '2014-12-02T00:00:00.000Z'
+updated: '2025-08-19T02:31:02.000Z'
+excerpt: ''
+tags:
+  - archive
+published: true
 ---
+This past week, Josh approached me about re-building his site, [The Newsprint](https://thenewsprint.co). We've kind of been in an ongoing discussing since he [started](https://thenewsprint.co/2013/12/14/the-newsprint-an-introduction/) the column a year ago. He's asked for various advice and I've given it as best as I can.
 
-This past week, Josh approached me about re-building his site, [The Newsprint](https://thenewsprint.co).
-We've kind of been in an ongoing discussing since he [started](https://thenewsprint.co/2013/12/14/the-newsprint-an-introduction/) the column a year ago. He's asked for various advice and I've given it as best as I can.
-
-If you've been following The Newsprint, you'll have noticed how much Josh likes to tinker with his site. In the short span of a year, he's gone from Squarespace to Ghost; updated the typography countless times, and tested numerous new layouts. I can still recall when [cloud.typography](https://typography.com/cloud) was released, and him drooling over the excellent Hoefler & Co typefaces — Ideal Sans in particular.
-Regardless of the piece of advice that I was giving, there was always one little thing that came up that was limited by the system that Josh was currently using. As a result, Josh often voiced his desire for me to build him a custom site, eventually.
+If you've been following The Newsprint, you'll have noticed how much Josh likes to tinker with his site. In the short span of a year, he's gone from Squarespace to Ghost; updated the typography countless times, and tested numerous new layouts. I can still recall when [cloud.typography](https://typography.com/cloud) was released, and him drooling over the excellent Hoefler & Co typefaces — Ideal Sans in particular. Regardless of the piece of advice that I was giving, there was always one little thing that came up that was limited by the system that Josh was currently using. As a result, Josh often voiced his desire for me to build him a custom site, eventually.
 
 As the first year anniversary of the site was coming up, Josh thought it would be good timing to rebuild the site. He sent me a text telling me that he was looking into it and wasn't sure if I'd be able to do it for him, based on timeline. Immediately after receiving that text, I decided to do a quick mockup in Sketch, pretty much just for the fun of it. He had talked often of the style of site that he enjoyed, so I based the mockup off of those discussions.
 
@@ -17,7 +20,7 @@ I sent it over to him, and he immediately thought that it was almost exactly how
 
 I decided that the mockup was close to what I was looking for, so I jumped into Sublime Text to start building. This is the first site that I've built with [Jekyll](https://jekyllrb.com), but I'm already very familiar with the [Liquid](https://liquidmarkup.org) syntax because at [Collectif](https://clc.tf) we've primarily been using the fantastic [Siteleaf](https://siteleaf.com) CMS.
 
-The first thing that I had to do was get the content over from Josh's existing Ghost instance. I exported the Ghost data in JSON format from Ghost's debug menu. I used the excellent [jekyll_ghost_importer](http://rubygems.org/gems/jekyll_ghost_importer) gem to convert the posts from JSON to individual Markdown files. This process went very smoothly.
+The first thing that I had to do was get the content over from Josh's existing Ghost instance. I exported the Ghost data in JSON format from Ghost's debug menu. I used the excellent [jekyll\_ghost\_importer](http://rubygems.org/gems/jekyll_ghost_importer) gem to convert the posts from JSON to individual Markdown files. This process went very smoothly.
 
 With all of the posts imported, I still needed to ensure they displayed properly. One of Josh's biggest complaints about previous CMS limitations was their support for proper link posts. I decided to start with this. I merely created a link layout, then added the necessary YAML headers to link posts:
 

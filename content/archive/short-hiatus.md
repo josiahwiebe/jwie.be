@@ -1,8 +1,13 @@
 ---
 title: Short Hiatus
-date: 2014-10-15
+slug: short-hiatus
+date: '2014-10-15T00:00:00.000Z'
+updated: '2025-08-19T02:31:20.000Z'
+excerpt: ''
+tags:
+  - archive
+published: true
 ---
-
 I’ve been negligent in writing here, as well as keeping you informed about what’s happening in my life right now.
 
 I’m sure most of my semi-regular readers have already abandoned me, but I thought I’d give a quick update here anyway.

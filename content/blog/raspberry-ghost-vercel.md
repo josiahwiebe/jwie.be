@@ -2,21 +2,21 @@
 title: Raspberry Ghost + Vercel
 slug: raspberry-ghost-vercel
 date: '2025-08-18T21:59:52.000Z'
-updated: '2025-08-19T00:44:20.000Z'
+updated: '2025-08-19T01:34:57.000Z'
 excerpt: Ghost + Raspberry Pi + Cloudflare Tunnel + GitHub Actions + Vercel
 published: true
 ---
 _Ghost + Raspberry Pi + Cloudflare Tunnel + GitHub Actions + Vercel_
 
-Late last week, I was looking through my desk and stumbled across an older Raspberry Pi 3 B model. Not a particularly powerful unit but I thought I could possibly still make use of it. 
+Late last week, I was looking through my desk and stumbled across an older Raspberry Pi 3 B model. Not a particularly powerful unit but I thought I could possibly still make use of it.
 
-Ghost recently released their [Docker (preview)](https://docs.ghost.org/install/docker#why-docker%3F) in version 6, and I've been looking for an excuse to try it. So I cooked up this idea to host a Ghost version of my site on the Raspberry Pi. 
+Ghost recently released their [Docker (preview)](https://docs.ghost.org/install/docker#why-docker%3F) in version 6, and I've been looking for an excuse to try it. So I cooked up this idea to host a Ghost version of my site on the Raspberry Pi.
 
 ## My Requirements
 
-* No new hardware - I could easily get a $5 VPS and run it there, but that's no fun.
-* Offline tolerant - the Raspberry Pi is not intended to be production grade and could go offline at any time. The same could be said about my home internet connection.
-* Maintains existing structure - my website is a weird mix of PHP running on Vercel, basically an SSR-markdown-powered static site. I'd like to keep that for now.
+- No new hardware - I could easily get a $5 VPS and run it there, but that's no fun.
+- Offline tolerant - the Raspberry Pi is not intended to be production grade and could go offline at any time. The same could be said about my home internet connection.
+- Maintains existing structure - my website is a weird mix of PHP running on Vercel, basically an SSR-markdown-powered static site. I'd like to keep that for now.
 
 ## Plan
 
@@ -26,7 +26,7 @@ Here's where I landed. There's probably better ways to do a lot of this, but thi
 
 The Raspberry Pi would run the Ghost instance, which is made available to the outside world using the excellent [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) (could also use Tailscale). Even if the RPi was offline, it wouldn't matter as it's not actually serving the site – it's simply used for authoring.
 
-The Ghost instance would have a webhook configured to target the Vercel webhook. On publish, the webhook would initiate a GitHub action, which in turn would export the content from Ghost, convert to Markdown, and it commit to the Git repository. This commit would trigger a new Vercel build, which would subsequently be deployed. 
+The Ghost instance would have a webhook configured to target the Vercel webhook. On publish, the webhook would initiate a GitHub action, which in turn would export the content from Ghost, convert to Markdown, and it commit to the Git repository. This commit would trigger a new Vercel build, which would subsequently be deployed.
 
 Outside of the GitHub action, there is no further requirement for the Ghost server to be online – I can disable the tunnel any time with no consequence for the running website. Plus, I can still author content using plain markdown; I just have to run the upload script to sync it back to Ghost whenever the server is back online.
 
@@ -66,14 +66,19 @@ The conversion of Markdown to Ghost-friendly HTML is pretty straightforward. How
 I'm using a CommonMark Attributes extension to allow me to create Markdown blocks like this:
 
 ```md
-:::image-half
-^^^
-![](img/image1.jpg)
-^^^ First image caption
-^^^
-![](/img/image2.jpg)
-^^^ Second image caption
-:::
+<figure class="kg-card kg-gallery-card kg-width-wide">
+  <div class="kg-gallery-container">
+    <div class="kg-gallery-row">
+        <div class="kg-gallery-image">
+          <img src="img/image1.jpg" width="1200" height="800" loading="lazy" alt="" />
+        </div>
+        <div class="kg-gallery-image">
+          <img src="/img/image2.jpg" width="1200" height="800" loading="lazy" alt="" />
+        </div>
+    </div>
+  </div>
+  <figcaption>First image caption | Second image caption</figcaption>
+</figure>
 ```
 
 Ghost doesn't natively support a layout like that, but they do have a gallery block. However, their galleries don't support videos and photos mixed, so we have to handle those a bit differently. Here's what I landed on to parse those Markdown blocks to galleries:
@@ -143,7 +148,7 @@ function imageHalf(md: string) {
 }
 ```
 
-For blocks that have videos and photos mixed, we actually just preserve the Markdown as a Ghost markdown block, so that our export script can simply export it as-is. Feels like a bit of a workaround, because it is! 
+For blocks that have videos and photos mixed, we actually just preserve the Markdown as a Ghost markdown block, so that our export script can simply export it as-is. Feels like a bit of a workaround, because it is!
 
 ### Images & Captions
 
@@ -187,17 +192,17 @@ There's a few steps to transforming the Markdown to Ghost-ready content. Some is
    5. Convert to Lexical format  
    6. Upload to Ghost using the [Ghost Admin API JavaScript client](https://docs.ghost.org/admin-api/javascript)
 
-That's it! All of my existing content is now in Ghost. 
+That's it! All of my existing content is now in Ghost.
 
 ## Export Script
 
 Now that the content is all in Ghost, we can get to work with the publishing flow. Since we've already built the import functionality, we simply need to work in reverse to create the export functionality.
 
-Unfortunately, it's not quite that simple, but here's a couple of solutions I ended up with. 
+Unfortunately, it's not quite that simple, but here's a couple of solutions I ended up with.
 
 ### Lexical Content
 
-Some types of content felt a bit easier to parse directly from the Lexical format, such as code blocks and images. 
+Some types of content felt a bit easier to parse directly from the Lexical format, such as code blocks and images.
 
 ```ts
 function processLexicalContent(lexicalStr?: string): { videos: Array<{src: string, caption: string, alt: string}>, markdownBlocks: string[] } {
@@ -246,7 +251,7 @@ We'll re-use the result of this function later.
 
 ### Galleries
 
-While the Ghost gallery block was an excellent solution for my `:::image-half` blocks, unfortunately Ghost does not support captions on a per-image basis for these. Thankfully, we just saved our caption with a pipe `|` separator in our import script, so we can now easily just split it on that. 
+While the Ghost gallery block was an excellent solution for my `:::image-half` blocks, unfortunately Ghost does not support captions on a per-image basis for these. Thankfully, we just saved our caption with a pipe `|` separator in our import script, so we can now easily just split it on that.
 
 Since we're going to re-process the HTML later, we'll add placeholders for all of the converted content so it's easier to find our place again. For example, for our `:::image-half` component:
 
@@ -307,7 +312,7 @@ function preprocessGhostGallery(html: string): { html: string, placeholders: Rec
 
 ### Putting it all together
 
-I won't go into all of the details – if you want to check out the source code, you can see the [Ghost export script here](https://github.com/josiahwiebe/jwie.be/blob/main/tools/ghost-export-md.ts). 
+I won't go into all of the details – if you want to check out the source code, you can see the [Ghost export script here](https://github.com/josiahwiebe/jwie.be/blob/main/tools/ghost-export-md.ts).
 
 The sequence is basically this:
 
@@ -422,6 +427,6 @@ I created a webhook for the `Post published` and `Post updated` events, but I co
 
 ### That's it!
 
-Now, I hit publish on Ghost, which fires that webhook (the Vercel serverless function). In turn, that function triggers the GitHub Action that will export the Ghost content, add it to VCS, and create a new commit. Finally, that commit automatically triggers the new Vercel build. 
+Now, I hit publish on Ghost, which fires that webhook (the Vercel serverless function). In turn, that function triggers the GitHub Action that will export the Ghost content, add it to VCS, and create a new commit. Finally, that commit automatically triggers the new Vercel build.
 
 You can check out the [full code on GitHub](https://github.com/josiahwiebe/jwie.be/tree/main/tools).

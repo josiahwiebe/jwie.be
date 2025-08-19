@@ -2,7 +2,7 @@
 title: 2024 - Haves and Have Nots
 slug: 2024-in-review
 date: '2025-01-02T00:00:00.000Z'
-updated: '2025-08-18T03:13:16.000Z'
+updated: '2025-08-19T02:32:02.000Z'
 excerpt: ''
 published: true
 ---
@@ -27,20 +27,20 @@ In addition to the usual work trips, we were fortunate to be able to get away fo
 
 As I'm writing this, I'm looking back at my year and I'm realizing there was a lot of new places! My first time at:
 
-* Universal Studios
-* New Mexico
-* New York City
-* Revelstoke
-* Toronto
-* Winnipeg
+- Universal Studios
+- New Mexico
+- New York City
+- Revelstoke
+- Toronto
+- Winnipeg
 
 Maybe not mind-blowing destinations but surprising to me that I've never been to any of these places before. Here's to more new places in 2025!
 
 We were fortunate to be able to visit a couple of restaurants that I've been wanting to try for a while.
 
-* [Prime Seafood Palace](https://primeseafoodpalace.ca/) - Toronto
-* [SAGA](https://www.saga-nyc.com/) - NYC
-* [Osteria Giulia](https://osteriagiulia.ca/) - Toronto
+- [Prime Seafood Palace](https://primeseafoodpalace.ca/) - Toronto
+- [SAGA](https://www.saga-nyc.com/) - NYC
+- [Osteria Giulia](https://osteriagiulia.ca/) - Toronto
 
 ^^^
 ![Prime Seafood Palace](/img/2024-in-review/psp.jpg)
@@ -133,6 +133,7 @@ I'm not a podcast listener (like, at all), but I used to listen to Syntax.fm a l
 
 Spent the best day paddling with the family and some friends on the Revelstoke Reservoir.
 
+<!-- GHOST_VIDEO_CONTENT -->
 :::image-half
 ^^^
 <video src="/img/2024-in-review/revelstoke.mp4" autoplay loop muted playsinline></video>
@@ -141,7 +142,6 @@ Spent the best day paddling with the family and some friends on the Revelstoke R
 ![Revelstoke Reservoir](/img/2024-in-review/revelstoke-reservoir.jpg)
 ^^^ Looking back toward the Revelstoke Reservoir
 :::
-
 
 **Best Late-Night Snack** - seared scallops w/ brown butter and broccolini
 
@@ -159,31 +159,31 @@ Spent the best day paddling with the family and some friends on the Revelstoke R
 
 **Favourite Apps**
 
-* [Halide Camera](https://halide.cam/). - This is by no means a new app, but I got into using it again. Just makes taking photos fun again.
-* [Overseer](https://overseer.dev/) - This is a fantastic tool for managing your media library requests (especially if you have a Plex server).
+- [Halide Camera](https://halide.cam/). - This is by no means a new app, but I got into using it again. Just makes taking photos fun again.
+- [Overseer](https://overseer.dev/) - This is a fantastic tool for managing your media library requests (especially if you have a Plex server).
 
 **Favourite Movies**
 
-* Wicked - 🤷‍♂️
-* The Fall Guy
-* White Bird
+- Wicked - 🤷‍♂️
+- The Fall Guy
+- White Bird
 
 **Favourite TV Series**
 
-* The Bear
-* The Day of the Jackal
-* Little Drummer Girl - not from 2024 so it doesn't really count
-* Death and Other Details
-* Silo - only season 1 though
+- The Bear
+- The Day of the Jackal
+- Little Drummer Girl - not from 2024 so it doesn't really count
+- Death and Other Details
+- Silo - only season 1 though
 
 **Favourite Books**
 
 I surpassed [my reading goal](https://www.goodreads.com/user/year_in_books/2024/3921541) of 32 books. Here's my top picks:
 
-* Hyperion by Dan Simmons (and the rest of the series)
-* The Midnight Feast by Lucy Foley
-* Observer by Robert Lanza, Nancy Kress
-* The Three Body Problem by Cixin Liu
-* Wool by Hugh Howey
+- Hyperion by Dan Simmons (and the rest of the series)
+- The Midnight Feast by Lucy Foley
+- Observer by Robert Lanza, Nancy Kress
+- The Three Body Problem by Cixin Liu
+- Wool by Hugh Howey
 
 I read three full series this year, and all of them were excellent.

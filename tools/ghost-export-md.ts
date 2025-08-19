@@ -1,12 +1,18 @@
 #!/usr/bin/env bun
 /**
- * Export Ghost posts → Markdown for content/blog only.
- * - Uses Ghost ADMIN API (includes draft posts)
- * - Downloads referenced images to public/img/<post-slug>/ (organized by post)
- * - Rewrites <img> src and feature_image to /img/<post-slug>/<filename>
- * - Writes files to content/blog/<slug>.md with YAML front‑matter
+ * Export Ghost posts and pages → Markdown.
+ * - Posts go to content/<tag>/<slug>.md (based on Ghost tags) or content/blog/<slug>.md (default)
+ * - Pages go to content/<slug>.md (root level)
+ * - Uses Ghost ADMIN API (includes draft posts/pages)
+ * - Downloads referenced images to public/img/<slug>/ (organized by slug)
+ * - Rewrites <img> src and feature_image to /img/<slug>/<filename>
+ * - Writes files with YAML front‑matter
  * - Properly handles draft/published status
  * - Uses meaningful filenames when possible, falls back to hash
+ *
+ * Usage:
+ *   bun tools/ghost-export-md.ts [posts|pages|all]
+ *   Default: all
  *
  * Env:
  *   GHOST_URL, GHOST_ADMIN_KEY
@@ -81,7 +87,9 @@ function processLexicalContent(lexicalStr?: string): { videos: Array<{src: strin
 // Pre-process Ghost HTML to handle special elements before markdown conversion
 function preprocessGhostHtml(html: string): { html: string; placeholders: Record<string, string> } {
   const doc = parse(html);
-  const nhm = new NodeHtmlMarkdown();
+  const nhm = new NodeHtmlMarkdown({
+    bulletMarker: '-',
+  });
   const placeholders: Record<string, string> = {};
 
   // Process Ghost gallery cards first (these become :::image-half blocks)
@@ -173,7 +181,7 @@ function preprocessGhostHtml(html: string): { html: string; placeholders: Record
     if (markdownContent.includes('<!-- GHOST_VIDEO_CONTENT -->')) {
       // Remove the marker and preserve the content
       const cleanContent = markdownContent.replace('<!-- GHOST_VIDEO_CONTENT -->\n', '');
-      
+
       // Create a unique placeholder for this markdown content
       const placeholder = `GHOSTMARKDOWN${index}`;
       placeholders[placeholder] = cleanContent;
@@ -340,6 +348,20 @@ async function downloadAndRewriteImages(html?: string, feature?: string | null, 
   };
 }
 
+interface GhostPage {
+  id: string;
+  slug: string;
+  title: string;
+  html?: string;
+  lexical?: string;
+  excerpt?: string;
+  custom_excerpt?: string;
+  feature_image?: string|null;
+  published_at?: string|null;
+  updated_at?: string|null;
+  status?: 'draft' | 'published';
+}
+
 interface GhostTag { slug: string }
 interface GhostPost {
   id: string;
@@ -354,6 +376,31 @@ interface GhostPost {
   updated_at?: string|null;
   status?: 'draft' | 'published';
   tags?: GhostTag[]
+}
+
+// Determine output directory for a post based on its tags
+function getPostOutputDir(tags?: GhostTag[]): string {
+  if (!tags || tags.length === 0) {
+    return OUT_BLOG; // Default to blog directory
+  }
+
+  // Look for known directory tags (excluding common tags like 'blog')
+  const directoryTags = tags.filter(tag =>
+    tag.slug &&
+    !['blog'].includes(tag.slug) &&
+    // Only use tags that look like directory names (simple alphanumeric)
+    /^[a-z0-9-]+$/.test(tag.slug)
+  );
+
+  if (directoryTags.length > 0) {
+    // Use the first directory tag found
+    const dirTag = directoryTags[0].slug;
+    const targetDir = path.join(OUT_CONTENT, dirTag);
+    fs.mkdirSync(targetDir, { recursive: true });
+    return targetDir;
+  }
+
+  return OUT_BLOG; // Default fallback
 }
 
 const api = new (GhostAdminAPI as any)({
@@ -391,16 +438,131 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
   return allPosts;
 }
 
+async function fetchAllPages(): Promise<GhostPage[]> {
+  const allPages: GhostPage[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    try {
+      const response = await (api as any).pages.browse({
+        limit: 50,
+        page: page,
+        formats: ['html', 'lexical']
+      });
+
+      const pages = response || [];
+      allPages.push(...pages);
+
+      // Check if there are more pages
+      hasMore = pages.length === 50;
+      page++;
+    } catch (error) {
+      console.error(`Error fetching pages on page ${page}:`, error);
+      break;
+    }
+  }
+
+  return allPages;
+}
+
 (async () => {
-  const nhm = new NodeHtmlMarkdown();
-  const posts = await fetchAllPosts();
+  const nhm = new NodeHtmlMarkdown({
+    bulletMarker: '-',
+  });
+  const exportType = process.argv[2] || 'all'; // posts, pages, or all
+
+  let posts: GhostPost[] = [];
+  let pages: GhostPage[] = [];
+
+  if (exportType === 'posts' || exportType === 'all') {
+    posts = await fetchAllPosts();
+  }
+
+  if (exportType === 'pages' || exportType === 'all') {
+    pages = await fetchAllPages();
+  }
+
   let changed = 0;
 
+  // Process posts (to content/blog/)
   for (const p of posts) {
     // Process lexical content first to extract videos and preserved markdown
     const { videos, markdownBlocks } = processLexicalContent(p.lexical);
 
     // We ignore tags and pages; everything from Ghost is a blog post
+    const { html, feature } = await downloadAndRewriteImages(p.html, p.feature_image, p.slug, videos);
+
+    // Pre-process Ghost HTML to handle special elements, then convert to markdown
+    const { html: preprocessedHtml, placeholders } = html ? preprocessGhostHtml(html) : { html: '', placeholders: {} };
+    let mdBody = preprocessedHtml ? nhm.translate(preprocessedHtml) : '';
+
+    // Restore placeholders after markdown conversion
+    Object.keys(placeholders).forEach(placeholder => {
+      mdBody = mdBody.replace(placeholder, placeholders[placeholder]);
+    });
+
+    // Add standalone videos from lexical as markdown (but skip if they're already in preserved markdown blocks)
+    videos.forEach((video, index) => {
+      // Check if this video is already part of a preserved markdown block
+      const isInMarkdownBlock = markdownBlocks.some(block =>
+        block.includes(video.src) || block.includes(`<video src="${video.src}"`)
+      );
+
+      if (!isInMarkdownBlock) {
+        const videoPlaceholder = `LEXICALVIDEO${index}`;
+        const videoMarkdown = video.caption
+          ? `![${video.alt}](${video.src})\n^^^ ${video.caption}`
+          : `![${video.alt}](${video.src})`;
+
+        // Add video placeholder to placeholders for restoration
+        placeholders[videoPlaceholder] = videoMarkdown;
+        mdBody += `\n\n${videoPlaceholder}\n`;
+      }
+    });
+
+    // Restore all placeholders including the preserved markdown
+    Object.keys(placeholders).forEach(placeholder => {
+      mdBody = mdBody.replace(placeholder, placeholders[placeholder]);
+    });
+
+    // Remove any remaining fenced markdown code blocks that weren't replaced
+    mdBody = mdBody.replace(/```markdown\n([\s\S]*?)\n```/g, '$1');
+
+    // Post-process to fix NodeHtmlMarkdown's quirks
+    const fixedMdBody = mdBody
+      // Fix URL encoding of underscores (NodeHtmlMarkdown encodes them)
+      .replace(/%5F/g, '_')
+      // Fix escaped periods after numbers (NodeHtmlMarkdown escodes them)
+      .replace(/(\d)\\\./g, '$1.')
+      .replace(/\\-/g, '-')
+      .replace(/https?:\/\/ghost\.burwal\.de\//g, '/');
+
+    const fm = {
+      title: p.title,
+      slug: p.slug,
+      ...(p.published_at ? { date: p.published_at } : {}),
+      ...(p.updated_at ? { updated: p.updated_at } : {}),
+      excerpt: p.custom_excerpt || "",
+      ...(feature ? { feature_image: feature } : {}),
+      ...(p.tags && p.tags.length > 0 ? { tags: p.tags.map(tag => tag.slug) } : {}),
+      published: p.status === 'published',
+    } as const;
+
+    const outputDir = getPostOutputDir(p.tags);
+    const outPath = path.join(outputDir, `${p.slug}.md`);
+
+    const file = matter.stringify(fixedMdBody.trim() + '\n', fm as any);
+
+    const prev = fs.existsSync(outPath) ? await fsp.readFile(outPath, 'utf8') : '';
+    if (prev !== file) { await fsp.writeFile(outPath, file); changed++; }
+  }
+
+  // Process pages (to content/ root)
+  for (const p of pages) {
+    // Process lexical content first to extract videos and preserved markdown
+    const { videos, markdownBlocks } = processLexicalContent(p.lexical);
+
     const { html, feature } = await downloadAndRewriteImages(p.html, p.feature_image, p.slug, videos);
 
     // Pre-process Ghost HTML to handle special elements, then convert to markdown
@@ -458,7 +620,7 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
       published: p.status === 'published',
     } as const;
 
-    const outPath = path.join(OUT_BLOG, `${p.slug}.md`);
+    const outPath = path.join(OUT_CONTENT, `${p.slug}.md`);
 
     const file = matter.stringify(fixedMdBody.trim() + '\n', fm as any);
 
@@ -467,8 +629,15 @@ async function fetchAllPosts(): Promise<GhostPost[]> {
   }
 
   const totalPosts = posts.length;
-  const published = posts.filter(p => p.status === 'published').length;
+  const totalPages = pages.length;
+  const publishedPosts = posts.filter(p => p.status === 'published').length;
+  const publishedPages = pages.filter(p => p.status === 'published').length;
 
-  console.log(`Exported ${changed} changed files to content/blog`);
-  console.log(`Total posts processed: ${totalPosts} (${published} published)`);
+  console.log(`Exported ${changed} changed files`);
+  if (totalPosts > 0) {
+    console.log(`Posts processed: ${totalPosts} (${publishedPosts} published) → content/blog/`);
+  }
+  if (totalPages > 0) {
+    console.log(`Pages processed: ${totalPages} (${publishedPages} published) → content/`);
+  }
 })().catch(err => { console.error(err); process.exit(1); });

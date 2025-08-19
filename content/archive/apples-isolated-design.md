@@ -1,8 +1,13 @@
 ---
 title: Apple's Isolated Design
-date: 2013-06-12
+slug: apples-isolated-design
+date: '2013-06-12T00:00:00.000Z'
+updated: '2025-08-19T02:31:13.000Z'
+excerpt: ''
+tags:
+  - archive
+published: true
 ---
-
 Following the announcement and subsequent release of iOS 7 beta, there have been mockups, complaints and criticisms flying rampantly around the design community. I’ve actually seen a lot of mockups that I’ve quite liked, and there are parts of iOS 7 that I’m fond of, but I’m not here to share my opinion of it. I’m here to discuss how Apple arrived at their design decisions.
 
 There’s been heaps of mockups that have surfaced following the release, notably [this](https://dribbble.com/shots/1109343-iOS-7-Redesign) one by [Leo Drapeau](https://twitter.com/leodrapeau). iOS 7 is almost entirely devoid of shadows; these new mockups are still “flat” but retain depth and clarity through the use of shadows and other methods.

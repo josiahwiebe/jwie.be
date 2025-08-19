@@ -7,6 +7,10 @@ export default async function handler(req, res) {
     if (!repo || !token) {
       return res.status(500).json({ error: "Missing GH_REPO or GH_TOKEN environment variables" });
     }
+    
+    if (req.query.secret != process.env.GH_DEPLOY_SECRET) {
+      return res.status(403).json({ error: "Invalid secret" });
+    }
 
     const response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/sync-blog.yml/dispatches`, {
       method: 'POST',

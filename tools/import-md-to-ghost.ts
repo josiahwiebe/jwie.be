@@ -5,6 +5,8 @@
  * - Converts to HTML
  * - Upserts by slug (edit if exists, else add)
  * - Shows full Ghost error payloads
+ * - Files in content/blog/ become Ghost posts
+ * - Files in content/ root become Ghost pages
  *
  * Env:
  *   GHOST_URL=https://ghost.your-domain.tld
@@ -12,6 +14,7 @@
  *
  * Usage:
  *   bun tools/import-md-to-ghost.ts content
+ *   bun tools/import-md-to-ghost.ts content/blog content  # both posts and pages
  */
 
 import fs from "node:fs";
@@ -25,7 +28,7 @@ import GhostAdminAPI from "@tryghost/admin-api";
 const GHOST_URL = process.env.GHOST_URL;
 const GHOST_ADMIN_KEY = process.env.GHOST_ADMIN_KEY;
 
-const SITE_BASE = process.env.SITE_BASE || "https://jwie.be"; // used to absolutize /img/... for Ghost editor
+const SITE_BASE = process.env.SITE_BASE || "https://jwww.me"; // used to absolutize /img/... for Ghost editor
 
 function convertMarkdownCaptions(text: string): string {
   // Use micromark for better markdown support in captions (links, bold, italic, etc.)
@@ -227,11 +230,21 @@ const api = new (GhostAdminAPI as any)({
   version: "v6.0",
 });
 
-function listMarkdownFiles(dir: string): string[] {
+function listMarkdownFiles(inputPath: string): string[] {
   const out: string[] = [];
-  if (!fs.existsSync(dir)) return out;
-  for (const name of fs.readdirSync(dir)) {
-    const full = path.join(dir, name);
+
+  // Check if it's a file
+  if (fs.existsSync(inputPath) && fs.statSync(inputPath).isFile()) {
+    if (inputPath.toLowerCase().endsWith('.md')) {
+      out.push(inputPath);
+    }
+    return out;
+  }
+
+  // Otherwise treat as directory
+  if (!fs.existsSync(inputPath)) return out;
+  for (const name of fs.readdirSync(inputPath)) {
+    const full = path.join(inputPath, name);
     const st = fs.statSync(full);
     if (st.isDirectory()) out.push(...listMarkdownFiles(full));
     else if (name.toLowerCase() === 'index.md') continue;

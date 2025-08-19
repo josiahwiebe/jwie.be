@@ -1,8 +1,13 @@
 ---
 title: Using Two-Factor Authentication
-date: 2014-01-29
+slug: using-two-factor-authentication
+date: '2014-01-29T00:00:00.000Z'
+updated: '2025-08-19T02:31:23.000Z'
+excerpt: ''
+tags:
+  - archive
+published: true
 ---
-
 > I had a rare Twitter username, @N. Yep, just one letter. I’ve been offered as much as $50,000 for it. People have tried to steal it. Password reset instructions are a regular sight in my email inbox. As of today, I no longer control @N. I was extorted into giving it up.
 
 A slightly terrifying account of how [Naoki Hiroshima](https://twitter.com/N_is_stolen)’s Twitter account; [@N](https://twitter.com/N), was stolen. It’s astounding how one weak link in your digital identity (PayPal in this case) can allow access to everything.

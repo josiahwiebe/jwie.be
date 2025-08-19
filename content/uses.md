@@ -1,9 +1,12 @@
 ---
 title: Uses
+slug: uses
 date: '2021-11-11T16:53:22.000Z'
+updated: '2025-08-19T01:33:25.000Z'
+excerpt: ''
+published: true
 ---
-
-Occassionally somebody will ask me "what **\_** do you use". This is the page I point them to. It also helps me look back and see how my tools have evolved.
+Occasionally somebody will ask me "what **\_** do you use". This is the page I point them to. It also helps me look back and see how my tools have evolved.
 
 ## Hardware & Desk
 

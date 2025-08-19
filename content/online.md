@@ -1,10 +1,11 @@
 ---
 title: Not here
+slug: online
 date: '2022-01-24T16:21:55.000Z'
-subtitle: Elsewhere on the Internet.
-layout: page
+updated: '2025-08-19T01:33:27.000Z'
+excerpt: ''
+published: true
 ---
-
 #### Twitter
 
 [@josiahwiebe](https://x.com/josiahwiebe)

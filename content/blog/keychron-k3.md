@@ -2,7 +2,7 @@
 title: 'Keychron K3: The Ideal First Mechanical Keyboard'
 slug: keychron-k3
 date: '2023-12-21T00:00:00.000Z'
-updated: '2025-08-18T02:13:36.000Z'
+updated: '2025-08-19T01:35:00.000Z'
 excerpt: >-
   A brief review of my initial foray in to the vast world of mechanical
   keyboards.

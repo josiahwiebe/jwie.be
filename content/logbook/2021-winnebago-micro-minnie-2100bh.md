@@ -1,24 +1,28 @@
 ---
 title: Winnebago Micro Minnie 2100BH - Changelog
-date: 2021-05-14
+slug: 2021-winnebago-micro-minnie-2100bh
+date: '2021-05-14T00:00:00.000Z'
+updated: '2025-08-19T02:55:44.000Z'
+excerpt: ''
+tags:
+  - logbook
+published: true
 ---
-
-In the spirit of software development, I thought I'd keep a record of the changes and upgrades I make to our 2022 Winnebago Micro Minnie 2100BH – a sort of "release notes" if you will.
+In the spirit of software development, I thought I'd keep a record of the changes and upgrades I make to our 2022 Winnebago Micro Minnie 2100BH – a sort of "release notes" if you will.
 
 ### 14 May 2021
 
 Took delivery.
 
-![New trailer setup on our driveway](/img/winnebago-micro-minnie/winnie-delivery.jpg)
+![New trailer setup on our driveway](/img/2021-winnebago-micro-minnie-2100bh/winnie-delivery-cb9476e6.jpg)
 
 ### 17 May 2022
 
 Received our Westinghouse iGen4500 Inverter Generator. This is a 4500W inverter generator that runs on gasoline. It's a bit larger than I would have liked, but it's the only one that can run the air conditioner. I have yet to discover that later upgrades will allow me to run the A/C off of a smaller generator.
 
-![Generator in rear storage compartment](/img/winnebago-micro-minnie/generator.jpg)
-**
-Test fitting the generator in the rear storage compartment
-**
+![Generator in rear storage compartment](/img/2021-winnebago-micro-minnie-2100bh/generator-35cbf31b.jpg)
+
+\*\* Test fitting the generator in the rear storage compartment \*\*
 
 ### 26 May 2021
 
@@ -30,11 +34,10 @@ Our first trip with the camper. We took it to Falcon Lake, Manitoba for a long w
 
 :::image-half
 ^^^
-![Prepared to depart for our inaugural trip](/img/winnebago-micro-minnie/winnie-first-trip.jpg)
+![Prepared to depart for our inaugural trip](/img/2021-winnebago-micro-minnie-2100bh/winnie-first-trip-b1a28cdf.jpg)
 ^^^ Ready for our maiden voyage!
-
 ^^^
-![Camper at Falcon Lake Beach Campground](/img/winnebago-micro-minnie/winnie-falcon.jpg)
+![Camper at Falcon Lake Beach Campground](/img/2021-winnebago-micro-minnie-2100bh/winnie-falcon-7f84a6f5.jpg)
 ^^^ Setup at [Falcon Lake Beach Campground](https://www.travelmanitoba.com/directory/falcon-beach-campground/)
 :::
 
@@ -54,33 +57,33 @@ Acquired a [Xantrex Freedom XC 2000W Pure Sine Wave Inverter](https://xantrex.co
 
 Dry mounted the inverter and battery in the rear storage compartment. With the help of my very knowledgeable coworker Brian, we sketched out a few scenarios and landed on this one.
 
-![A sketch showing the plan for installing the inverter](/img/winnebago-micro-minnie/winnie-inverter-plan.jpg)
+![A sketch showing the plan for installing the inverter](/img/2021-winnebago-micro-minnie-2100bh/winnie-inverter-plan-81f1104e.jpg)
 
 One of the challenges we had to overcome was the assumption by Winnebago that the battery would be mounted on the trailer tongue (standard on most travel trailers). We wanted to limit the interruption of the existing wiring as much as possible.
 
 Looking at the [Winnie Owners forums](https://www.winnieowners.com/forums/), it seems that many folks decided to install their equipment in the pass through storage under the primary bed at the front. So we had two options:
 
-1. Pass-through storage
-   - Pro: closer to 12V distribution on tongue
-   - Pro: shorter DC cable runs (less voltage drop)
-   - Con: fan noise from inverter directly below primary bed
-   - Con: takes up our most valuable storage area
+1. Pass-through storage  
+   - Pro: closer to 12V distribution on tongue  
+   - Pro: shorter DC cable runs (less voltage drop)  
+   - Con: fan noise from inverter directly below primary bed  
+   - Con: takes up our most valuable storage area  
    - Con: un-conditioned space
-2. Rear storage
-   - Pro: closer to 120V shore power input
-   - Pro: inverter fan far from primary bed
-   - Pro: conditioned space - can use in sub-zero temperatures
+2. Rear storage  
+   - Pro: closer to 120V shore power input  
+   - Pro: inverter fan far from primary bed  
+   - Pro: conditioned space - can use in sub-zero temperatures  
    - Con: long 12V DC cable run
 
 In the end, we settled on the rear storage area. Using 2 AWG cable over a 13 metre cable run only results in a 1% voltage drop at 10 amps, well within acceptable range. We ended up using 4 AWG as there was no 2 AWG available, but even that resulted in only 1.65% voltage drop.
 
 ^^^
-![Showing how the shore power enters the RV](/img/winnebago-micro-minnie/winnie-shore-power.jpg)
+![Showing how the shore power enters the RV](/img/2021-winnebago-micro-minnie-2100bh/winnie-shore-power-d9e27f0c.jpg)
 ^^^ Shore power enters the trailer through the rear storage compartment.
 
 The Freedom XC has a pass-through mode, which will simply allow it to operate as a (relatively) neutral part of the circuit when plugged into shore power once the battery is fully charged. To accomplish this, we split the shore power wire where it entered the trailer and installed a junction box. From this box, we connected the shore power wire to the inverter IN, then ran a cable from the inverter OUT which connected inside the junction box to the wire we originally split (which continues on to our distribution and breaker panel).
 
-![Final installation of the inverter and lithium battery](/img/winnebago-micro-minnie/inverter-final-install.jpg)
+![Final installation of the inverter and lithium battery](/img/2021-winnebago-micro-minnie-2100bh/inverter-final-install-4ab4f8f0.jpg)
 
 Here's what the final installation looks like. There's enough space to easily accommodate an additional 200aH battery beside this one, which could prove useful in the future.
 
@@ -92,17 +95,18 @@ One component I was really hoping to test was the air conditioner. Our summer ha
 
 I acquired a MicroAir Easy Start (soft start capacitor) and set about installing it. Specifically, the [ASY-364-X36-BLUE](https://www.microair.net/collections/easystart-soft-starters/products/easystart-364-3-ton-single-phase-soft-starter-for-air-conditioners?variant=29181121483) model.
 
-![Installing the Easy Start under the air conditioner shroud](/img/winnebago-micro-minnie/soft-start-install.jpg)
+![Installing the Easy Start under the air conditioner shroud](/img/2021-winnebago-micro-minnie-2100bh/soft-start-install-83baa3b6.jpg)
 
 After a few tests, I was able to successfully run the air conditioner off of battery power! It ran at about 5.5A, so that only gave me about 2 hours of run time, but that didn't matter. I simply wanted to be able to do it, and have the option available to me in a pinch.
 
 :::image-half
+
 ^^^
-![Screenshot of Easy Start app status](/img/winnebago-micro-minnie/soft-start-status.png)
+![Screenshot of Easy Start app status](/img/2021-winnebago-micro-minnie-2100bh/soft-start-status-ced628a9.png)
 ^^^ The Easy Start app shows the current voltage and starting voltage of the A/C
 
 ^^^
-![Screenshot of Renogy app](/img/winnebago-micro-minnie/battery-status.png)
+![Screenshot of Renogy app](/img/2021-winnebago-micro-minnie-2100bh/battery-status-93125523.png)
 ^^^ The Renogy app shows the remaining battery capacity under load
 
 ### 10 August 2022 - IRVWPC
@@ -111,4 +115,4 @@ After seeing numerous installations of them at the LTV Quebec Rally in June, I w
 
 Made in Canada, this control board sits between the 12V DC power supply and your water pump, and slowly ramps the supplied voltage up and down as a means to control the speed of the pump.
 
-![The IRVWPC installed](/img/winnebago-micro-minnie/irvwpc-install.jpg)
+![The IRVWPC installed](/img/2021-winnebago-micro-minnie-2100bh/irvwpc-install-55b208a2.jpg)

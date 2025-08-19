@@ -1,8 +1,13 @@
 ---
 title: Field Notes Arts & Sciences
-date: 2014-06-01
+slug: field-notes-arts-sciences
+date: '2014-06-01T00:00:00.000Z'
+updated: '2025-08-19T02:30:59.000Z'
+excerpt: ''
+tags:
+  - archive
+published: true
 ---
-
 I can’t say I’ve been more excited for a pack of notebooks. That grid is going to be beautiful. The colour choices are lovely as well.
 
 I’ve always loved the dot-grid for my sketches, but I think that the blank page will be good for me. I often have little sketches or diagrams that accompany my notes, and it will be interesting to try not having them inline with the actual notes.

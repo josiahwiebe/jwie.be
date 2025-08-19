@@ -2,7 +2,7 @@
 title: 2022 In Review
 slug: 2022-in-review
 date: '2023-01-22T00:00:00.000Z'
-updated: '2025-08-18T02:14:38.000Z'
+updated: '2025-08-19T02:31:59.000Z'
 excerpt: ''
 published: true
 ---
@@ -190,20 +190,20 @@ You can also follow me on [Twitter](https://twitter.com/josiahwiebe)/[Mastodon](
 
 ### Travel:
 
-* 26,014 kilometres flown on 22 flights
-* 6,500+ kilometres driven with the camper, across three provinces
-* Stayed at 13 different campsites
-* Commuted over 300 kilometres via e-scooter (I have the Apollo Phantom v2)
+- 26,014 kilometres flown on 22 flights
+- 6,500+ kilometres driven with the camper, across three provinces
+- Stayed at 13 different campsites
+- Commuted over 300 kilometres via e-scooter (I have the Apollo Phantom v2)
 
 ### Activity:
 
-* Cycled 1,201 kilometres
-* Ran 91 kilometres
-* Walked 2,708,130 steps (about 2,400 kilometres)
+- Cycled 1,201 kilometres
+- Ran 91 kilometres
+- Walked 2,708,130 steps (about 2,400 kilometres)
 
 ### Media:
 
-* [Read 24 books](https://www.goodreads.com/user/year_in_books/2022/3921541)
-* Listened to as little podcasts as possible
-* Wrote 0 blog posts (but that changes now)
-* [Listened to 7,481 songs](https://www.last.fm/user/josiahbenjamin/listening-report/year)
+- [Read 24 books](https://www.goodreads.com/user/year_in_books/2022/3921541)
+- Listened to as little podcasts as possible
+- Wrote 0 blog posts (but that changes now)
+- [Listened to 7,481 songs](https://www.last.fm/user/josiahbenjamin/listening-report/year)
