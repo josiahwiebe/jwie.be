@@ -92,7 +92,8 @@ function imageHalf(md: string) {
 
       if (hasVideo) {
         // Preserve as markdown block if videos are detected
-        return `\`\`\`markdown\n:::image-half\n${content}\n:::\n\`\`\``;
+        // Add special marker to distinguish from legitimate code examples
+        return `\`\`\`markdown\n<!-- GHOST_VIDEO_CONTENT -->\n:::image-half\n${content}\n:::\n\`\`\``;
       }
 
       const images: { src: string; alt: string; caption?: string }[] = [];

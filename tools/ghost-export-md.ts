@@ -169,16 +169,23 @@ function preprocessGhostHtml(html: string): { html: string; placeholders: Record
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&');
 
-    // Create a unique placeholder for this markdown content
-    const placeholder = `GHOSTMARKDOWN${index}`;
-    placeholders[placeholder] = markdownContent;
+    // Only unwrap blocks that have our special marker (preserved video content)
+    if (markdownContent.includes('<!-- GHOST_VIDEO_CONTENT -->')) {
+      // Remove the marker and preserve the content
+      const cleanContent = markdownContent.replace('<!-- GHOST_VIDEO_CONTENT -->\n', '');
+      
+      // Create a unique placeholder for this markdown content
+      const placeholder = `GHOSTMARKDOWN${index}`;
+      placeholders[placeholder] = cleanContent;
 
-    // Replace the entire pre block with a simple text node containing the placeholder
-    const preElement = code.closest('pre');
-    if (preElement) {
-      const placeholderNode = parse(placeholder);
-      preElement.replaceWith(placeholderNode);
+      // Replace the entire pre block with a simple text node containing the placeholder
+      const preElement = code.closest('pre');
+      if (preElement) {
+        const placeholderNode = parse(placeholder);
+        preElement.replaceWith(placeholderNode);
+      }
     }
+    // Leave legitimate markdown code blocks unchanged
   });
 
   return { html: doc.toString(), placeholders };
