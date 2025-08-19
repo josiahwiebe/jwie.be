@@ -2,8 +2,8 @@
 title: Raspberry Ghost + Vercel
 slug: raspberry-ghost-vercel
 date: '2025-08-18T21:59:52.000Z'
-updated: '2025-08-19T00:43:27.000Z'
-excerpt: ''
+updated: '2025-08-19T00:44:20.000Z'
+excerpt: Ghost + Raspberry Pi + Cloudflare Tunnel + GitHub Actions + Vercel
 published: true
 ---
 _Ghost + Raspberry Pi + Cloudflare Tunnel + GitHub Actions + Vercel_
