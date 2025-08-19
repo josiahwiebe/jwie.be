@@ -2,7 +2,7 @@
 title: Adding a Vite-Powered Playground to my Website
 slug: adding-a-react-playground
 date: '2025-01-04T00:00:00.000Z'
-updated: '2025-08-19T02:32:10.000Z'
+updated: '2025-08-19T03:11:10.000Z'
 excerpt: >-
   You can easily use Vite to power a React/Solid/Vue/etc. application within
   your PHP website.

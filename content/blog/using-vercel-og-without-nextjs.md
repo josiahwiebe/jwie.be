@@ -2,7 +2,7 @@
 title: Using @vercel/og without Next.js
 slug: using-vercel-og-without-nextjs
 date: '2024-02-12T00:00:00.000Z'
-updated: '2025-08-19T02:31:46.000Z'
+updated: '2025-08-19T03:10:52.000Z'
 excerpt: ''
 published: true
 ---

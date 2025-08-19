@@ -2,7 +2,7 @@
 title: Building A Personal Blog With Next.js 13 - Part 1
 slug: building-a-personal-blog-with-next-13-part-1
 date: '2023-01-26T00:00:00.000Z'
-updated: '2025-08-19T02:31:56.000Z'
+updated: '2025-08-19T03:10:59.000Z'
 excerpt: >-
   Building a personal blog using Next.js, Tailwind CSS, next-mdx-remote,
   Planetscale, and Prisma.

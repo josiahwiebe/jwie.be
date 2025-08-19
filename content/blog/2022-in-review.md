@@ -2,7 +2,7 @@
 title: 2022 In Review
 slug: 2022-in-review
 date: '2023-01-22T00:00:00.000Z'
-updated: '2025-08-19T02:31:59.000Z'
+updated: '2025-08-19T03:11:01.000Z'
 excerpt: ''
 published: true
 ---
