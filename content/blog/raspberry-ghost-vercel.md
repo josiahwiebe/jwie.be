@@ -2,7 +2,7 @@
 title: Raspberry Ghost + Vercel
 slug: raspberry-ghost-vercel
 date: '2025-08-18T21:59:52.000Z'
-updated: '2025-08-19T00:39:36.000Z'
+updated: '2025-08-19T00:43:27.000Z'
 excerpt: ''
 published: true
 ---
@@ -307,7 +307,7 @@ function preprocessGhostGallery(html: string): { html: string, placeholders: Rec
 
 ### Putting it all together
 
-I won't go into all of the details – if you want to check out the source code, you can see the Ghost export script here. 
+I won't go into all of the details – if you want to check out the source code, you can see the [Ghost export script here](https://github.com/josiahwiebe/jwie.be/blob/main/tools/ghost-export-md.ts). 
 
 The sequence is basically this:
 
@@ -422,4 +422,6 @@ I created a webhook for the `Post published` and `Post updated` events, but I co
 
 ### That's it!
 
-Now, I hit publish on Ghost, which fires that webhook (the Vercel serverless function). In turn, that function triggers the GitHub Action that will export the Ghost content, add it to VCS, and create a new commit. Finally, that commit automatically triggers the new Vercel build.
+Now, I hit publish on Ghost, which fires that webhook (the Vercel serverless function). In turn, that function triggers the GitHub Action that will export the Ghost content, add it to VCS, and create a new commit. Finally, that commit automatically triggers the new Vercel build. 
+
+You can check out the [full code on GitHub](https://github.com/josiahwiebe/jwie.be/tree/main/tools).
