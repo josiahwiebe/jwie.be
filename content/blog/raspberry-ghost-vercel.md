@@ -2,7 +2,7 @@
 title: Raspberry Ghost + Vercel
 slug: raspberry-ghost-vercel
 date: '2025-08-18T21:59:52.000Z'
-updated: '2025-08-18T22:05:52.000Z'
+updated: '2025-08-19T00:39:36.000Z'
 excerpt: ''
 published: true
 ---
@@ -22,7 +22,7 @@ Ghost recently released their [Docker (preview)](https://docs.ghost.org/install/
 
 Here's where I landed. There's probably better ways to do a lot of this, but this is what it looked like after spending a couple hours on it over the weekend.
 
-![](/img/raspberry-ghost-vercel/ghost-rpi.png)
+![](/img/raspberry-ghost-vercel/ghost-rpi-15cda15d.png)
 
 The Raspberry Pi would run the Ghost instance, which is made available to the outside world using the excellent [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) (could also use Tailscale). Even if the RPi was offline, it wouldn't matter as it's not actually serving the site – it's simply used for authoring.
 
@@ -65,14 +65,16 @@ The conversion of Markdown to Ghost-friendly HTML is pretty straightforward. How
 
 I'm using a CommonMark Attributes extension to allow me to create Markdown blocks like this:
 
-:::image-half  
-^^^  
-![](/img/raspberry-ghost-vercel/image1.jpg)  
-^^^ First image caption  
-^^^  
-![](/img/raspberry-ghost-vercel/image2.jpg)  
-^^^ Second image caption  
+```md
+:::image-half
+^^^
+![](img/image1.jpg)
+^^^ First image caption
+^^^
+![](/img/image2.jpg)
+^^^ Second image caption
 :::
+```
 
 Ghost doesn't natively support a layout like that, but they do have a gallery block. However, their galleries don't support videos and photos mixed, so we have to handle those a bit differently. Here's what I landed on to parse those Markdown blocks to galleries:
 
@@ -414,7 +416,7 @@ export default async function handler(req, res) {
 
 Let's hook this up to Ghost. In the Ghost admin, we can create a new "custom integration". This is also where we'll get the Content API Key and the Admin API Key that are needed by our import and export scripts.
 
-![](/img/raspberry-ghost-vercel/cleanshot-2025-08-18-at-16-56-34-2x.jpg)
+![](/img/raspberry-ghost-vercel/cleanshot-2025-08-18-at-16-56-34-2x-33b7fbf5.jpg)
 
 I created a webhook for the `Post published` and `Post updated` events, but I could add more if needed.
 
