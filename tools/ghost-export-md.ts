@@ -530,13 +530,39 @@ async function fetchAllPages(): Promise<GhostPage[]> {
     mdBody = mdBody.replace(/```markdown\n([\s\S]*?)\n```/g, '$1');
 
     // Post-process to fix NodeHtmlMarkdown's quirks
-    const fixedMdBody = mdBody
+    let fixedMdBody = mdBody
       // Fix URL encoding of underscores (NodeHtmlMarkdown encodes them)
       .replace(/%5F/g, '_')
       // Fix escaped periods after numbers (NodeHtmlMarkdown escodes them)
       .replace(/(\d)\\\./g, '$1.')
       .replace(/\\-/g, '-')
       .replace(/https?:\/\/ghost\.burwal\.de\//g, '/');
+
+    // Extract custom front matter from HTML comments and remove them from content
+    let extractedCustomFields = {};
+    fixedMdBody = fixedMdBody.replace(/<!-- CUSTOM_FRONT_MATTER:(.+?) -->\s*/g, (match, jsonStr) => {
+      try {
+        const customFields = JSON.parse(jsonStr);
+        extractedCustomFields = { ...extractedCustomFields, ...customFields };
+      } catch (e) {
+        console.warn(`Failed to parse custom front matter for ${p.slug}:`, e);
+      }
+      return ''; // Remove the comment from the content
+    });
+
+    // Read existing front matter to preserve custom fields
+    let existingFrontMatter = {};
+    const outputDir = getPostOutputDir(p.tags);
+    const outPath = path.join(outputDir, `${p.slug}.md`);
+    if (fs.existsSync(outPath)) {
+      try {
+        const existingContent = await fsp.readFile(outPath, 'utf8');
+        const existingMatter = matter(existingContent);
+        existingFrontMatter = existingMatter.data || {};
+      } catch (e) {
+        console.warn(`Could not read existing front matter for ${p.slug}:`, e);
+      }
+    }
 
     const fm = {
       title: p.title,
@@ -547,10 +573,16 @@ async function fetchAllPages(): Promise<GhostPage[]> {
       ...(feature ? { feature_image: feature } : {}),
       ...(p.tags && p.tags.length > 0 ? { tags: p.tags.map(tag => tag.slug) } : {}),
       published: p.status === 'published',
+      // First include custom fields extracted from Ghost content
+      ...extractedCustomFields,
+      // Then include existing custom fields from filesystem (these take precedence)
+      ...Object.keys(existingFrontMatter).reduce((acc, key) => {
+        if (!['title', 'slug', 'date', 'updated', 'excerpt', 'feature_image', 'tags', 'published'].includes(key)) {
+          acc[key] = existingFrontMatter[key];
+        }
+        return acc;
+      }, {} as Record<string, any>),
     } as const;
-
-    const outputDir = getPostOutputDir(p.tags);
-    const outPath = path.join(outputDir, `${p.slug}.md`);
 
     const file = matter.stringify(fixedMdBody.trim() + '\n', fm as any);
 
@@ -602,13 +634,38 @@ async function fetchAllPages(): Promise<GhostPage[]> {
     mdBody = mdBody.replace(/```markdown\n([\s\S]*?)\n```/g, '$1');
 
     // Post-process to fix NodeHtmlMarkdown's quirks
-    const fixedMdBody = mdBody
+    let fixedMdBody = mdBody
       // Fix URL encoding of underscores (NodeHtmlMarkdown encodes them)
       .replace(/%5F/g, '_')
       // Fix escaped periods after numbers (NodeHtmlMarkdown escapes them)
       .replace(/(\d)\\\./g, '$1.')
       .replace(/\\-/g, '-')
       .replace(/https?:\/\/ghost\.burwal\.de\//g, '/');
+
+    // Extract custom front matter from HTML comments and remove them from content
+    let extractedCustomFields = {};
+    fixedMdBody = fixedMdBody.replace(/<!-- CUSTOM_FRONT_MATTER:(.+?) -->\s*/g, (match, jsonStr) => {
+      try {
+        const customFields = JSON.parse(jsonStr);
+        extractedCustomFields = { ...extractedCustomFields, ...customFields };
+      } catch (e) {
+        console.warn(`Failed to parse custom front matter for ${p.slug}:`, e);
+      }
+      return ''; // Remove the comment from the content
+    });
+
+    // Read existing front matter to preserve custom fields
+    let existingFrontMatter = {};
+    const outPath = path.join(OUT_CONTENT, `${p.slug}.md`);
+    if (fs.existsSync(outPath)) {
+      try {
+        const existingContent = await fsp.readFile(outPath, 'utf8');
+        const existingMatter = matter(existingContent);
+        existingFrontMatter = existingMatter.data || {};
+      } catch (e) {
+        console.warn(`Could not read existing front matter for ${p.slug}:`, e);
+      }
+    }
 
     const fm = {
       title: p.title,
@@ -618,9 +675,16 @@ async function fetchAllPages(): Promise<GhostPage[]> {
       excerpt: p.custom_excerpt || "",
       ...(feature ? { feature_image: feature } : {}),
       published: p.status === 'published',
+      // First include custom fields extracted from Ghost content
+      ...extractedCustomFields,
+      // Then include existing custom fields from filesystem (these take precedence)
+      ...Object.keys(existingFrontMatter).reduce((acc, key) => {
+        if (!['title', 'slug', 'date', 'updated', 'excerpt', 'feature_image', 'published'].includes(key)) {
+          acc[key] = existingFrontMatter[key];
+        }
+        return acc;
+      }, {} as Record<string, any>),
     } as const;
-
-    const outPath = path.join(OUT_CONTENT, `${p.slug}.md`);
 
     const file = matter.stringify(fixedMdBody.trim() + '\n', fm as any);
 

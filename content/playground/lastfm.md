@@ -7,6 +7,7 @@ excerpt: Calculate your last.fm listening stats.
 tags:
   - playground
 published: true
+layout: react-app
 ---
 If you use Last.fm to scrobble your music, this app will calculate your listening stats for a set time period.
 

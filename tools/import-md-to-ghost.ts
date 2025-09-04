@@ -263,6 +263,8 @@ type FrontMatter = {
   feature_image?: string;
   canonical_url?: string;
   published?: boolean;
+  // Allow any additional custom fields
+  [key: string]: any;
 };
 
 function classifyByPath(file: string): { kind: 'post' | 'page'; folder?: string } {
@@ -284,7 +286,24 @@ async function upsertPostOrPage(file: string) {
 
   const title = String(fm.title ?? path.basename(file, '.md'));
   const slug = String(fm.slug ?? path.basename(file, '.md')).trim().toLowerCase();
+
+  // Extract custom front matter fields (non-standard Ghost fields)
+  const standardFields = ['title', 'slug', 'date', 'updated', 'tags', 'excerpt', 'feature_image', 'canonical_url', 'published'];
+  const customFields = Object.keys(fm).reduce((acc, key) => {
+    if (!standardFields.includes(key)) {
+      acc[key] = fm[key];
+    }
+    return acc;
+  }, {} as Record<string, any>);
+
   let md = content;
+
+  // If there are custom fields, prepend them as an HTML comment
+  if (Object.keys(customFields).length > 0) {
+    const customFieldsJson = JSON.stringify(customFields);
+    md = `<!-- CUSTOM_FRONT_MATTER:${customFieldsJson} -->\n\n${md}`;
+  }
+
   md = cleanStandaloneCarets(md);
   md = imageHalf(md);
   md = mdCaptionToFigure(md);
