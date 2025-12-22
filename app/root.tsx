@@ -85,9 +85,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <footer className="grid-row site-footer">
           <div className="footer-content">
             <div className="text-xs text-gray-500 leading-5 mt-4 space-x-3 flex items-center">
-              <Link to="/feed.xml" className="text-gray-500 dark:text-slate-400 no-underline hover:no-underline">
+              <a href="/feed.xml" className="text-gray-500 dark:text-slate-400 no-underline hover:no-underline">
                 RSS
-              </Link>
+              </a>
               <Link to="/archive" className="text-gray-500 dark:text-slate-400 no-underline hover:no-underline">
                 Archive
               </Link>
