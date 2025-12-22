@@ -15,16 +15,6 @@
       "source": "/hawaii",
       "destination": "/logbook/big-island-hawaii",
       "permanent": true
-    },
-    {
-      "source": "/api/og",
-      "destination": "/api/og.mjs",
-      "permanent": true
-    },
-    {
-      "source": "/api/ghost-hook",
-      "destination": "/api/ghost-hook.ts",
-      "permanent": true
     }
   ]
 }
