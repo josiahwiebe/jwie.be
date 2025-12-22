@@ -65,7 +65,7 @@ The conversion of Markdown to Ghost-friendly HTML is pretty straightforward. How
 
 I'm using a CommonMark Attributes extension to allow me to create Markdown blocks like this:
 
-```html
+```md
 <figure class="kg-card kg-gallery-card kg-width-wide">
   <div class="kg-gallery-container">
     <div class="kg-gallery-row">
@@ -184,13 +184,13 @@ There's a few steps to transforming the Markdown to Ghost-ready content. Some is
 
 1. Read the Markdown files (I pass a directory as an argument to the script)
 2. Parse the front matter and title, slugify it (I should probably use [the Ghost slug function](https://github.com/TryGhost/Koenig/blob/main/packages/kg-utils/lib/slugify.js) instead of my own, but I don't have any collision issues yet)
-3. Start converting the content to HTML  
-   1. Handle `:::image-half`  
-   2. Handle image captions  
-   3. Convert to HTML using [micromark](https://github.com/micromark/micromark)  
-   4. Absolute-ize the images (since they live in the GitHub repo and not on Ghost)  
-   5. Convert to Lexical format  
-   6. Upload to Ghost using the [Ghost Admin API JavaScript client](https://docs.ghost.org/admin-api/javascript)
+3. Start converting the content to HTML
+  1. Handle `:::image-half`
+  2. Handle image captions
+  3. Convert to HTML using [micromark](https://github.com/micromark/micromark)
+  4. Absolute-ize the images (since they live in the GitHub repo and not on Ghost)
+  5. Convert to Lexical format
+  6. Upload to Ghost using the [Ghost Admin API JavaScript client](https://docs.ghost.org/admin-api/javascript)
 
 That's it! All of my existing content is now in Ghost.
 
