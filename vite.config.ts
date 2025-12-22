@@ -1,22 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { reactRouter } from '@react-router/dev/vite'
 import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite'
+import path from 'node:path'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  build: {
-    manifest: true,
-    rollupOptions: {
-      input: {
-        style: resolve(__dirname, 'src/style.css'),
-        lastfm: resolve(__dirname, 'src/lastfm/index.tsx'),
-      },
+  plugins: [tailwindcss(), reactRouter()],
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, './app'),
     },
-    outDir: 'dist',
-    emptyOutDir: false,
   },
-  server: {
-    origin: 'http://localhost:5173',
+  build: {
+    target: 'ES2022',
   },
 })
