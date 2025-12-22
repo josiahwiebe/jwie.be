@@ -27,7 +27,7 @@ foreach ($posts as $post) {
   $item = $channel->addItem()
     ->title($post->front_matter->title)
     ->link('https://jwww.me' . $post->slug)
-    ->pubDate(new DateTime('@' . $post->front_matter->date))
+    ->pubDate(new DateTime($post->front_matter->date))
     ->encodedContent($post->markdown)
     ->guid('https://jwww.me' . $post->slug, true);
 }
