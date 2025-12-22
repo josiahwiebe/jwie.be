@@ -65,7 +65,7 @@ The conversion of Markdown to Ghost-friendly HTML is pretty straightforward. How
 
 I'm using a CommonMark Attributes extension to allow me to create Markdown blocks like this:
 
-```md
+```html
 <figure class="kg-card kg-gallery-card kg-width-wide">
   <div class="kg-gallery-container">
     <div class="kg-gallery-row">

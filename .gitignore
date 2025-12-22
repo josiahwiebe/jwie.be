@@ -4,3 +4,5 @@ vendor/
 node_modules/
 public/css/
 dist/
+.react-router/
+build/
