@@ -3,6 +3,10 @@ import { type RouteConfig, index, route, prefix } from '@react-router/dev/routes
 export default [
   index('routes/home.tsx'),
 
+  // API resource routes
+  route('api/og', 'routes/api.og.tsx'),
+  route('api/ghost-hook', 'routes/api.ghost-hook.ts'),
+
   // Section routes (blog, archive, logbook)
   ...['blog', 'archive', 'logbook'].flatMap((section) =>
     prefix(section, [
