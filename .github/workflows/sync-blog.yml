@@ -21,7 +21,7 @@ jobs:
       - run: bun install
 
       - name: Export posts → content/blog
-        run: bun tools/ghost-export-md.ts
+        run: bun scripts/ghost-export-md.ts
         env:
           GHOST_URL: ${{ secrets.GHOST_URL }}
           GHOST_CONTENT_KEY: ${{ secrets.GHOST_CONTENT_KEY }}
