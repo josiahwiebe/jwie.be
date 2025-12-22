@@ -7,7 +7,7 @@ import {
   Link,
   useLocation,
 } from 'react-router'
-import type { LinksFunction, MetaFunction } from 'react-router'
+import type { Route } from "./+types/root";
 
 import './styles/app.css'
 
@@ -18,7 +18,7 @@ const navItems = [
   { name: 'Not here', slug: '/online' },
 ] as const
 
-export const links: LinksFunction = () => [
+export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: '/css/fonts.css' },
   { rel: 'stylesheet', href: '/css/nord.css' },
   { rel: 'alternate', type: 'application/rss+xml', title: 'RSS Feed for jwie.be', href: '/feed.xml' },
@@ -33,7 +33,7 @@ export const links: LinksFunction = () => [
   { rel: 'authorization_endpoint', href: 'https://indieauth.com/auth' },
 ]
 
-export const meta: MetaFunction = () => [
+export const meta: Route.MetaFunction = () => [
   { charSet: 'utf-8' },
   { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
   { name: 'theme-color', content: '#f2787c' },

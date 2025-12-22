@@ -4,9 +4,11 @@
     "": {
       "name": "@josiahwiebe/jwiebe-php",
       "dependencies": {
+        "@react-router/node": "^7.11.0",
         "@vercel/og": "^0.6.2",
         "@vercel/react-router": "^1.2.4",
         "gray-matter": "^4.0.3",
+        "isbot": "^5",
         "nuqs": "^2.3.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
@@ -25,7 +27,6 @@
       },
       "devDependencies": {
         "@react-router/dev": "^7.1.0",
-        "@react-router/node": "^7.1.0",
         "@tailwindcss/postcss": "^4.0.0",
         "@tailwindcss/typography": "^0.5.15",
         "@tailwindcss/vite": "^4.0.0",
