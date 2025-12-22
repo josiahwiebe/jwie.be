@@ -1,3 +1,13 @@
+import type { MetaFunction } from 'react-router'
+
+export const meta: MetaFunction = () => [
+  { title: 'Josiah Wiebe' },
+  { name: 'description', content: 'Multi-disciplinary developer and marketing manager based in the Canadian Prairies.' },
+  { property: 'og:title', content: 'Josiah Wiebe' },
+  { property: 'og:description', content: 'Multi-disciplinary developer and marketing manager based in the Canadian Prairies.' },
+  { property: 'og:image', content: '/api/og?title=Josiah%20Wiebe' },
+]
+
 /**
  * Home page route.
  */

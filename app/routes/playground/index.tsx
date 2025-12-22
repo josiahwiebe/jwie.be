@@ -19,9 +19,13 @@ export async function loader({}: Route.LoaderArgs) {
 }
 
 export function meta({ data }: Route.MetaArgs) {
+  const title = data?.title ?? 'Playground'
   return [
-    { title: `Josiah Wiebe – ${data?.title ?? 'Playground'}` },
+    { title: `Josiah Wiebe – ${title}` },
     { name: 'description', content: data?.subtitle ?? 'Experiments and side projects' },
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: data?.subtitle ?? 'Experiments and side projects' },
+    { property: 'og:image', content: `/api/og?title=${encodeURIComponent(title)}` },
   ]
 }
 

@@ -23,9 +23,9 @@ export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: '/css/nord.css' },
   { rel: 'alternate', type: 'application/rss+xml', title: 'RSS Feed for jwie.be', href: '/feed.xml' },
   { rel: 'icon', href: '/favicon.ico' },
-  { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/static/favicon-16x16.png' },
-  { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/static/favicon-32x32.png' },
-  { rel: 'apple-touch-icon', href: '/static/apple-touch-icon.png' },
+  { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+  { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+  { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
   { rel: 'me', href: 'https://mastodon.social/@josiahwiebe' },
   { rel: 'me', href: 'https://x.com/josiahwiebe' },
   { rel: 'me', href: 'https://bsky.app/profile/jwie.be' },
@@ -37,6 +37,7 @@ export const meta: Route.MetaFunction = () => [
   { charSet: 'utf-8' },
   { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
   { name: 'theme-color', content: '#f2787c' },
+  { property: 'og:image', content: '/api/og' },
 ]
 
 /**
