@@ -108,6 +108,34 @@ export async function getIndexPage(dir: string): Promise<Post | null> {
 }
 
 /**
+ * Get all section slugs (directories with index.md, excluding playground).
+ */
+export async function getSectionSlugs(): Promise<string[]> {
+  try {
+    const entries = await fs.readdir(CONTENT_DIR, { withFileTypes: true })
+    const sections: string[] = []
+
+    for (const entry of entries) {
+      // Skip non-directories and playground (special case)
+      if (!entry.isDirectory() || entry.name === 'playground') continue
+
+      // Check if index.md exists (defines a valid section)
+      const indexPath = path.join(CONTENT_DIR, entry.name, 'index.md')
+      try {
+        await fs.access(indexPath)
+        sections.push(entry.name)
+      } catch {
+        // No index.md, not a valid section
+      }
+    }
+
+    return sections
+  } catch {
+    return []
+  }
+}
+
+/**
  * Get all standalone page slugs (excludes index.md).
  */
 export async function getPageSlugs(): Promise<string[]> {

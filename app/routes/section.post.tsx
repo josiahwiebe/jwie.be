@@ -3,28 +3,20 @@ import { markdownToHtml } from '~/lib/markdown.server'
 import { PostContent } from '~/components/PostContent'
 import type { Route } from './+types/section.post'
 
-const VALID_SECTIONS = ['blog', 'archive', 'logbook'] as const
-type Section = (typeof VALID_SECTIONS)[number]
-
 /**
  * Extract section from URL path (e.g., /blog/post-slug -> blog).
  */
-function getSectionFromUrl(url: string): Section | null {
+function getSectionFromUrl(url: string): string {
   const pathname = new URL(url).pathname
-  const segment = pathname.split('/')[1] as Section
-  return VALID_SECTIONS.includes(segment) ? segment : null
+  return pathname.split('/')[1] ?? ''
 }
 
 /**
  * Loader for dynamic section post pages.
+ * Valid sections are determined by filesystem.
  */
 export async function loader({ request, params }: Route.LoaderArgs) {
   const section = getSectionFromUrl(request.url)
-
-  if (!section) {
-    throw new Response('Not Found', { status: 404 })
-  }
-
   const post = await getPost(section, params.slug)
 
   if (!post) {

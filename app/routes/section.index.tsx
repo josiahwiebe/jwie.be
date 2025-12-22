@@ -2,32 +2,29 @@ import { getAllPosts, getIndexPage } from '~/lib/posts.server'
 import { PostList } from '~/components/PostList'
 import type { Route } from './+types/section.index'
 
-const VALID_SECTIONS = ['blog', 'archive', 'logbook'] as const
-type Section = (typeof VALID_SECTIONS)[number]
-
 /**
  * Extract section from URL path (e.g., /blog -> blog).
  */
-function getSectionFromUrl(url: string): Section | null {
+function getSectionFromUrl(url: string): string {
   const pathname = new URL(url).pathname
-  const segment = pathname.split('/')[1] as Section
-  return VALID_SECTIONS.includes(segment) ? segment : null
+  return pathname.split('/')[1] ?? ''
 }
 
 /**
- * Loader for dynamic section index pages (blog, archive, logbook).
+ * Loader for dynamic section index pages.
+ * Valid sections are determined by filesystem - directories with index.md.
  */
 export async function loader({ request }: Route.LoaderArgs) {
   const section = getSectionFromUrl(request.url)
-
-  if (!section) {
-    throw new Response('Not Found', { status: 404 })
-  }
 
   const [posts, indexPage] = await Promise.all([
     getAllPosts(section),
     getIndexPage(section),
   ])
+
+  if (!indexPage) {
+    throw new Response('Not Found', { status: 404 })
+  }
 
   return {
     section,

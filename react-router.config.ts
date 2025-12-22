@@ -1,33 +1,38 @@
 import type { Config } from '@react-router/dev/config'
 import { vercelPreset } from '@vercel/react-router/vite';
-import { getAllPostSlugs, getPageSlugs } from './app/lib/posts.server'
+import { getAllPostSlugs, getPageSlugs, getSectionSlugs } from './app/lib/posts.server'
 
 export default {
   ssr: true,
   presets: [vercelPreset()],
   async prerender() {
-    // Static routes
-    const staticRoutes = [
-      '/',
-      '/blog',
-      '/logbook',
-      '/playground',
-      '/archive',
-    ]
+    const sections = await getSectionSlugs()
 
-    // Dynamic routes from markdown content
-    const blogSlugs = await getAllPostSlugs('blog')
-    const logbookSlugs = await getAllPostSlugs('logbook')
+    // Static routes
+    const staticRoutes = ['/', '/playground']
+
+    // Build section routes dynamically
+    const sectionRoutes = await Promise.all(
+      sections.map(async (section) => {
+        const slugs = await getAllPostSlugs(section)
+        return [
+          `/${section}`,
+          ...slugs.map((slug) => `/${section}/${slug}`),
+        ]
+      })
+    )
+
+    // Playground special routes
     const playgroundSlugs = await getAllPostSlugs('playground')
-    const archiveSlugs = await getAllPostSlugs('archive')
+
+    // Static pages
     const pageSlugs = await getPageSlugs()
 
     return [
       ...staticRoutes,
-      ...blogSlugs.map((slug) => `/blog/${slug}`),
-      ...logbookSlugs.map((slug) => `/logbook/${slug}`),
+      ...sectionRoutes.flat(),
+      '/playground/lastfm',
       ...playgroundSlugs.map((slug) => `/playground/${slug}`),
-      ...archiveSlugs.map((slug) => `/archive/${slug}`),
       ...pageSlugs.map((slug) => `/${slug}`),
     ]
   },
