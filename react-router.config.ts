@@ -1,9 +1,10 @@
 import type { Config } from '@react-router/dev/config'
+import { vercelPreset } from '@vercel/react-router/vite';
 import { getAllPostSlugs } from './app/lib/posts.server'
 
 export default {
-  ssr: false, // Static site generation only, no runtime server
-
+  ssr: true,
+  presets: [vercelPreset()],
   async prerender() {
     // Static routes
     const staticRoutes = [
