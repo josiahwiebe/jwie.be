@@ -108,6 +108,20 @@ export async function getIndexPage(dir: string): Promise<Post | null> {
 }
 
 /**
+ * Get all standalone page slugs (excludes index.md).
+ */
+export async function getPageSlugs(): Promise<string[]> {
+  try {
+    const files = await fs.readdir(CONTENT_DIR)
+    return files
+      .filter((f) => f.endsWith('.md') && f !== 'index.md')
+      .map((f) => f.replace('.md', ''))
+  } catch {
+    return []
+  }
+}
+
+/**
  * Get a standalone page (e.g., /uses, /online).
  */
 export async function getPage(slug: string): Promise<Post | null> {

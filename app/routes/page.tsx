@@ -3,20 +3,12 @@ import { markdownToHtml } from '~/lib/markdown.server'
 import { PostContent } from '~/components/PostContent'
 import type { Route } from './+types/page'
 
-const VALID_PAGES = ['online', 'uses'] as const
-type PageSlug = (typeof VALID_PAGES)[number]
-
 /**
  * Loader for dynamic static pages (online, uses).
+ * Valid pages are determined by filesystem - if the .md file exists, it's valid.
  */
 export async function loader({ params }: Route.LoaderArgs) {
-  const slug = params.slug as PageSlug
-
-  if (!VALID_PAGES.includes(slug)) {
-    throw new Response('Not Found', { status: 404 })
-  }
-
-  const page = await getPage(slug)
+  const page = await getPage(params.slug)
 
   if (!page) {
     throw new Response('Not Found', { status: 404 })

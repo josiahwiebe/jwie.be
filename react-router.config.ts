@@ -1,6 +1,6 @@
 import type { Config } from '@react-router/dev/config'
 import { vercelPreset } from '@vercel/react-router/vite';
-import { getAllPostSlugs } from './app/lib/posts.server'
+import { getAllPostSlugs, getPageSlugs } from './app/lib/posts.server'
 
 export default {
   ssr: true,
@@ -13,8 +13,6 @@ export default {
       '/logbook',
       '/playground',
       '/archive',
-      '/online',
-      '/uses',
     ]
 
     // Dynamic routes from markdown content
@@ -22,6 +20,7 @@ export default {
     const logbookSlugs = await getAllPostSlugs('logbook')
     const playgroundSlugs = await getAllPostSlugs('playground')
     const archiveSlugs = await getAllPostSlugs('archive')
+    const pageSlugs = await getPageSlugs()
 
     return [
       ...staticRoutes,
@@ -29,6 +28,7 @@ export default {
       ...logbookSlugs.map((slug) => `/logbook/${slug}`),
       ...playgroundSlugs.map((slug) => `/playground/${slug}`),
       ...archiveSlugs.map((slug) => `/archive/${slug}`),
+      ...pageSlugs.map((slug) => `/${slug}`),
     ]
   },
 } satisfies Config
