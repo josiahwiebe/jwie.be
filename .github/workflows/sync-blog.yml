@@ -32,5 +32,19 @@ jobs:
           git config user.name "ghost-bot"
           git config user.email "ghost-bot@users.noreply.github.com"
           git add content/blog public/img
-          git diff --cached --quiet || git commit -m "chore: export blog"
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          # Generate commit message from changed files
+          ADDED=$(git diff --cached --name-only --diff-filter=A | grep "content/blog" | xargs -I {} basename {} .md 2>/dev/null | tr '\n' ', ' | sed 's/,$//')
+          MODIFIED=$(git diff --cached --name-only --diff-filter=M | grep "content/blog" | xargs -I {} basename {} .md 2>/dev/null | tr '\n' ', ' | sed 's/,$//')
+
+          MSG="auto-chore: blog sync from Ghost"
+          [ -n "$ADDED" ] && MSG="$MSG"$'\n\n'"Added: $ADDED"
+          [ -n "$MODIFIED" ] && MSG="$MSG"$'\n\n'"Updated: $MODIFIED"
+
+          git commit -m "$MSG" --trailer "Co-authored-by: Josiah Wiebe <hi@jwie.be>"
           git push
