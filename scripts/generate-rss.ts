@@ -6,6 +6,12 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import matter from 'gray-matter'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypeExternalLinks from 'rehype-external-links'
 
 const SITE_URL = 'https://jwww.me'
 const SITE_TITLE = 'Josiah Wiebe – Blog'
@@ -19,7 +25,56 @@ interface Post {
   section: string
 }
 
-function getPostsFromDir(dir: string, section: string): Post[] {
+/**
+ * Pre-process markdown to handle figure syntax before parsing.
+ * Converts ^^^ blocks to HTML figures.
+ */
+function preprocessFigures(markdown: string): string {
+  const figureRegex = /\^\^\^\s*\n([\s\S]*?)\n\^\^\^\s*([^\n]*)/g
+
+  return markdown.replace(figureRegex, (_, content: string, caption: string) => {
+    const trimmedCaption = caption.trim()
+    const figcaptionHtml = trimmedCaption ? `<figcaption>${trimmedCaption}</figcaption>` : ''
+
+    return `<figure>\n\n${content.trim()}\n\n${figcaptionHtml}</figure>`
+  })
+}
+
+/**
+ * Pre-process markdown to handle container syntax before parsing.
+ * Converts ::: blocks to div elements with classes.
+ */
+function preprocessContainers(markdown: string): string {
+  const containerRegex = /:::(\S*)\s*\n([\s\S]*?)\n:::/g
+
+  return markdown.replace(containerRegex, (_, className: string, content: string) => {
+    const classAttr = className ? ` class="${className}"` : ''
+    return `<div${classAttr}>\n\n${content.trim()}\n\n</div>`
+  })
+}
+
+/**
+ * Convert markdown to HTML (simplified version without syntax highlighting for RSS).
+ */
+async function markdownToHtml(markdown: string): Promise<string> {
+  let processed = preprocessFigures(markdown)
+  processed = preprocessContainers(processed)
+
+  const result = await unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeExternalLinks, {
+      target: '_blank',
+      rel: ['noopener', 'noreferrer'],
+    })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(processed)
+
+  return String(result)
+}
+
+async function getPostsFromDir(dir: string, section: string): Promise<Post[]> {
   const contentDir = join(process.cwd(), 'content', dir)
   const posts: Post[] = []
 
@@ -35,11 +90,12 @@ function getPostsFromDir(dir: string, section: string): Post[] {
       const { data, content } = matter(fileContent)
 
       if (data.title && data.date) {
+        const htmlContent = await markdownToHtml(content)
         posts.push({
           title: data.title,
           slug: file.replace('.md', ''),
           date: new Date(data.date).toISOString(),
-          content,
+          content: htmlContent,
           section,
         })
       }
@@ -105,20 +161,24 @@ ${items}
 }
 
 // Main
-const blogPosts = getPostsFromDir('blog', 'blog')
-const logbookPosts = getPostsFromDir('logbook', 'logbook')
-const archivePosts = getPostsFromDir('archive', 'archive')
-const allPosts = [...blogPosts, ...logbookPosts, ...archivePosts]
+async function main() {
+  const blogPosts = await getPostsFromDir('blog', 'blog')
+  const logbookPosts = await getPostsFromDir('logbook', 'logbook')
+  const archivePosts = await getPostsFromDir('archive', 'archive')
+  const allPosts = [...blogPosts, ...logbookPosts, ...archivePosts]
 
-const feed = generateRssFeed(allPosts)
-const outputPath = join(process.cwd(), 'build', 'client', 'feed.xml')
+  const feed = generateRssFeed(allPosts)
+  const outputPath = join(process.cwd(), 'build', 'client', 'feed.xml')
 
-try {
-  writeFileSync(outputPath, feed, 'utf-8')
-  console.log(`✓ RSS feed generated: ${outputPath} (${allPosts.length} posts)`)
-} catch (e) {
-  // build/client might not exist yet during first build
-  const fallbackPath = join(process.cwd(), 'public', 'feed.xml')
-  writeFileSync(fallbackPath, feed, 'utf-8')
-  console.log(`✓ RSS feed generated: ${fallbackPath} (${allPosts.length} posts)`)
+  try {
+    writeFileSync(outputPath, feed, 'utf-8')
+    console.log(`✓ RSS feed generated: ${outputPath} (${allPosts.length} posts)`)
+  } catch (e) {
+    // build/client might not exist yet during first build
+    const fallbackPath = join(process.cwd(), 'public', 'feed.xml')
+    writeFileSync(fallbackPath, feed, 'utf-8')
+    console.log(`✓ RSS feed generated: ${fallbackPath} (${allPosts.length} posts)`)
+  }
 }
+
+main()
