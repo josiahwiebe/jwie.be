@@ -2,7 +2,7 @@
 title: Raspberry Ghost + Vercel
 slug: raspberry-ghost-vercel
 date: '2025-08-18T21:59:52.000Z'
-updated: '2025-08-19T01:34:57.000Z'
+updated: '2025-12-22T20:37:54.000Z'
 excerpt: Ghost + Raspberry Pi + Cloudflare Tunnel + GitHub Actions + Vercel
 published: true
 ---
@@ -65,7 +65,7 @@ The conversion of Markdown to Ghost-friendly HTML is pretty straightforward. How
 
 I'm using a CommonMark Attributes extension to allow me to create Markdown blocks like this:
 
-```md
+```html
 <figure class="kg-card kg-gallery-card kg-width-wide">
   <div class="kg-gallery-container">
     <div class="kg-gallery-row">
