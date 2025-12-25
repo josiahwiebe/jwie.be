@@ -7,6 +7,7 @@ import {
   Link,
   useLocation,
 } from 'react-router'
+import { Analytics } from '@vercel/analytics/react'
 import type { Route } from "./+types/root";
 
 import './styles/app.css'
@@ -113,6 +114,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         <ScrollRestoration />
         <Scripts />
+        <Analytics />
       </body>
     </html>
   )

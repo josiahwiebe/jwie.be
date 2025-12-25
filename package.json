@@ -15,9 +15,11 @@
   "license": "ISC",
   "dependencies": {
     "@react-router/node": "^7.11.0",
+    "@vercel/analytics": "^1.6.1",
     "@vercel/og": "^0.6.2",
     "@vercel/react-router": "^1.2.4",
     "gray-matter": "^4.0.3",
+    "isbot": "^5",
     "nuqs": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -32,8 +34,7 @@
     "remark-rehype": "^11.1.1",
     "shiki": "^1.24.0",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
-    "isbot": "^5"
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.1.0",
