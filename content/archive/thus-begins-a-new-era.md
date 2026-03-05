@@ -2,7 +2,7 @@
 title: Thus Begins a New Era
 slug: thus-begins-a-new-era
 date: '2014-03-14T00:00:00.000Z'
-updated: '2025-08-19T02:31:06.000Z'
+updated: '2025-08-19T03:10:07.000Z'
 excerpt: ''
 tags:
   - archive

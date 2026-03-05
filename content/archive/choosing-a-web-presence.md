@@ -2,7 +2,7 @@
 title: Choosing a Web Presence
 slug: choosing-a-web-presence
 date: '2014-03-03T00:00:00.000Z'
-updated: '2025-08-19T02:31:08.000Z'
+updated: '2025-08-19T03:10:10.000Z'
 excerpt: ''
 tags:
   - archive

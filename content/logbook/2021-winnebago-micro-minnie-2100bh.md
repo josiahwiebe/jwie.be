@@ -2,7 +2,7 @@
 title: Winnebago Micro Minnie 2100BH - Changelog
 slug: 2021-winnebago-micro-minnie-2100bh
 date: '2021-05-14T00:00:00.000Z'
-updated: '2025-08-19T02:55:44.000Z'
+updated: '2025-08-19T03:10:43.000Z'
 excerpt: ''
 tags:
   - logbook
@@ -63,17 +63,17 @@ One of the challenges we had to overcome was the assumption by Winnebago that th
 
 Looking at the [Winnie Owners forums](https://www.winnieowners.com/forums/), it seems that many folks decided to install their equipment in the pass through storage under the primary bed at the front. So we had two options:
 
-1. Pass-through storage  
-   - Pro: closer to 12V distribution on tongue  
-   - Pro: shorter DC cable runs (less voltage drop)  
-   - Con: fan noise from inverter directly below primary bed  
-   - Con: takes up our most valuable storage area  
-   - Con: un-conditioned space
-2. Rear storage  
-   - Pro: closer to 120V shore power input  
-   - Pro: inverter fan far from primary bed  
-   - Pro: conditioned space - can use in sub-zero temperatures  
-   - Con: long 12V DC cable run
+1. Pass-through storage
+  - Pro: closer to 12V distribution on tongue
+  - Pro: shorter DC cable runs (less voltage drop)
+  - Con: fan noise from inverter directly below primary bed
+  - Con: takes up our most valuable storage area
+  - Con: un-conditioned space
+2. Rear storage
+  - Pro: closer to 120V shore power input
+  - Pro: inverter fan far from primary bed
+  - Pro: conditioned space - can use in sub-zero temperatures
+  - Con: long 12V DC cable run
 
 In the end, we settled on the rear storage area. Using 2 AWG cable over a 13 metre cable run only results in a 1% voltage drop at 10 amps, well within acceptable range. We ended up using 4 AWG as there was no 2 AWG available, but even that resulted in only 1.65% voltage drop.
 

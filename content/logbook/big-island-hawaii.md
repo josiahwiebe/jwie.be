@@ -2,7 +2,7 @@
 title: 'Big Island, Hawaii'
 slug: big-island-hawaii
 date: '2017-01-23T00:00:00.000Z'
-updated: '2025-08-19T02:31:30.000Z'
+updated: '2025-08-19T03:10:39.000Z'
 excerpt: ''
 tags:
   - logbook
@@ -28,9 +28,9 @@ This document is intended to be living document, documenting our favourite place
 # Background
 
 - The primary airport (KOA) is located on the Kohala Coast, about 15 kilometres (30 minutes) north of Kona. A few options:
-   - Rent a car - this is pretty much required on the Big Island
-   - Taxi
-   - Hitchhiking (mixed results, but can be fun)
+  - Rent a car - this is pretty much required on the Big Island
+  - Taxi
+  - Hitchhiking (mixed results, but can be fun)
 - Trespassing & private property. The Big Island is a very special place, but keep in mind that you are a visitor on native Hawaiian land. Respect the land and the people.
 - Kona coffee isn't all that good 😅 People think that it is, but they are wrong. Still fun to go on a free coffee tour though.
 - The Big Island has eight of our planet's 13 different climate zones. Be prepared for all of them.
@@ -44,31 +44,31 @@ This document is intended to be living document, documenting our favourite place
 It's simplest to divide the Big Island up into a few distinct regions:
 
 - **Kona**
-   - the most popular region, known for its beaches, coffee, and the town of Kona.
-   - the Kailua-Kona town area extends a fair ways down the western coast, and includes Kailua-Kona proper, Kealakekua Bay, Captain Cook, etc
+  - the most popular region, known for its beaches, coffee, and the town of Kona.
+  - the Kailua-Kona town area extends a fair ways down the western coast, and includes Kailua-Kona proper, Kealakekua Bay, Captain Cook, etc
 - **Kohala**
-   - the northernmost region, known for its beaches, golf courses, and the town of Waimea.
-   - includes the **Waikoloa Beach** resort area (not to be confused with Waikoloa Village), the Mauna Lani Resort, and the **Hapuna Beach** State Recreation Area.
-   - home to some of the best beaches and sunny weather on the island.
-   - the town of Waimea is also in northeast Kohala - Hawaii's "cowboy" town.
+  - the northernmost region, known for its beaches, golf courses, and the town of Waimea.
+  - includes the **Waikoloa Beach** resort area (not to be confused with Waikoloa Village), the Mauna Lani Resort, and the **Hapuna Beach** State Recreation Area.
+  - home to some of the best beaches and sunny weather on the island.
+  - the town of Waimea is also in northeast Kohala - Hawaii's "cowboy" town.
 - **Hamakua**
-   - the easternmost region, known for its waterfalls, rainforests, and awe-inspiring views.
-   - rolling green hills as well as the summit of Mauna Kea, the tallest mountain in the world.
-   - massive Jurassic Park-like cliffs and waterfalls on the north side, including Waipio Valley.
+  - the easternmost region, known for its waterfalls, rainforests, and awe-inspiring views.
+  - rolling green hills as well as the summit of Mauna Kea, the tallest mountain in the world.
+  - massive Jurassic Park-like cliffs and waterfalls on the north side, including Waipio Valley.
 - **Hilo**
-   - the second most popular region, known for its rainforests, waterfalls, and the town of Hilo.
-   - the town of Hilo is the second largest city on the island.
-   - this is the wettest, or "windward" side of the island, with the most rainfall.
-   - waterfalls (including Akaka Falls) and lush rainforests.
+  - the second most popular region, known for its rainforests, waterfalls, and the town of Hilo.
+  - the town of Hilo is the second largest city on the island.
+  - this is the wettest, or "windward" side of the island, with the most rainfall.
+  - waterfalls (including Akaka Falls) and lush rainforests.
 - **Puna**
-   - the eastern side of the island, between Hilo and the active lava flows in the National Park.
-   - the Puna side of the island is quite rural, with a lot of farmland and the town of Pahoa.
-   - a number of black sand beach, including (clothing optional) **Kehena Beach**.
+  - the eastern side of the island, between Hilo and the active lava flows in the National Park.
+  - the Puna side of the island is quite rural, with a lot of farmland and the town of Pahoa.
+  - a number of black sand beach, including (clothing optional) **Kehena Beach**.
 - **Ka'u**
-   - the southernmost region, probably the least popular region.
-   - the Ka'u side of the island is the most remote, with a lot of farmland and the town of Ka'u.
-   - home to **South Point**, the southernmost point in the United States.
-   - also home to **Papakolea Beach**, one of four green sand beaches in the world.
+  - the southernmost region, probably the least popular region.
+  - the Ka'u side of the island is the most remote, with a lot of farmland and the town of Ka'u.
+  - home to **South Point**, the southernmost point in the United States.
+  - also home to **Papakolea Beach**, one of four green sand beaches in the world.
 
 # Activities
 
@@ -124,8 +124,8 @@ It's simplest to divide the Big Island up into a few distinct regions:
 
 - pretty much guaranteed to see turtles here
 - two options
-   1. Park by the highway and hike down on gravel
-   2. Park near the sea and hike along soft sand
+  1. Park by the highway and hike down on gravel
+  2. Park near the sea and hike along soft sand
 - we generally choose to hike down from the highway, [parking right here](https://goo.gl/maps/TCrFFx4HNmGnJvoA9)
 - [GPS route](https://www.gaiagps.com/public/ypRjeWFj4j8TFAJr2pVFBl77) - 4km one way, nominal elevation gain
 
@@ -214,7 +214,7 @@ I'd recommend hitting up both Mahaiula Beach and Makalawena Beach back to back, 
 - easiest to get to at low tide
 
 ^^^
-![](/img/hawaii/anaehoomalu-bay.jpg)
+![](https://jwie.be/img/hawaii/anaehoomalu-bay.jpg)
 ^^^ ʻAnaehoʻomalu Bay
 
 ### Green Sand Beach
@@ -253,8 +253,8 @@ Black sand beaches are common on the Big Island, due to the volcanic activity. T
 - a bit out of the way, but if you're in the area, it's worth a visit
 - not the best for swimming
 - [Kehena Beach](https://maps.app.goo.gl/uxoGewBoamd8h5Zq8)
-   - this beach is in Puna, and clothing optional
-   - it's a fairly steep walk down to the beach
+  - this beach is in Puna, and clothing optional
+  - it's a fairly steep walk down to the beach
 
 ## Snorkelling & Paddleboarding
 
@@ -285,7 +285,7 @@ The lava rock really attracts sea urchins, so be careful. It's best to wear some
 ### Other snorkelling
 
 - If you want to do any snorkelling or scuba diving, I'd recommend [Jack's Diving Locker](https://www.jackdivinglocker.com/) - they are a great local company.
-   - night snorkelling with Manta rays is a truly unforgettable experience
+  - night snorkelling with Manta rays is a truly unforgettable experience
 
 ^^^
 ![](/img/big-island-hawaii/night-mantas-2b14aa52.jpg)
@@ -305,15 +305,15 @@ Our top spot for paddleboarding is actually just the Kona Bay. It's relatively c
 ## Happy Hour
 
 - [Don's Mai Tai](https://maps.app.goo.gl/BzNhqTz3NbzcDoTUA)
-   - claims to have invented the Mai Tai
-   - happy hour from 4–6 p.m.
+  - claims to have invented the Mai Tai
+  - happy hour from 4–6 p.m.
 - [Kona Brewing Company](https://maps.app.goo.gl/jJzbZZNJpmksBAwc7)
-   - no happy hour, but they have a good selection of beers
-   - daily tours at 10:30 a.m. and 3 p.m.
+  - no happy hour, but they have a good selection of beers
+  - daily tours at 10:30 a.m. and 3 p.m.
 - [Tropics Ale House](https://maps.app.goo.gl/22f6i9EnR7ZqhjPe9)
-   - located in Waikoloa Beach
-   - happy hour from 2–5 p.m.
-   - excellent mai tais
+  - located in Waikoloa Beach
+  - happy hour from 2–5 p.m.
+  - excellent mai tais
 
 ## Restaurants & Groceries
 
@@ -322,33 +322,33 @@ The Big Island of Hawaii is not a foodie destination, but here's a few spots we'
 ### Groceries
 
 - [Costco](https://maps.app.goo.gl/wpdUMsCoBKybSmdm9)
-   - best place to pick up groceries for your stay
-   - also a great opportunity to stock up on booze – cheapest place on the island
+  - best place to pick up groceries for your stay
+  - also a great opportunity to stock up on booze – cheapest place on the island
 - downtown Kona hosts a [small open-air market](https://maps.app.goo.gl/an3WqmWzQ15kN5oDA) from Tuesday–Sunday, 7am–4pm
-   - there's a lot of trinkety crap but you can usually find some decent produce for reasonable prices
+  - there's a lot of trinkety crap but you can usually find some decent produce for reasonable prices
 - [Target](https://maps.app.goo.gl/d4T9YZMjzRprvkCt9) on the northwest side of Kona is a good bet
 - [Safeway](https://maps.app.goo.gl/vRwW8nyTJ4F84Jfz5) is also an option
 
 ### Restaurants
 
 - Fosters Kitchen
-   - nicer place to eat
-   - location in [downtown Kona](https://maps.app.goo.gl/tGrauujPcwVHBTK16) and [Waikoloa Beach](https://maps.app.goo.gl/8yVeKbhMdEQNuN6t7)
+  - nicer place to eat
+  - location in [downtown Kona](https://maps.app.goo.gl/tGrauujPcwVHBTK16) and [Waikoloa Beach](https://maps.app.goo.gl/8yVeKbhMdEQNuN6t7)
 - [Umeke's Poke](https://maps.app.goo.gl/sjw2GQMGzn2L7EKd8)
-   - this is raw fish and it's SO GOOD
-   - make sure to get a Ho'io salad on the side
+  - this is raw fish and it's SO GOOD
+  - make sure to get a Ho'io salad on the side
 - [Hayashi's (You Make The Roll)](https://maps.app.goo.gl/FkHBgZcKm7CvkV4v5)
-   - massive rolls for a bargain
-   - not amazing but good value
+  - massive rolls for a bargain
+  - not amazing but good value
 - [Kamana Kitchen](https://maps.app.goo.gl/iua2VHAS79V1CW846)
-   - great Indian food option
+  - great Indian food option
 - [Tex Drive In](https://maps.app.goo.gl/8CssZ3PfcXu5MpuE6)
-   - famously known for malasadas - a type of Hawaiian/Portuguese "doughnut"
-   - they do run out, so you might be disappointed
-   - I've been known to make the late night trek for these
+  - famously known for malasadas - a type of Hawaiian/Portuguese "doughnut"
+  - they do run out, so you might be disappointed
+  - I've been known to make the late night trek for these
 - [Basik Cafe](https://maps.app.goo.gl/vhER2TFuCati6z7LA)
-   - the best damn acai bowls
+  - the best damn acai bowls
 - [Island Lava Java](https://maps.app.goo.gl/LFYFfaBKxeaqvVHG6)
-   - great eggs benedict
+  - great eggs benedict
 - [Ken's House of Pancakes](https://maps.app.goo.gl/DP7y5xKGh5DQd3YH9)
-   - if you make the trek to Hilo, you'll want to stop here
+  - if you make the trek to Hilo, you'll want to stop here

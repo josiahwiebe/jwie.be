@@ -2,7 +2,7 @@
 title: Using Two-Factor Authentication
 slug: using-two-factor-authentication
 date: '2014-01-29T00:00:00.000Z'
-updated: '2025-08-19T02:31:23.000Z'
+updated: '2025-08-19T03:10:35.000Z'
 excerpt: ''
 tags:
   - archive

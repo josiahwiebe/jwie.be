@@ -2,7 +2,7 @@
 title: Launching the Murphy Bed Lounge
 slug: murphy-bed-lounge-launch
 date: '2022-09-13T00:00:00.000Z'
-updated: '2025-08-19T02:31:32.000Z'
+updated: '2025-08-19T03:10:41.000Z'
 excerpt: ''
 tags:
   - logbook

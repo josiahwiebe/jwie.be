@@ -2,7 +2,7 @@
 title: Field Notes Arts & Sciences
 slug: field-notes-arts-sciences
 date: '2014-06-01T00:00:00.000Z'
-updated: '2025-08-19T02:30:59.000Z'
+updated: '2025-08-19T03:09:58.000Z'
 excerpt: ''
 tags:
   - archive

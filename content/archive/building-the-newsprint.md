@@ -2,7 +2,7 @@
 title: Building The Newsprint
 slug: building-the-newsprint
 date: '2014-12-02T00:00:00.000Z'
-updated: '2025-08-19T02:31:02.000Z'
+updated: '2025-08-19T03:10:00.000Z'
 excerpt: ''
 tags:
   - archive

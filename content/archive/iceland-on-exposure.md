@@ -2,7 +2,7 @@
 title: Iceland on Exposure
 slug: iceland-on-exposure
 date: '2014-12-16T00:00:00.000Z'
-updated: '2025-08-19T02:31:17.000Z'
+updated: '2025-08-19T03:10:30.000Z'
 excerpt: ''
 tags:
   - archive

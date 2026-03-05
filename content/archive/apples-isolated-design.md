@@ -2,7 +2,7 @@
 title: Apple's Isolated Design
 slug: apples-isolated-design
 date: '2013-06-12T00:00:00.000Z'
-updated: '2025-08-19T02:31:13.000Z'
+updated: '2025-08-19T03:10:26.000Z'
 excerpt: ''
 tags:
   - archive

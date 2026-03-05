@@ -2,7 +2,7 @@
 title: Plex → Letterboxd Scrobbler
 slug: plex-scrobbler
 date: '2025-08-01T13:21:43.000Z'
-updated: '2025-08-19T01:34:29.000Z'
+updated: '2025-08-19T03:10:46.000Z'
 excerpt: >-
   I've long wanted a tool that would sync my movie history from Plex to
   Letterboxd, but since there is no public API for Letterboxd, I had to build it

@@ -2,7 +2,7 @@
 title: Feed
 slug: feed
 date: '2023-01-01T21:22:43.000Z'
-updated: '2025-08-19T01:34:30.000Z'
+updated: '2025-08-19T03:10:48.000Z'
 excerpt: A custom "Twitter" style feed.
 tags:
   - playground

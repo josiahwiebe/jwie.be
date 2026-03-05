@@ -2,7 +2,7 @@
 title: 'Thank You, Redwall'
 slug: beginnings
 date: '2014-01-28T00:00:00.000Z'
-updated: '2025-08-19T02:31:04.000Z'
+updated: '2025-08-19T03:10:04.000Z'
 excerpt: ''
 tags:
   - archive

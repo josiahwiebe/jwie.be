@@ -2,7 +2,7 @@
 title: Status Update
 slug: status-update
 date: '2014-04-25T00:00:00.000Z'
-updated: '2025-08-19T02:31:27.000Z'
+updated: '2025-08-19T03:10:37.000Z'
 excerpt: ''
 tags:
   - archive
@@ -16,7 +16,7 @@ I've chosen a web-presence! In the near future, I'll be saying good-bye to Svbtl
 
 [Jon](http://jondueck.ca) and I have been using [Siteleaf](http://siteleaf.net) over at [Collectif](http://collectif.co) for quite some time now, and we _love_ developing with it.
 
-The site is coming along fairly well, I'm really focusing on the typography and simplicity of the site. Here's a screenshot of the style-guide for your viewing pleasure.[](https://svbtleusercontent.com/4bl146zab5mqua.png)
+The site is coming along fairly well, I'm really focusing on the typography and simplicity of the site. Here's a screenshot of the style-guide for your viewing pleasure.
 
 I hope to launch the new site in mid-May, but it will depend on whether my upcoming trip plans interfere with that or not.
 

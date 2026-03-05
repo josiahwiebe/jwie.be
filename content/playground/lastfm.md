@@ -2,7 +2,7 @@
 title: Last.fm Listening Stats
 slug: lastfm
 date: '2025-01-03T06:43:11.000Z'
-updated: '2025-08-19T01:34:32.000Z'
+updated: '2025-08-19T03:10:50.000Z'
 excerpt: Calculate your last.fm listening stats.
 tags:
   - playground
