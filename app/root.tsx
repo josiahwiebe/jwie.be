@@ -16,6 +16,7 @@ const navItems = [
   { name: 'Blog', slug: '/blog' },
   { name: 'Playground', slug: '/playground' },
   { name: 'Logbook', slug: '/logbook' },
+  { name: 'Uses', slug: '/uses' },
   { name: 'Not here', slug: '/online' },
 ] as const
 
