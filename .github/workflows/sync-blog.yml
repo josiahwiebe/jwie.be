@@ -1,4 +1,4 @@
-name: Sync blog (Ghost → MD)
+name: Sync content (Ghost → MD)
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
 
       - run: bun install
 
-      - name: Export posts → content/blog
+      - name: Export Ghost content → markdown
         run: bun scripts/ghost-export-md.ts
         env:
           GHOST_URL: ${{ secrets.GHOST_URL }}
@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name "ghost-bot"
           git config user.email "ghost-bot@users.noreply.github.com"
-          git add content/blog public/img
+          git add content public/img
 
           if git diff --cached --quiet; then
             echo "No changes to commit"
@@ -39,10 +39,10 @@ jobs:
           fi
 
           # Generate commit message from changed files
-          ADDED=$(git diff --cached --name-only --diff-filter=A | grep "content/blog" | xargs -I {} basename {} .md 2>/dev/null | tr '\n' ', ' | sed 's/,$//')
-          MODIFIED=$(git diff --cached --name-only --diff-filter=M | grep "content/blog" | xargs -I {} basename {} .md 2>/dev/null | tr '\n' ', ' | sed 's/,$//')
+          ADDED=$(git diff --cached --name-only --diff-filter=A | grep -E "^content/.+\.md$" | xargs -I {} basename {} .md 2>/dev/null | tr '\n' ', ' | sed 's/,$//')
+          MODIFIED=$(git diff --cached --name-only --diff-filter=M | grep -E "^content/.+\.md$" | xargs -I {} basename {} .md 2>/dev/null | tr '\n' ', ' | sed 's/,$//')
 
-          MSG="auto-chore: blog sync from Ghost"
+          MSG="auto-chore: content sync from Ghost"
           [ -n "$ADDED" ] && MSG="$MSG"$'\n\n'"Added: $ADDED"
           [ -n "$MODIFIED" ] && MSG="$MSG"$'\n\n'"Updated: $MODIFIED"
 
