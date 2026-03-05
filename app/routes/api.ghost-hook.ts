@@ -13,6 +13,8 @@ export async function action({ request }: ActionFunctionArgs) {
     const repo = process.env.GH_REPO
     const token = process.env.GH_TOKEN
     const secret = process.env.GH_DEPLOY_SECRET
+    const workflowId = process.env.GH_WORKFLOW_ID || 'sync-blog.yml'
+    const ref = process.env.GH_REF || 'main'
 
     if (!repo || !token) {
       return Response.json(
@@ -26,18 +28,20 @@ export async function action({ request }: ActionFunctionArgs) {
       return Response.json({ error: 'Invalid secret' }, { status: 403 })
     }
 
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'vercel-webhook',
+    }
+
     const response = await fetch(
-      `https://api.github.com/repos/${repo}/actions/workflows/sync-blog.yml/dispatches`,
+      `https://api.github.com/repos/${repo}/actions/workflows/${workflowId}/dispatches`,
       {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
-          'User-Agent': 'vercel-webhook',
-        },
+        headers,
         body: JSON.stringify({
-          ref: 'main',
+          ref,
           inputs: { event_type: 'ghost-publish' },
         }),
       }
@@ -49,7 +53,30 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     const errText = await response.text()
-    console.error('GitHub API error:', response.status, errText)
+    console.error('GitHub workflow_dispatch error:', response.status, errText)
+
+    if (response.status >= 500) {
+      const fallbackResponse = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          event_type: 'ghost-publish',
+          client_payload: { source: 'ghost-hook' },
+        }),
+      })
+
+      if (fallbackResponse.status === 204) {
+        console.log('Repository dispatch fallback triggered successfully')
+        return Response.json({ success: true, message: 'Repository dispatch fallback triggered' })
+      }
+
+      const fallbackErrText = await fallbackResponse.text()
+      console.error('GitHub repository_dispatch fallback error:', fallbackResponse.status, fallbackErrText)
+      throw new Error(
+        `workflow_dispatch failed (${response.status}) and repository_dispatch fallback failed (${fallbackResponse.status}): ${fallbackErrText}`
+      )
+    }
+
     throw new Error(`GitHub API returned ${response.status}: ${errText}`)
   } catch (error) {
     console.error('Error triggering workflow:', error)

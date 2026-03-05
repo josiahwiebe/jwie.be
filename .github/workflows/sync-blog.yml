@@ -8,6 +8,9 @@ on:
         required: true
         default: 'ghost-publish'
         type: string
+  repository_dispatch:
+    types:
+      - ghost-publish
 
 jobs:
   export:
