@@ -20,6 +20,11 @@
       "source": "/hawaii",
       "destination": "/logbook/big-island-hawaii",
       "permanent": true
+    },
+    {
+      "source": "/opensession/install",
+      "destination": "https://raw.githubusercontent.com/josiahwiebe/opensession/main/scripts/install.sh",
+      "permanent": false
     }
   ]
 }
