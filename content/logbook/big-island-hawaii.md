@@ -214,7 +214,7 @@ I'd recommend hitting up both Mahaiula Beach and Makalawena Beach back to back, 
 - easiest to get to at low tide
 
 ^^^
-![](/img/big-island-hawaii/anaehoomalu-bay-68f6328b.jpg)
+![](https://jwie.be/img/hawaii/anaehoomalu-bay.jpg)
 ^^^ ʻAnaehoʻomalu Bay
 
 ### Green Sand Beach
