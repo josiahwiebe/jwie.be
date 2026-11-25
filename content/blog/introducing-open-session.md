@@ -13,7 +13,7 @@ These sessions exist all over the place, with a multitude of working directories
 So I built `opensession` – a simple TUI for managing your past chat sessions – making it easy to recall a session and jump right back in.
 
 ^^^
-![](/img/introducing-open-session/cleanshot-2026-03-07-at-15-15-44-2x.png)
+![](/img/introducing-open-session/cleanshot-2026-03-07-at-15-15-44-2x-c1120746.png)
 ^^^ Screenshot of the Open Session TUI
 
 ### Install
